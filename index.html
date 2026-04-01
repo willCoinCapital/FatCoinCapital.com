@@ -5,129 +5,99 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FatCoin Capital</title>
     <style>
-        /* Define Brand Palette & CSS Variables */
         :root {
             --pitch-black: #000000;
             --text-white: #FFFFFF;
-            --muted-gray: rgba(255, 255, 255, 0.7);
-            --button-cyan: #3FE1F5; /* Neon Cyan from original design */
+            --muted-gray: rgba(255, 255, 255, 0.6);
+            --accent-cyan: #3FE1F5;
+            --card-bg: #111111;
         }
 
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
-            background-color: #f0f2f5; /* Light grey outer context */
+            background-color: #f0f2f5;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
         }
 
-        /* 1. Main Mobile-First Container (The Black App View) */
         .container {
             width: 100%;
-            max-width: 375px; /* Matches modern phone width */
+            max-width: 375px;
             height: 100%;
-            max-height: 812px; /* Matches modern phone height */
-            background-color: var(--pitch-black); /* Final base color confirmed */
-            border-radius: 40px; /* Large, soft corners as requested */
-            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
-            overflow: hidden; /* Keeps the asset contained */
+            max-height: 812px;
+            background-color: var(--pitch-black);
+            border-radius: 40px;
             position: relative;
             display: flex;
             flex-direction: column;
+            overflow: hidden;
         }
 
-        /* 2. THE NEW VISUALIZATION LAYER */
-        /* This places the newly generated image_4.png behind everything */
-        .viz-background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('index-background.jpg'); /* The asset from GitHub */
-            background-size: cover;
-            background-position: center;
-            opacity: 0.6; /* Softly blends the image with the black */
-            z-index: 1; /* Sets the base layer */
-        }
-
-        /* --- THE CONTENT LAYER (Sits ABOVE viz-background) --- */
         .content {
-            position: relative;
-            z-index: 10; /* Important: Sits above viz-background */
-            padding: 100px 40px; /* Space from top and sides */
-            margin-top: auto;
-            margin-bottom: auto;
+            padding: 60px 30px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
 
         h1 {
             color: var(--text-white);
-            font-size: 36px;
+            font-size: 38px;
             font-weight: 800;
-            margin: 0 0 15px 0;
-            letter-spacing: -0.5px;
-            text-align: left;
+            margin: 60px 0 40px 0; /* Increased bottom margin since subtext is gone */
         }
 
-        p {
-            color: var(--muted-gray);
-            font-size: 16px;
-            line-height: 1.6;
-            margin: 0;
-            max-width: 260px; /* Controls text wrap for readability */
-            text-align: left;
-        }
-
-        /* --- THE SIGNUP VISUALIZATION GRID (The core request) --- */
-        /* This grid holds the calculated opportunity data */
-        .visualization-area {
-            position: absolute;
-            bottom: 120px; /* Tucked above the action buttons */
-            left: 30px;
-            right: 30px;
+        /* The Grid Layout */
+        .grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
-            z-index: 10;
         }
 
-        .viz-box {
-            background-color: rgba(255, 255, 255, 0.08); /* Transparent 'glass' effect */
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 12px;
-            padding: 18px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid #222;
         }
 
-        .viz-label {
-            font-size: 11px;
+        .card-label {
+            font-size: 10px;
             color: var(--muted-gray);
             text-transform: uppercase;
-            font-weight: 600;
-            margin-bottom: 5px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
         }
 
-        .viz-value {
-            font-size: 20px;
+        .card-value {
+            font-size: 22px;
             font-weight: 800;
             color: var(--text-white);
         }
 
-        /* Emphasizes the 50% rate with the brand cyan */
-        .viz-prime {
-            border: 1px solid var(--button-cyan);
-            background-color: rgba(63, 225, 245, 0.05);
+        .highlight {
+            border: 1px solid var(--accent-cyan);
         }
-        .viz-prime .viz-label { color: var(--button-cyan); }
+        .highlight .card-label { color: var(--accent-cyan); }
 
-        /* --- BOTTOM NAV BAR (Sign In/Sign Up structure) --- */
-        .bottom-nav {
+        .full-width-card {
+            grid-column: span 2;
+            padding: 12px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--accent-cyan);
+            background: rgba(63, 225, 245, 0.05);
+            border: 1px solid rgba(63, 225, 245, 0.2);
+            border-radius: 12px;
+        }
+
+        /* Bottom Navigation */
+        .footer {
             position: absolute;
             bottom: 40px;
             left: 30px;
@@ -135,88 +105,59 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 10;
         }
 
-        .signin-text {
-            color: var(--text-white);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 16px;
-            padding: 10px;
-        }
-
-        /* The white action button, exactly as in image_3.png */
-        .signup-btn {
-            background-color: var(--text-white);
-            color: var(--pitch-black);
-            padding: 18px 40px;
-            border-radius: 14px;
+        .btn-signin {
+            color: white;
             text-decoration: none;
             font-weight: 700;
             font-size: 16px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
-        /* Accepts Bitcoin Pill (secondary info from signup, integrated) */
-        .btc-indicator {
-            grid-column: span 2; /* Spans across both columns */
-            border: none;
-            padding: 8px 18px;
-            font-size: 12px;
-            color: var(--button-cyan);
-            border: 1px solid rgba(63, 225, 245, 0.3);
-            background: rgba(63, 225, 245, 0.03);
-            border-radius: 12px;
-            margin-top: 5px;
+        .btn-signup {
+            background: white;
+            color: black;
+            padding: 18px 45px;
+            border-radius: 14px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 16px;
         }
-
     </style>
 </head>
 <body>
 
     <div class="container">
-        
-        <div class="viz-background"></div>
-        
         <div class="content">
             <h1>Welcome Back!</h1>
-            <p>Access your FatCoin Capital portfolio and digital assets.</p>
+
+            <div class="grid">
+                <div class="card">
+                    <div class="card-label">Daily Balance</div>
+                    <div class="card-value">$0.50</div>
+                </div>
+                <div class="card">
+                    <div class="card-label">Investment Cycle</div>
+                    <div class="card-value">7 Days</div>
+                </div>
+                <div class="card highlight">
+                    <div class="card-label">Rate of Yield</div>
+                    <div class="card-value">50%</div>
+                </div>
+                <div class="card">
+                    <div class="card-label">Projected Gain*</div>
+                    <div class="card-value">$100</div>
+                </div>
+                <div class="card full-width-card">
+                    Deposits via: [ BITCOIN ]
+                </div>
+            </div>
         </div>
 
-        <div class="visualization-area">
-            
-            <div class="viz-box">
-                <div class="viz-label">Daily Balance</div>
-                <div class="viz-value">$0.50</div>
-            </div>
-
-            <div class="viz-box">
-                <div class="viz-label">Investment Cycle</div>
-                <div class="viz-value">7 Days</div>
-            </div>
-
-            <div class="viz-box viz-prime">
-                <div class="viz-label">Rate of Yield</div>
-                <div class="viz-value">50%</div>
-            </div>
-
-            <div class="viz-box">
-                <div class="viz-label">Projected Gain*</div>
-                <div class="viz-value">$100</div>
-            </div>
-
-            <div class="viz-box btc-indicator">
-                Deposits via: [ BITCOIN ]
-            </div>
-
+        <div class="footer">
+            <a href="#" class="btn-signin">Sign in</a>
+            <a href="#" class="btn-signup">Sign up</a>
         </div>
-        
-        <div class="bottom-nav">
-            <a href="#" class="signin-text">Sign in</a>
-            <a href="#" class="signup-btn">Sign up</a>
-        </div>
-        
     </div>
 
 </body>
