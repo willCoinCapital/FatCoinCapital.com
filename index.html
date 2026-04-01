@@ -3,125 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome Back | FatCoin Capital</title>
+    <title>FatCoin Capital</title>
     <style>
-        /* CSS resets for a clean canvas */
+        /* Base page setup */
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
-            overflow: hidden; /* Keep the screen clean */
+            background-color: #f0f2f5; /* Light gray outer background */
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: #f3f5f9; /* The soft background color of the canvas */
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        /* 1. Main Container (The Phone View) */
+        /* The Phone Container */
         .container {
             width: 100%;
-            max-width: 375px; /* Matches modern mobile width */
+            max-width: 375px;
             height: 100%;
-            max-height: 812px; /* Matches modern mobile height */
-            background-color: white;
-            border-radius: 40px; /* Rounded screen corners from the image */
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1); /* Subtle shadow for depth */
-            overflow: hidden; /* Keeps the background image contained */
+            max-height: 812px;
+            background-color: #000000; /* PITCH BLACK */
+            border-radius: 40px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+            overflow: hidden;
             position: relative;
             display: flex;
             flex-direction: column;
         }
 
-        /* 2. Background Image Layer (Asset needed from Step 1) */
-        .background-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            /* Important: Links to the file in your GitHub repo */
-            background-image: url('background.png'); 
-            background-size: cover;
-            background-position: center;
-            z-index: 1; /* Sets the base layer */
-        }
-
-        /* 3. Content Layer (Text and buttons) */
+        /* Content Layer */
         .content {
-            position: relative;
-            z-index: 2; /* Lifts content above background image */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            height: 100%;
-            padding: 0 40px; /* Generous side padding */
+            padding: 80px 40px; /* Space from top and sides */
+            margin-top: auto;
+            margin-bottom: auto;
         }
 
         h1 {
-            color: white;
-            font-size: 32px; /* Large header text from image */
-            font-weight: 700;
-            margin: 0 0 10px 0; /* Tight spacing to subheader */
-            text-align: left;
+            color: #ffffff;
+            font-size: 36px;
+            font-weight: 800;
+            margin: 0 0 15px 0;
+            letter-spacing: -0.5px;
         }
 
         p {
-            color: rgba(255, 255, 255, 0.85); /* Slightly transparent white */
-            font-size: 15px;
+            color: rgba(255, 255, 255, 0.7); /* Muted white text */
+            font-size: 16px;
             line-height: 1.6;
             margin: 0;
-            text-align: left;
-            max-width: 260px; /* Controls text wrap like the design */
+            max-width: 260px;
         }
 
-        /* 4. Action Area (Fixed Bottom Buttons) */
-        .action-area {
+        /* Bottom Navigation Bar */
+        .bottom-nav {
             position: absolute;
-            bottom: 30px; /* Fixed distance from screen bottom */
+            bottom: 40px; /* Distance from bottom of screen */
             left: 30px;
             right: 30px;
             display: flex;
-            justify-content: flex-end; /* Aligns primary button right */
+            justify-content: space-between; /* Pushes Sign In left, Sign Up right */
+            align-items: center;
         }
 
         .signin-link {
+            color: #ffffff;
             text-decoration: none;
-            color: white;
             font-weight: 600;
             font-size: 16px;
-            padding: 15px 20px;
-            position: absolute;
-            left: 0; /* Fixed text on the left */
-            bottom: 0;
+            padding: 10px;
         }
 
-        /* "Sign up" button styling inside the white box */
+        /* The signature white button */
         .signup-btn {
-            background-color: white;
-            color: #3f5fed; /* Primary Blue from design */
+            background-color: #ffffff;
+            color: #000000; /* Black text on white button */
+            padding: 18px 40px;
+            border-radius: 14px;
             text-decoration: none;
             font-weight: 700;
             font-size: 16px;
-            padding: 18px 45px;
-            border-radius: 12px; /* Very soft corners */
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(255,255,255,0.1);
+            transition: transform 0.2s ease;
         }
 
+        .signup-btn:active {
+            transform: scale(0.95); /* Adds a little "click" feel */
+        }
     </style>
 </head>
 <body>
 
     <div class="container">
         
-        <div class="background-image"></div>
-        
         <div class="content">
             <h1>Welcome Back!</h1>
-            <p>Enter personal details to access your FatCoinCapital dashboard.</p>
+            <p>Enter personal details to access your FatCoin Capital portfolio.</p>
         </div>
         
-        <div class="action-area">
+        <div class="bottom-nav">
             <a href="#" class="signin-link">Sign in</a>
             <a href="#" class="signup-btn">Sign up</a>
         </div>
