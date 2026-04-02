@@ -9,6 +9,20 @@
     <style>
         body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
+        
+        /* News Ticker Animation */
+        @keyframes ticker {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        .ticker-content {
+            display: inline-block;
+            white-space: nowrap;
+            animation: ticker 25s linear infinite;
+        }
+        .ticker-container:hover .ticker-content {
+            animation-play-state: paused;
+        }
     </style>
 </head>
 <body class="bg-white text-gray-900">
@@ -31,8 +45,45 @@
         </nav>
     </header>
 
-    <main class="max-w-6xl mx-auto px-4 pt-12 pb-24">
+    <main class="max-w-6xl mx-auto px-4 pb-24">
         
+        <div class="pt-8 mb-10">
+            <div class="bg-gradient-to-br from-[#2b59ff] to-[#1e40af] rounded-[3rem] p-8 md:p-16 shadow-2xl flex justify-center">
+                <div class="bg-white w-full max-w-[320px] rounded-[2.5rem] shadow-2xl p-6 border-[6px] border-black/5">
+                    <div class="flex justify-between items-center mb-6">
+                        <span class="text-xs text-gray-400">☰</span>
+                        <div class="bg-gray-100 px-4 py-1 rounded-full text-[10px] text-gray-400">Search</div>
+                        <span class="text-yellow-500">🔔</span>
+                    </div>
+                    <p class="text-3xl font-extrabold mb-1">$33,683.80</p>
+                    <p class="text-green-500 text-xs font-bold mb-6">↑ $131.36 (1.38%) 1D</p>
+                    
+                    <div class="h-24 w-full mb-6">
+                        <svg viewBox="0 0 100 40" class="w-full h-full text-blue-500">
+                            <path d="M0 35 Q 25 30, 45 15 T 85 10 T 100 5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+
+                    <div class="space-y-4 text-xs">
+                        <div class="flex justify-between border-b pb-2"><span class="text-gray-400">Crypto</span><span class="font-bold text-gray-900">$14,186.12</span></div>
+                        <div class="flex justify-between border-b pb-2"><span class="text-gray-400">Stocks</span><span class="font-bold text-gray-900">$8,133.98</span></div>
+                        <div class="flex justify-between font-bold text-blue-600"><span>Cash</span><span>$10,124.22</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ticker-container bg-black text-white py-3 rounded-2xl mb-16 overflow-hidden border-y border-yellow-500/20 shadow-lg">
+            <div class="ticker-content font-bold text-sm tracking-wide">
+                <span class="mx-10 text-yellow-500">LIVE NEWS:</span>
+                <span class="mx-10">BITCOIN (BTC) SHOWS STRONG BULLISH MOMENTUM ON FATCOINCAPITAL NODES</span>
+                <span class="mx-10 text-green-400">ALERT: INSTANT $200 SIGN-UP BONUS IS NOW LIVE FOR NEW ACCOUNTS</span>
+                <span class="mx-10">7-DAY YIELD PLANS UPDATED: NEW AUTOMATED PERFORMANCE OPTIMIZATION ACTIVE</span>
+                <span class="mx-10 text-yellow-500">LIVE NEWS:</span>
+                <span class="mx-10">ETHEREUM (ETH) STAKING REWARDS INCREASED ACROSS ALL POOLS</span>
+            </div>
+        </div>
+
         <div class="text-center mb-16">
             <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 text-gray-900">
                 The future of capital is here.
@@ -74,9 +125,9 @@
 
             <div class="p-8 rounded-3xl border-2 border-blue-500 bg-blue-50 shadow-blue-100 shadow-2xl transition-all duration-300">
                 <div class="w-12 h-12 bg-blue-600 text-white rounded-2xl flex items-center justify-center text-2xl mb-6">🎁</div>
-                <h3 class="text-xl font-bold mb-3">5. Instant Sign-Up Bonus</h3>
+                <h3 class="text-xl font-bold mb-3">5. Instant $200 Sign-Up Bonus</h3>
                 <p class="text-blue-700 text-xs font-bold uppercase tracking-widest mb-2">How it works</p>
-                <p class="text-gray-700 text-sm leading-relaxed text-blue-900/80 font-medium">New **fatCoinCapital** users receive a starting balance (e.g., $200) upon registration to track earnings immediately.</p>
+                <p class="text-gray-700 text-sm leading-relaxed text-blue-900/80 font-medium">New **fatCoinCapital** users receive a starting balance of **$200** upon registration to track earnings immediately.</p>
             </div>
 
             <div class="p-8 rounded-3xl border border-gray-100 bg-white hover:shadow-xl transition-all duration-300 group">
