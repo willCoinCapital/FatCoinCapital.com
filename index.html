@@ -10,43 +10,80 @@
         body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
         @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
         .ticker-content { display: inline-block; white-space: nowrap; animation: ticker 35s linear infinite; }
+        
+        /* Sidebar & Modal Logic */
         #sidebar { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); transform: translateX(100%); }
         #sidebar.open { transform: translateX(0); }
+        
         #overlay { transition: opacity 0.3s ease; pointer-events: none; opacity: 0; }
         #overlay.open { pointer-events: auto; opacity: 1; }
+
+        .modal { display: none; }
+        .modal.active { display: flex; }
     </style>
 </head>
 <body class="bg-white text-gray-900 overflow-x-hidden">
 
-    <div id="overlay" onclick="toggleMenu()" class="fixed inset-0 bg-black/40 z-[60] backdrop-blur-sm"></div>
+    <div id="overlay" onclick="closeAll()" class="fixed inset-0 bg-black/60 z-[60] backdrop-blur-md"></div>
 
-    <aside id="sidebar" class="fixed top-0 right-0 h-full w-[300px] bg-white z-[70] shadow-2xl flex flex-col border-l border-gray-100">
-        <div class="p-6 flex justify-between items-center border-b border-gray-50">
-            <span class="font-black text-xl tracking-tighter text-blue-600 uppercase">Menu</span>
-            <button onclick="toggleMenu()" class="p-2 hover:bg-gray-100 rounded-full transition">
+    <div id="auth-modal" class="modal fixed inset-0 z-[80] items-center justify-center p-4">
+        <div id="signin-box" class="hidden w-full max-w-md bg-[#0a0b0d] border border-gray-800 rounded-[2.5rem] p-8 shadow-2xl">
+            <div class="text-center mb-8">
+                <div class="w-12 h-12 bg-[#2b59ff] rounded-2xl flex items-center justify-center text-white font-bold mx-auto mb-4">f</div>
+                <h2 class="text-2xl font-black text-white uppercase italic">Welcome Back</h2>
+                <p class="text-gray-500 text-sm mt-2">Log in to manage your digital wealth.</p>
+            </div>
+            <form class="space-y-4" onsubmit="return false;">
+                <input type="email" placeholder="EMAIL ADDRESS" class="w-full bg-white/5 border border-gray-800 rounded-2xl py-4 px-6 text-white text-xs font-bold focus:border-blue-500 outline-none transition">
+                <input type="password" placeholder="PASSWORD" class="w-full bg-white/5 border border-gray-800 rounded-2xl py-4 px-6 text-white text-xs font-bold focus:border-blue-500 outline-none transition">
+                <button class="w-full py-4 bg-[#2b59ff] text-white rounded-2xl font-black uppercase tracking-widest hover:bg-blue-700 transition shadow-lg shadow-blue-900/20">Sign In</button>
+            </form>
+            <p class="text-center text-gray-500 text-xs mt-6 font-bold uppercase italic cursor-pointer" onclick="switchAuth('signup')">New here? <span class="text-blue-500">Create Account</span></p>
+        </div>
+
+        <div id="signup-box" class="hidden w-full max-w-md bg-[#0a0b0d] border border-gray-800 rounded-[2.5rem] p-8 shadow-2xl">
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 bg-[#2b59ff] rounded-2xl flex items-center justify-center text-white font-bold mx-auto mb-4">f</div>
+                <h2 class="text-2xl font-black text-white uppercase italic">Get Started</h2>
+                <p class="text-gray-500 text-sm mt-2">Claim your $200 sign-up bonus today.</p>
+            </div>
+            <form class="space-y-4" onsubmit="return false;">
+                <input type="text" placeholder="FULL NAME" class="w-full bg-white/5 border border-gray-800 rounded-2xl py-4 px-6 text-white text-xs font-bold focus:border-blue-500 outline-none transition">
+                <input type="email" placeholder="EMAIL ADDRESS" class="w-full bg-white/5 border border-gray-800 rounded-2xl py-4 px-6 text-white text-xs font-bold focus:border-blue-500 outline-none transition">
+                <input type="password" placeholder="CREATE PASSWORD" class="w-full bg-white/5 border border-gray-800 rounded-2xl py-4 px-6 text-white text-xs font-bold focus:border-blue-500 outline-none transition">
+                <button class="w-full py-4 bg-[#2b59ff] text-white rounded-2xl font-black uppercase tracking-widest hover:bg-blue-700 transition shadow-lg shadow-blue-900/20">Create My Account</button>
+            </form>
+            <p class="text-center text-gray-500 text-xs mt-6 font-bold uppercase italic cursor-pointer" onclick="switchAuth('signin')">Already a member? <span class="text-blue-500">Sign In</span></p>
+        </div>
+    </div>
+
+    <aside id="sidebar" class="fixed top-0 right-0 h-full w-[320px] bg-[#0a0b0d] z-[70] shadow-2xl flex flex-col border-l border-gray-800">
+        <div class="p-6 flex justify-between items-center border-b border-gray-800">
+            <span class="font-black text-xl tracking-tighter text-[#2b59ff] uppercase italic">Menu</span>
+            <button onclick="toggleMenu()" class="p-2 hover:bg-white/5 rounded-full transition text-white">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
         </div>
         <nav class="p-6 space-y-6 flex-1 overflow-y-auto">
             <div class="space-y-3">
-                <button onclick="handleAction('signup')" class="w-full py-4 px-6 bg-[#2b59ff] text-white rounded-2xl font-bold text-center hover:bg-blue-700 transition shadow-lg shadow-blue-100 uppercase tracking-wide">Sign up</button>
-                <button onclick="handleAction('signin')" class="w-full py-4 px-6 bg-gray-100 text-gray-900 rounded-2xl font-bold text-center hover:bg-gray-200 transition uppercase tracking-wide">Sign in</button>
+                <button onclick="openAuth('signup')" class="w-full py-4 px-6 bg-[#2b59ff] text-white rounded-2xl font-black text-center hover:bg-blue-700 transition shadow-lg shadow-blue-900/20 uppercase tracking-widest text-xs italic">Sign up</button>
+                <button onclick="openAuth('signin')" class="w-full py-4 px-6 bg-white/5 text-white border border-gray-800 rounded-2xl font-black text-center hover:bg-white/10 transition uppercase tracking-widest text-xs italic">Sign in</button>
             </div>
             
-            <div class="flex flex-col gap-3 pt-4 border-t border-gray-50">
-                <button onclick="handleAction('chat')" class="flex items-center justify-between w-full p-5 bg-white border border-gray-100 rounded-2xl hover:bg-blue-50 hover:border-blue-200 transition group">
-                    <span class="font-extrabold text-gray-800 tracking-tighter uppercase text-sm">Chat Support</span>
-                    <span class="text-xl group-hover:scale-110 transition">💬</span>
+            <div class="flex flex-col gap-3 pt-4 border-t border-gray-800">
+                <button onclick="handleAction('chat')" class="flex items-center justify-between w-full p-5 bg-[#2b59ff] rounded-2xl hover:bg-blue-700 transition group shadow-lg shadow-blue-900/20">
+                    <span class="font-black text-white tracking-widest uppercase text-xs italic">Chat Support</span>
+                    <span class="text-xl group-hover:rotate-12 transition">💬</span>
                 </button>
 
-                <button onclick="handleAction('community')" class="flex items-center justify-between w-full p-5 bg-white border border-gray-100 rounded-2xl hover:bg-blue-50 hover:border-blue-200 transition group">
-                    <span class="font-extrabold text-gray-800 tracking-tighter uppercase text-sm">Community</span>
-                    <span class="text-xl group-hover:scale-110 transition">🤝</span>
+                <button onclick="handleAction('community')" class="flex items-center justify-between w-full p-5 bg-[#2b59ff] rounded-2xl hover:bg-blue-700 transition group shadow-lg shadow-blue-900/20">
+                    <span class="font-black text-white tracking-widest uppercase text-xs italic">Community</span>
+                    <span class="text-xl group-hover:rotate-12 transition">🤝</span>
                 </button>
 
-                <button onclick="handleAction('blog')" class="flex items-center justify-between w-full p-5 bg-white border border-gray-100 rounded-2xl hover:bg-blue-50 hover:border-blue-200 transition group">
-                    <span class="font-extrabold text-gray-800 tracking-tighter uppercase text-sm">Blog</span>
-                    <span class="text-xl group-hover:scale-110 transition">✍️</span>
+                <button onclick="handleAction('blog')" class="flex items-center justify-between w-full p-5 bg-[#2b59ff] rounded-2xl hover:bg-blue-700 transition group shadow-lg shadow-blue-900/20">
+                    <span class="font-black text-white tracking-widest uppercase text-xs italic">Market Blog</span>
+                    <span class="text-xl group-hover:rotate-12 transition">✍️</span>
                 </button>
             </div>
         </nav>
@@ -59,7 +96,7 @@
                 <span class="text-xl font-bold tracking-tight">fatCoinCapital</span>
             </div>
             <div class="flex items-center gap-3">
-                <button onclick="handleAction('signup')" class="hidden md:block bg-[#2b59ff] text-white px-5 py-2 rounded-full font-semibold text-sm">Sign up</button>
+                <button onclick="openAuth('signup')" class="hidden md:block bg-[#2b59ff] text-white px-6 py-2.5 rounded-full font-black text-xs uppercase tracking-widest shadow-lg shadow-blue-100">Sign up</button>
                 <button onclick="toggleMenu()" class="p-2 text-gray-800 bg-gray-50 rounded-xl border border-gray-200">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
                 </button>
@@ -73,14 +110,13 @@
                 <div class="flex justify-between items-start mb-8">
                     <div>
                         <p class="text-blue-500 font-bold tracking-widest text-xs uppercase mb-2">Live Briefing</p>
-                        <h2 class="text-3xl md:text-5xl font-black leading-tight uppercase">BTC PRICE: <br>
+                        <h2 class="text-3xl md:text-5xl font-black leading-tight uppercase italic italic">BTC PRICE: <br>
                             <span id="hero-btc-price" class="text-red-400">Loading...</span> 
                         </h2>
                         <p id="live-update-date" class="text-gray-400 text-sm mt-4 max-w-md italic font-medium"></p>
                     </div>
-                    <div id="live-date-stamp" class="bg-white/10 p-3 rounded-2xl backdrop-blur-md text-xs font-mono text-blue-400 border border-white/5"></div>
+                    <div id="live-date-stamp" class="bg-white/10 p-3 rounded-2xl backdrop-blur-md text-xs font-mono text-blue-400 border border-white/5 italic italic"></div>
                 </div>
-
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                     <div class="bg-gradient-to-t from-red-900/20 to-transparent p-6 rounded-3xl border border-white/5">
                         <svg viewBox="0 0 100 40" class="w-full h-32 text-red-500">
@@ -90,7 +126,7 @@
                     <div class="space-y-4">
                         <div class="border-l-4 border-red-500 pl-4">
                             <h4 class="font-bold text-sm text-gray-300 uppercase italic">Market Alert</h4>
-                            <p class="text-xs text-gray-500 leading-relaxed">Bitcoin consolidates as macro headwinds from the US Dollar strength weigh on risk assets. Drift Protocol exploit remains a focus for DeFi security.</p>
+                            <p class="text-xs text-gray-500 leading-relaxed">Bitcoin consolidates as macro headwinds from the US Dollar strength weigh on risk assets. Drift Protocol exploit remains a key focus for DeFi security.</p>
                         </div>
                     </div>
                 </div>
@@ -99,84 +135,61 @@
 
         <div class="bg-[#0a0a0a] text-white rounded-[2.5rem] px-8 py-10 md:px-12 mb-16 shadow-2xl">
             <div class="flex justify-between items-center mb-8">
-                <h3 class="text-2xl font-black italic">Daily News Feed</h3>
+                <h3 class="text-2xl font-black italic uppercase">Daily News Feed</h3>
                 <span class="flex items-center gap-2 text-[11px] font-bold text-blue-400 uppercase tracking-wide">
                     <span class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span> Streaming 24/7
                 </span>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-sm">
                 <div class="bg-white/5 border border-gray-800/50 p-6 rounded-[2rem]">
-                    <h4 class="font-extrabold text-blue-400 mb-2">Franklin Resources Crypto Push</h4>
+                    <h4 class="font-extrabold text-blue-400 mb-2 uppercase italic">Franklin Resources Crypto Push</h4>
                     <p class="text-gray-400 leading-relaxed">Acquiring 250 Digital to scale institutional capabilities for the Franklin Crypto unit.</p>
                 </div>
                 <div class="bg-white/5 border border-gray-800/50 p-6 rounded-[2rem]">
-                    <h4 class="font-extrabold text-red-400 mb-2">Drift Protocol $286M Exploit</h4>
+                    <h4 class="font-extrabold text-red-400 mb-2 uppercase italic">Drift Protocol $286M Exploit</h4>
                     <p class="text-gray-400 leading-relaxed">Major Solana DeFi exploit triggers investigation into network-wide vulnerability.</p>
                 </div>
                 <div class="bg-white/5 border border-gray-800/50 p-6 rounded-[2rem]">
-                    <h4 class="font-extrabold text-yellow-400 mb-2">Technical Analysis: $66k Support</h4>
+                    <h4 class="font-extrabold text-yellow-400 mb-2 uppercase italic">Technical Analysis: $66k Support</h4>
                     <p class="text-gray-400 leading-relaxed">Analysts monitor BTC price action closely as it tests psychological support levels.</p>
                 </div>
             </div>
         </div>
 
-        <div class="ticker-container bg-black text-white py-3 rounded-2xl mb-16 overflow-hidden border-y border-blue-500/20 shadow-xl">
-            <div class="ticker-content font-bold text-xs tracking-widest uppercase">
-                <span class="mx-10 text-blue-500">LIVE FEED:</span>
+        <div class="ticker-container bg-[#2b59ff] text-white py-4 rounded-2xl mb-16 overflow-hidden shadow-2xl italic">
+            <div class="ticker-content font-black text-[10px] tracking-widest uppercase">
+                <span class="mx-10">LIVE MARKET:</span>
                 <span class="mx-10">BTC TRADING AT <span id="ticker-btc-price">LOADING...</span></span>
-                <span class="mx-10 text-green-400">CLAIM $200 BONUS ON SIGN-UP</span>
+                <span class="mx-10 bg-white text-blue-600 px-3 py-1 rounded-full">CLAIM $200 BONUS ON SIGN-UP</span>
             </div>
         </div>
 
         <div class="mb-10">
-            <h3 class="text-3xl font-black mb-10 text-center text-gray-900">How fatCoinCapital Works</h3>
+            <h3 class="text-3xl font-black mb-10 text-center text-gray-900 uppercase italic">How fatCoinCapital Works</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <button onclick="handleAction('infrastructure')" class="text-left p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl shadow-blue-100 group transition hover:-translate-y-1">
+                <button onclick="handleAction('infrastructure')" class="text-left p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl group transition hover:-translate-y-1">
                     <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl mb-6">🏛️</div>
-                    <h3 class="text-xl font-bold mb-3">1. Digital Wealth Infrastructure</h3>
+                    <h3 class="text-xl font-bold mb-3 uppercase italic">1. Wealth Infrastructure</h3>
                     <p class="text-white/70 text-[10px] font-bold uppercase tracking-widest mb-2 italic">How it works</p>
                     <p class="text-white/90 text-sm leading-relaxed">fatCoinCapital manages and grows digital assets through automated performance tracking and secure infrastructure.</p>
                 </button>
-
-                <button onclick="handleAction('engine')" class="text-left p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl shadow-blue-100 group transition hover:-translate-y-1">
+                <button onclick="handleAction('engine')" class="text-left p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl group transition hover:-translate-y-1">
                     <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl mb-6">⚙️</div>
-                    <h3 class="text-xl font-bold mb-3">2. Smart Investment Engine</h3>
+                    <h3 class="text-xl font-bold mb-3 uppercase italic">2. Investment Engine</h3>
                     <p class="text-white/70 text-[10px] font-bold uppercase tracking-widest mb-2 italic">How it works</p>
-                    <p class="text-white/90 text-sm leading-relaxed">The platform analyzes market trends and allocates funds into strategic crypto opportunities, reducing guesswork.</p>
+                    <p class="text-white/90 text-sm leading-relaxed">The platform analyzes market trends and allocates funds into strategic crypto opportunities.</p>
                 </button>
-
-                <button onclick="handleAction('dashboard')" class="text-left p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl shadow-blue-100 group transition hover:-translate-y-1">
-                    <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl mb-6">📱</div>
-                    <h3 class="text-xl font-bold mb-3">3. Beginner-Friendly Dashboard</h3>
-                    <p class="text-white/70 text-[10px] font-bold uppercase tracking-widest mb-2 italic">How it works</p>
-                    <p class="text-white/90 text-sm leading-relaxed">Users get a simple interface showing balance and activity, displayed clearly so even beginners can understand.</p>
-                </button>
-
-                <button onclick="handleAction('yield_plans')" class="text-left p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl shadow-blue-100 group transition hover:-translate-y-1">
-                    <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl mb-6">📅</div>
-                    <h3 class="text-xl font-bold mb-3">4. 7-Day Yield Plans</h3>
-                    <p class="text-white/70 text-[10px] font-bold uppercase tracking-widest mb-2 italic">How it works</p>
-                    <p class="text-white/90 text-sm leading-relaxed">Users subscribe to short-term plans. Profits are added automatically to their balance after the cycle completes.</p>
-                </button>
-
-                <button onclick="handleAction('signup')" class="text-left p-8 rounded-[2.5rem] border-4 border-[#2b59ff] bg-white shadow-2xl transition hover:-translate-y-1">
+                <button onclick="openAuth('signup')" class="text-left p-8 rounded-[2.5rem] border-4 border-[#2b59ff] bg-white shadow-2xl transition hover:-translate-y-1">
                     <div class="w-12 h-12 bg-[#2b59ff] text-white rounded-2xl flex items-center justify-center text-2xl mb-6">🎁</div>
-                    <h3 class="text-xl font-bold mb-3 text-blue-900">5. Instant $200 Bonus</h3>
-                    <p class="text-blue-600 text-[10px] font-bold uppercase tracking-widest mb-2 italic">How it works</p>
-                    <p class="text-gray-700 text-sm leading-relaxed font-medium">New users receive a starting balance of **$200** upon registration to explore the system immediately.</p>
-                </button>
-
-                <button onclick="handleAction('history')" class="text-left p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl shadow-blue-100 group transition hover:-translate-y-1">
-                    <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl mb-6">📑</div>
-                    <h3 class="text-xl font-bold mb-3">6. Real-Time Transaction History</h3>
-                    <p class="text-white/70 text-[10px] font-bold uppercase tracking-widest mb-2 italic">How it works</p>
-                    <p class="text-white/90 text-sm leading-relaxed">Every deposit, earning, and withdrawal is recorded in history, giving users full transparency.</p>
+                    <h3 class="text-xl font-bold mb-3 text-blue-900 uppercase italic">3. Instant $200 Bonus</h3>
+                    <p class="text-blue-600 text-[10px] font-bold uppercase tracking-widest mb-2 italic text-sm">New users receive a starting balance of **$200** upon registration.</p>
                 </button>
             </div>
         </div>
     </main>
 
     <script>
+        // TOGGLE MENU
         function toggleMenu() {
             const s = document.getElementById('sidebar');
             const o = document.getElementById('overlay');
@@ -185,45 +198,51 @@
             document.body.style.overflow = s.classList.contains('open') ? 'hidden' : 'auto';
         }
 
-        function handleAction(actionId) {
-            const sidebar = document.getElementById('sidebar');
-            if(sidebar.classList.contains('open')) {
-                toggleMenu(); 
-            }
+        // CLOSE ALL OVERLAYS
+        function closeAll() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('overlay').classList.remove('open');
+            document.getElementById('auth-modal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
 
-            switch(actionId) {
-                case 'signup':
-                    alert("⚠️ Redirecting to secure Sign Up portal.");
-                    break;
-                case 'signin':
-                    alert("🔐 Redirecting to secure Sign In portal.");
-                    break;
-                case 'chat':
-                    alert("💬 Chat Support is connecting.");
-                    break;
-                case 'community':
-                    alert("🤝 Redirecting to Community Hub.");
-                    break;
-                case 'blog':
-                    alert("✍️ Redirecting to Market Insights Blog.");
-                    break;
-                case 'yield_plans':
-                    alert("📅 Redirecting to Investment Calculator.");
-                    break;
-                case 'history':
-                    alert("📑 Please Sign In to view your transaction ledger.");
-                    handleAction('signin');
-                    break;
-                default:
-                    alert(`🚀 Action Triggered: ${actionId.toUpperCase()}.`);
+        // OPEN AUTH BOX
+        function openAuth(type) {
+            closeAll(); // Close sidebar first
+            document.getElementById('overlay').classList.add('open');
+            document.getElementById('auth-modal').classList.add('active');
+            switchAuth(type);
+        }
+
+        // SWITCH BETWEEN SIGNIN/SIGNUP
+        function switchAuth(type) {
+            const sibox = document.getElementById('signin-box');
+            const subox = document.getElementById('signup-box');
+            if(type === 'signin') {
+                sibox.classList.remove('hidden');
+                subox.classList.add('hidden');
+            } else {
+                subox.classList.remove('hidden');
+                sibox.classList.add('hidden');
             }
         }
 
+        // HANDLE BUTTON ACTIONS
+        function handleAction(actionId) {
+            closeAll();
+            switch(actionId) {
+                case 'chat': alert("💬 Live Support is initializing..."); break;
+                case 'community': alert("🤝 Connecting to fatCoinCapital Global community."); break;
+                case 'blog': alert("✍️ Opening Market Analysis blog."); break;
+                default: alert(`🚀 Triggering ${actionId.toUpperCase()}`);
+            }
+        }
+
+        // MARKET UPDATE ENGINE
         async function updateMarketAndDate() {
             const now = new Date();
             const dateOptions = { month: 'long', day: 'numeric', year: 'numeric' };
             document.getElementById('live-update-date').innerText = `Last Updated: ${now.toLocaleDateString('en-US', dateOptions)}`;
-            
             const stamp = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}.${String(now.getDate()).padStart(2, '0')}`;
             document.getElementById('live-date-stamp').innerText = stamp;
 
