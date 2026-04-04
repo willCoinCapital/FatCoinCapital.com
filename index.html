@@ -32,18 +32,18 @@
             </button>
             <h2 class="text-3xl font-black uppercase mb-2">Create Account</h2>
             <p class="text-gray-500 text-sm mb-8">Join fatCoinCapital for secure market access.</p>
-            <form class="space-y-4" onsubmit="event.preventDefault();">
+            <form class="space-y-4" onsubmit="handleRegistration(event)">
                 <div>
                     <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1 ml-2">Full Name</label>
-                    <input type="text" placeholder="Enter full name" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:border-blue-500 transition">
+                    <input type="text" required placeholder="Enter full name" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:border-blue-500 transition">
                 </div>
                 <div>
                     <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1 ml-2">Email Address</label>
-                    <input type="email" placeholder="name@email.com" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:border-blue-500 transition">
+                    <input type="email" required placeholder="name@email.com" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:border-blue-500 transition">
                 </div>
                 <div>
                     <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1 ml-2">Password</label>
-                    <input type="password" placeholder="••••••••" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:border-blue-500 transition">
+                    <input type="password" required placeholder="••••••••" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:border-blue-500 transition">
                 </div>
                 <button type="submit" class="w-full py-5 bg-[#2b59ff] text-white rounded-2xl font-black uppercase tracking-widest shadow-lg hover:bg-blue-700 transition mt-4">Register Now</button>
             </form>
@@ -58,14 +58,14 @@
             </button>
             <h2 class="text-3xl font-black uppercase mb-2">Welcome Back</h2>
             <p class="text-gray-500 text-sm mb-8">Access your investment terminal.</p>
-            <form class="space-y-4" onsubmit="event.preventDefault();">
+            <form class="space-y-4" onsubmit="handleLogin(event)">
                 <div>
                     <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1 ml-2">Email Address</label>
-                    <input type="email" placeholder="name@email.com" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:border-blue-500 transition">
+                    <input type="email" required placeholder="name@email.com" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:border-blue-500 transition">
                 </div>
                 <div>
                     <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1 ml-2">Password</label>
-                    <input type="password" placeholder="••••••••" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:border-blue-500 transition">
+                    <input type="password" required placeholder="••••••••" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:border-blue-500 transition">
                 </div>
                 <button type="submit" class="w-full py-5 bg-[#2b59ff] text-white rounded-2xl font-black uppercase tracking-widest shadow-lg hover:bg-blue-700 transition mt-4">Sign In</button>
             </form>
@@ -97,7 +97,7 @@
         <nav class="max-w-7xl mx-auto flex items-center justify-between">
             <div class="flex items-center gap-2">
                 <div class="w-8 h-8 bg-[#2b59ff] rounded-full flex items-center justify-center text-white font-bold text-sm">f</div>
-                <span class="text-xl font-bold tracking-tight">fatCoinCapital</span>
+                <span class="text-xl font-bold tracking-tight uppercase">fatCoinCapital</span>
             </div>
             
             <div class="flex items-center gap-3">
@@ -129,17 +129,17 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="bg-white/5 border border-gray-800 p-6 rounded-[2rem]">
-                    <span class="text-[10px] bg-red-500/20 text-red-400 px-2 py-1 rounded font-bold mb-3 inline-block">CRITICAL</span>
+                    <span class="text-[10px] bg-red-500/20 text-red-400 px-2 py-1 rounded font-bold mb-3 inline-block uppercase">CRITICAL</span>
                     <h4 class="font-bold text-white mb-2 uppercase">Drift Protocol $285M Heist</h4>
                     <p class="text-gray-400 text-xs">Major exploit on Solana triggers investigation into network vulnerabilities.</p>
                 </div>
                 <div class="bg-white/5 border border-gray-800 p-6 rounded-[2rem]">
-                    <span class="text-[10px] bg-blue-500/20 text-blue-400 px-2 py-1 rounded font-bold mb-3 inline-block">INSTITUTIONAL</span>
+                    <span class="text-[10px] bg-blue-500/20 text-blue-400 px-2 py-1 rounded font-bold mb-3 inline-block uppercase">INSTITUTIONAL</span>
                     <h4 class="font-bold text-white mb-2 uppercase">Morgan Stanley BTC ETF</h4>
                     <p class="text-gray-400 text-xs">Anticipation grows for mid-April launch, boosting liquidity expectations.</p>
                 </div>
                 <div class="bg-white/5 border border-gray-800 p-6 rounded-[2rem]">
-                    <span class="text-[10px] bg-green-500/20 text-green-400 px-2 py-1 rounded font-bold mb-3 inline-block">ANALYSIS</span>
+                    <span class="text-[10px] bg-green-500/20 text-green-400 px-2 py-1 rounded font-bold mb-3 inline-block uppercase">ANALYSIS</span>
                     <h4 class="font-bold text-white mb-2 uppercase">BTC Consolidation at $66k</h4>
                     <p class="text-gray-400 text-xs">Market weighs geopolitical tensions against rising corporate accumulation.</p>
                 </div>
@@ -218,7 +218,7 @@
         }
 
         function openModal(type) {
-            closeAll(); // Close sidebar/other modals first
+            closeAll();
             document.getElementById(type + 'Modal').classList.add('open');
             document.getElementById('overlay').classList.add('open');
         }
@@ -229,6 +229,43 @@
             document.getElementById('loginModal').classList.remove('open');
             document.getElementById('overlay').classList.remove('open');
         }
+
+        /* NEW: Handle registration and move to dashboard */
+        function handleRegistration(event) {
+            event.preventDefault();
+            
+            // Get name from the first input field
+            const fullName = event.target.querySelector('input[type="text"]').value;
+            const submitBtn = event.target.querySelector('button[type="submit"]');
+
+            // Professional "Processing" state
+            submitBtn.innerText = "AUTHENTICATING PROTOCOLS...";
+            submitBtn.style.opacity = "0.6";
+            submitBtn.disabled = true;
+
+            // Save name for the dashboard to display
+            localStorage.setItem('fatCoinUser', fullName || 'Investor');
+
+            // 1.5s delay for a high-end terminal feel, then redirect
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 1500);
+        }
+
+        /* NEW: Handle login (similar logic) */
+        function handleLogin(event) {
+            event.preventDefault();
+            const submitBtn = event.target.querySelector('button[type="submit"]');
+            
+            submitBtn.innerText = "CONNECTING TO TERMINAL...";
+            submitBtn.style.opacity = "0.6";
+            submitBtn.disabled = true;
+
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 1200);
+        }
     </script>
 </body>
 </html>
+
