@@ -8,8 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
-        @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-        .ticker-content { display: inline-block; white-space: nowrap; animation: ticker 35s linear infinite; }
+        /* Smooth transitions for the side menu */
         #sidebar { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); transform: translateX(100%); }
         #sidebar.open { transform: translateX(0); }
         #overlay { transition: opacity 0.3s ease; pointer-events: none; opacity: 0; }
@@ -22,28 +21,28 @@
 
     <aside id="sidebar" class="fixed top-0 right-0 h-full w-[300px] bg-white z-[70] shadow-2xl flex flex-col border-l border-gray-100">
         <div class="p-6 flex justify-between items-center border-b border-gray-50">
-            <span class="font-black text-xl tracking-tighter text-blue-600 uppercase italic">Menu</span>
+            <span class="font-bold text-xl tracking-tight text-blue-600 uppercase">Menu</span>
             <button onclick="toggleMenu()" class="p-2 hover:bg-gray-100 rounded-full transition">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
         </div>
         <nav class="p-6 space-y-6 flex-1 overflow-y-auto">
             <div class="space-y-3">
-                <button class="w-full py-4 px-6 bg-[#2b59ff] text-white rounded-2xl font-bold text-center uppercase tracking-wide italic">Sign up</button>
-                <button class="w-full py-4 px-6 bg-gray-100 text-gray-900 rounded-2xl font-bold text-center uppercase tracking-wide italic">Sign in</button>
+                <button class="w-full py-4 px-6 bg-[#2b59ff] text-white rounded-2xl font-bold text-center uppercase tracking-wide">Sign up</button>
+                <button class="w-full py-4 px-6 bg-gray-100 text-gray-900 rounded-2xl font-bold text-center uppercase tracking-wide">Sign in</button>
             </div>
             
             <div class="flex flex-col gap-3 pt-4 border-t border-gray-50">
-                <button class="flex items-center justify-between w-full p-5 bg-[#2b59ff] text-white rounded-2xl shadow-md">
-                    <span class="font-extrabold tracking-tighter uppercase text-sm italic">Chat Support</span>
+                <button class="flex items-center justify-between w-full p-5 bg-white border border-gray-100 text-gray-900 rounded-2xl shadow-sm hover:bg-gray-50 transition">
+                    <span class="font-bold uppercase text-xs tracking-wider">Chat Support</span>
                     <span class="text-xl">💬</span>
                 </button>
-                <button class="flex items-center justify-between w-full p-5 bg-[#2b59ff] text-white rounded-2xl shadow-md">
-                    <span class="font-extrabold tracking-tighter uppercase text-sm italic">Community</span>
+                <button class="flex items-center justify-between w-full p-5 bg-white border border-gray-100 text-gray-900 rounded-2xl shadow-sm hover:bg-gray-50 transition">
+                    <span class="font-bold uppercase text-xs tracking-wider">Community</span>
                     <span class="text-xl">🤝</span>
                 </button>
-                <button class="flex items-center justify-between w-full p-5 bg-[#2b59ff] text-white rounded-2xl shadow-md">
-                    <span class="font-extrabold tracking-tighter uppercase text-sm italic">Blog</span>
+                <button class="flex items-center justify-between w-full p-5 bg-white border border-gray-100 text-gray-900 rounded-2xl shadow-sm hover:bg-gray-50 transition">
+                    <span class="font-bold uppercase text-xs tracking-wider">Market Blog</span>
                     <span class="text-xl">✍️</span>
                 </button>
             </div>
@@ -63,65 +62,70 @@
     </header>
 
     <main class="max-w-6xl mx-auto px-4 pb-24">
+        
         <div class="pt-8 mb-10">
-            <div class="bg-[#0a0b0d] text-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl border border-gray-800 relative">
+            <div class="bg-[#0a0b0d] text-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl border border-gray-800 relative overflow-hidden">
                 <p class="text-blue-500 font-bold tracking-widest text-xs uppercase mb-2">Live Briefing</p>
-                <h2 class="text-3xl md:text-5xl font-black leading-tight uppercase italic text-green-400">BTC PRICE: $66,804.14</h2>
+                <h2 class="text-4xl md:text-6xl font-black leading-tight uppercase text-green-400">BTC PRICE: $66,804.14</h2>
+                <div class="mt-6 flex flex-wrap gap-4 items-center">
+                    <span class="bg-white/10 px-4 py-2 rounded-full text-xs font-mono text-blue-400 border border-white/5">UPDATE: 2026.04.04</span>
+                    <span class="text-gray-400 text-sm font-medium">Market Trend: Bullish Consolidation</span>
+                </div>
             </div>
         </div>
 
         <div class="mb-10">
-            <h3 class="text-3xl font-black mb-10 text-center text-gray-900 italic uppercase">How fatCoinCapital Works</h3>
+            <h3 class="text-3xl font-black mb-10 text-center text-gray-900 uppercase">How fatCoinCapital Works</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white">
+                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
                     <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl mb-6">🏛️</div>
-                    <h3 class="text-xl font-bold mb-3 italic uppercase">1. Digital Wealth Infrastructure</h3>
-                    <p class="text-white/90 text-sm leading-relaxed">Secure asset management through automated performance tracking.</p>
+                    <h3 class="text-xl font-bold mb-3 uppercase">1. Digital Wealth Infrastructure</h3>
+                    <p class="text-white/80 text-sm leading-relaxed">Secure asset management through automated performance tracking and global secure infrastructure.</p>
                 </div>
-                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white">
+                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
                     <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl mb-6">⚙️</div>
-                    <h3 class="text-xl font-bold mb-3 italic uppercase">2. Smart Investment Engine</h3>
-                    <p class="text-white/90 text-sm leading-relaxed">Strategic allocation using real-time market trend analysis.</p>
+                    <h3 class="text-xl font-bold mb-3 uppercase">2. Smart Investment Engine</h3>
+                    <p class="text-white/80 text-sm leading-relaxed">The platform analyzes market trends and allocates funds into high-potential strategic crypto opportunities.</p>
                 </div>
-                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white">
+                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
                     <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl mb-6">📱</div>
-                    <h3 class="text-xl font-bold mb-3 italic uppercase">3. Beginner-Friendly Dashboard</h3>
-                    <p class="text-white/90 text-sm leading-relaxed">Simplified interface designed for ease of use at any skill level.</p>
+                    <h3 class="text-xl font-bold mb-3 uppercase">3. Beginner-Friendly Dashboard</h3>
+                    <p class="text-white/80 text-sm leading-relaxed">A simplified interface designed for maximum clarity, allowing anyone to track their growth with ease.</p>
                 </div>
-                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white">
+                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
                     <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl mb-6">📅</div>
-                    <h3 class="text-xl font-bold mb-3 italic uppercase">4. 7-Day Yield Plans</h3>
-                    <p class="text-white/90 text-sm leading-relaxed">Automated short-term cycles for consistent profit accumulation.</p>
+                    <h3 class="text-xl font-bold mb-3 uppercase">4. 7-Day Yield Plans</h3>
+                    <p class="text-white/80 text-sm leading-relaxed">Short-term cycles where accrued profits are automatically added to your balance upon completion.</p>
                 </div>
-                <div class="p-8 rounded-[2.5rem] border-4 border-[#2b59ff] bg-white text-blue-900">
+                <div class="p-8 rounded-[2.5rem] border-4 border-[#2b59ff] bg-white text-blue-900 shadow-2xl">
                     <div class="w-12 h-12 bg-[#2b59ff] text-white rounded-2xl flex items-center justify-center text-2xl mb-6">🎁</div>
-                    <h3 class="text-xl font-bold mb-3 italic uppercase">5. Instant $200 Bonus</h3>
-                    <p class="text-gray-700 text-sm leading-relaxed">Get a $200 starting balance immediately upon registration.</p>
+                    <h3 class="text-xl font-bold mb-3 uppercase">5. Instant $200 Bonus</h3>
+                    <p class="text-gray-700 text-sm leading-relaxed font-medium">Every new user receive a starting balance of **$200** immediately upon registration to explore our features.</p>
                 </div>
-                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white">
+                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
                     <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl mb-6">📑</div>
-                    <h3 class="text-xl font-bold mb-3 italic uppercase">6. Real-Time History</h3>
-                    <p class="text-white/90 text-sm leading-relaxed">Full transparency for every deposit, earning, and withdrawal.</p>
+                    <h3 class="text-xl font-bold mb-3 uppercase">6. Real-Time Transaction History</h3>
+                    <p class="text-white/80 text-sm leading-relaxed">Full transparency for every action; every deposit and earning is recorded and instantly verifiable.</p>
                 </div>
-                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white">
+                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
                     <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl mb-6">📈</div>
-                    <h3 class="text-xl font-bold mb-3 italic uppercase">7. High-Yield Opportunities</h3>
-                    <p class="text-white/90 text-sm leading-relaxed">Access to premium tiers of high-performance crypto growth.</p>
+                    <h3 class="text-xl font-bold mb-3 uppercase">7. Diversified Asset Selection</h3>
+                    <p class="text-white/80 text-sm leading-relaxed">Access a wide range of top-performing digital assets curated for sustainable long-term performance.</p>
                 </div>
-                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white">
+                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
                     <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl mb-6">🔐</div>
-                    <h3 class="text-xl font-bold mb-3 italic uppercase">8. Staking & Passive Income</h3>
-                    <p class="text-white/90 text-sm leading-relaxed">Earn consistent rewards through integrated staking protocols.</p>
+                    <h3 class="text-xl font-bold mb-3 uppercase">8. Protocol-Level Encryption</h3>
+                    <p class="text-white/80 text-sm leading-relaxed">Multi-layer security protocols ensure that your investment capital is protected with industry-leading technology.</p>
                 </div>
-                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white">
-                    <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl mb-6">📊</div>
-                    <h3 class="text-xl font-bold mb-3 italic uppercase">9. Portfolio Tracking</h3>
-                    <p class="text-white/90 text-sm leading-relaxed">Advanced tools to monitor your total asset growth over time.</p>
+                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
+                    <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl mb-6">⚖️</div>
+                    <h3 class="text-xl font-bold mb-3 uppercase">9. Automated Reinvestment</h3>
+                    <p class="text-white/80 text-sm leading-relaxed">Optionally enable auto-compounding to automatically reinvest your gains for maximized wealth growth.</p>
                 </div>
-                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white">
+                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
                     <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl mb-6">⚡</div>
-                    <h3 class="text-xl font-bold mb-3 italic uppercase">10. Fast Withdrawals</h3>
-                    <p class="text-white/90 text-sm leading-relaxed">Instant access to your funds with rapid processing speed.</p>
+                    <h3 class="text-xl font-bold mb-3 uppercase">10. Rapid Liquidity Access</h3>
+                    <p class="text-white/80 text-sm leading-relaxed">Experience high-speed withdrawal processing, ensuring your funds are available exactly when you need them.</p>
                 </div>
             </div>
         </div>
@@ -129,8 +133,10 @@
 
     <script>
         function toggleMenu() {
-            document.getElementById('sidebar').classList.toggle('open');
-            document.getElementById('overlay').classList.toggle('open');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('open');
         }
     </script>
 </body>
