@@ -8,11 +8,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
-        /* Smooth transitions for the side menu */
         #sidebar { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); transform: translateX(100%); }
         #sidebar.open { transform: translateX(0); }
         #overlay { transition: opacity 0.3s ease; pointer-events: none; opacity: 0; }
         #overlay.open { pointer-events: auto; opacity: 1; }
+        @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        .ticker-content { display: inline-block; white-space: nowrap; animation: ticker 35s linear infinite; }
     </style>
 </head>
 <body class="bg-white text-gray-900 overflow-x-hidden">
@@ -31,20 +32,10 @@
                 <button class="w-full py-4 px-6 bg-[#2b59ff] text-white rounded-2xl font-bold text-center uppercase tracking-wide">Sign up</button>
                 <button class="w-full py-4 px-6 bg-gray-100 text-gray-900 rounded-2xl font-bold text-center uppercase tracking-wide">Sign in</button>
             </div>
-            
             <div class="flex flex-col gap-3 pt-4 border-t border-gray-50">
-                <button class="flex items-center justify-between w-full p-5 bg-white border border-gray-100 text-gray-900 rounded-2xl shadow-sm hover:bg-gray-50 transition">
-                    <span class="font-bold uppercase text-xs tracking-wider">Chat Support</span>
-                    <span class="text-xl">💬</span>
-                </button>
-                <button class="flex items-center justify-between w-full p-5 bg-white border border-gray-100 text-gray-900 rounded-2xl shadow-sm hover:bg-gray-50 transition">
-                    <span class="font-bold uppercase text-xs tracking-wider">Community</span>
-                    <span class="text-xl">🤝</span>
-                </button>
-                <button class="flex items-center justify-between w-full p-5 bg-white border border-gray-100 text-gray-900 rounded-2xl shadow-sm hover:bg-gray-50 transition">
-                    <span class="font-bold uppercase text-xs tracking-wider">Market Blog</span>
-                    <span class="text-xl">✍️</span>
-                </button>
+                <button class="flex items-center justify-between w-full p-5 bg-[#2b59ff] text-white rounded-2xl shadow-md uppercase text-xs font-bold tracking-wider">Chat Support <span>💬</span></button>
+                <button class="flex items-center justify-between w-full p-5 bg-[#2b59ff] text-white rounded-2xl shadow-md uppercase text-xs font-bold tracking-wider">Community <span>🤝</span></button>
+                <button class="flex items-center justify-between w-full p-5 bg-[#2b59ff] text-white rounded-2xl shadow-md uppercase text-xs font-bold tracking-wider">Market Blog <span>✍️</span></button>
             </div>
         </nav>
     </aside>
@@ -62,70 +53,100 @@
     </header>
 
     <main class="max-w-6xl mx-auto px-4 pb-24">
-        
         <div class="pt-8 mb-10">
-            <div class="bg-[#0a0b0d] text-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl border border-gray-800 relative overflow-hidden">
+            <div class="bg-[#0a0b0d] text-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl border border-gray-800">
                 <p class="text-blue-500 font-bold tracking-widest text-xs uppercase mb-2">Live Briefing</p>
-                <h2 class="text-4xl md:text-6xl font-black leading-tight uppercase text-green-400">BTC PRICE: $66,804.14</h2>
-                <div class="mt-6 flex flex-wrap gap-4 items-center">
-                    <span class="bg-white/10 px-4 py-2 rounded-full text-xs font-mono text-blue-400 border border-white/5">UPDATE: 2026.04.04</span>
-                    <span class="text-gray-400 text-sm font-medium">Market Trend: Bullish Consolidation</span>
+                <h2 class="text-4xl md:text-6xl font-black uppercase text-green-400">BTC PRICE: $66,804.14</h2>
+                <p class="text-gray-400 text-sm mt-4 font-mono uppercase">Update: 2026.04.04 | Trend: Bullish</p>
+            </div>
+        </div>
+
+        <div class="bg-[#0a0a0a] text-white rounded-[2.5rem] px-8 py-10 mb-16 shadow-2xl">
+            <div class="flex justify-between items-center mb-8">
+                <h3 class="text-2xl font-black uppercase">Daily News Feed</h3>
+                <span class="flex items-center gap-2 text-[11px] font-bold text-blue-400 uppercase">
+                    <span class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span> Streaming Live News
+                </span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white/5 border border-gray-800 p-6 rounded-[2rem]">
+                    <span class="text-[10px] bg-red-500/20 text-red-400 px-2 py-1 rounded font-bold mb-3 inline-block">CRITICAL</span>
+                    <h4 class="font-bold text-white mb-2">Drift Protocol $285M Heist</h4>
+                    <p class="text-gray-400 text-xs">Major exploit on Solana triggers investigation into network vulnerabilities.</p>
+                </div>
+                <div class="bg-white/5 border border-gray-800 p-6 rounded-[2rem]">
+                    <span class="text-[10px] bg-blue-500/20 text-blue-400 px-2 py-1 rounded font-bold mb-3 inline-block">INSTITUTIONAL</span>
+                    <h4 class="font-bold text-white mb-2">Morgan Stanley BTC ETF</h4>
+                    <p class="text-gray-400 text-xs">Anticipation grows for mid-April launch, boosting liquidity expectations.</p>
+                </div>
+                <div class="bg-white/5 border border-gray-800 p-6 rounded-[2rem]">
+                    <span class="text-[10px] bg-green-500/20 text-green-400 px-2 py-1 rounded font-bold mb-3 inline-block">ANALYSIS</span>
+                    <h4 class="font-bold text-white mb-2">BTC Consolidation at $66k</h4>
+                    <p class="text-gray-400 text-xs">Market weighs geopolitical tensions against rising corporate accumulation.</p>
                 </div>
             </div>
         </div>
 
+        <div class="bg-black text-white py-4 rounded-2xl mb-16 overflow-hidden border-y border-blue-500/20">
+            <div class="ticker-content font-bold text-xs tracking-widest uppercase">
+                <span class="mx-10 text-blue-500">LIVE FEED:</span>
+                <span>BTC TRADING AT $66,804.14</span>
+                <span class="mx-10 text-green-400">CLAIM $200 BONUS ON SIGN-UP</span>
+            </div>
+        </div>
+
         <div class="mb-10">
-            <h3 class="text-3xl font-black mb-10 text-center text-gray-900 uppercase">How fatCoinCapital Works</h3>
+            <h3 class="text-3xl font-black mb-10 text-center uppercase">How fatCoinCapital Works</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
-                    <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl mb-6">🏛️</div>
-                    <h3 class="text-xl font-bold mb-3 uppercase">1. Digital Wealth Infrastructure</h3>
-                    <p class="text-white/80 text-sm leading-relaxed">Secure asset management through automated performance tracking and global secure infrastructure.</p>
+                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">🏛️</div>
+                    <h3 class="font-bold mb-2 uppercase">1. Digital Wealth Infrastructure</h3>
+                    <p class="text-white/80 text-xs">Automated performance tracking and global secure infrastructure.</p>
                 </div>
                 <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
-                    <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl mb-6">⚙️</div>
-                    <h3 class="text-xl font-bold mb-3 uppercase">2. Smart Investment Engine</h3>
-                    <p class="text-white/80 text-sm leading-relaxed">The platform analyzes market trends and allocates funds into high-potential strategic crypto opportunities.</p>
+                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">⚙️</div>
+                    <h3 class="font-bold mb-2 uppercase">2. Smart Investment Engine</h3>
+                    <p class="text-white/80 text-xs">Strategic allocation into high-potential crypto opportunities.</p>
                 </div>
                 <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
-                    <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl mb-6">📱</div>
-                    <h3 class="text-xl font-bold mb-3 uppercase">3. Beginner-Friendly Dashboard</h3>
-                    <p class="text-white/80 text-sm leading-relaxed">A simplified interface designed for maximum clarity, allowing anyone to track their growth with ease.</p>
+                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">📱</div>
+                    <h3 class="font-bold mb-2 uppercase">3. Beginner-Friendly Dashboard</h3>
+                    <p class="text-white/80 text-xs">Track growth with ease through a high-clarity interface.</p>
                 </div>
                 <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
-                    <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl mb-6">📅</div>
-                    <h3 class="text-xl font-bold mb-3 uppercase">4. 7-Day Yield Plans</h3>
-                    <p class="text-white/80 text-sm leading-relaxed">Short-term cycles where accrued profits are automatically added to your balance upon completion.</p>
+                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">📅</div>
+                    <h3 class="font-bold mb-2 uppercase">4. 7-Day Yield Plans</h3>
+                    <p class="text-white/80 text-xs">Short-term cycles with automated profit distribution.</p>
                 </div>
                 <div class="p-8 rounded-[2.5rem] border-4 border-[#2b59ff] bg-white text-blue-900 shadow-2xl">
-                    <div class="w-12 h-12 bg-[#2b59ff] text-white rounded-2xl flex items-center justify-center text-2xl mb-6">🎁</div>
-                    <h3 class="text-xl font-bold mb-3 uppercase">5. Instant $200 Bonus</h3>
-                    <p class="text-gray-700 text-sm leading-relaxed font-medium">Every new user receive a starting balance of **$200** immediately upon registration to explore our features.</p>
+                    <div class="w-10 h-10 bg-[#2b59ff] text-white rounded-xl flex items-center justify-center mb-6">🎁</div>
+                    <h3 class="font-bold mb-2 uppercase">5. Instant $200 Bonus</h3>
+                    <p class="text-gray-600 text-xs font-medium">New users receive a starting balance immediately upon registration.</p>
                 </div>
                 <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
-                    <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl mb-6">📑</div>
-                    <h3 class="text-xl font-bold mb-3 uppercase">6. Real-Time Transaction History</h3>
-                    <p class="text-white/80 text-sm leading-relaxed">Full transparency for every action; every deposit and earning is recorded and instantly verifiable.</p>
+                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">📑</div>
+                    <h3 class="font-bold mb-2 uppercase">6. Real-Time History</h3>
+                    <p class="text-white/80 text-xs">Full transparency for every deposit and earning.</p>
                 </div>
                 <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
-                    <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl mb-6">📈</div>
-                    <h3 class="text-xl font-bold mb-3 uppercase">7. Diversified Asset Selection</h3>
-                    <p class="text-white/80 text-sm leading-relaxed">Access a wide range of top-performing digital assets curated for sustainable long-term performance.</p>
+                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">📈</div>
+                    <h3 class="font-bold mb-2 uppercase">7. Diversified Asset Selection</h3>
+                    <p class="text-white/80 text-xs">Curated top-performing assets for sustainable growth.</p>
                 </div>
                 <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
-                    <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl mb-6">🔐</div>
-                    <h3 class="text-xl font-bold mb-3 uppercase">8. Protocol-Level Encryption</h3>
-                    <p class="text-white/80 text-sm leading-relaxed">Multi-layer security protocols ensure that your investment capital is protected with industry-leading technology.</p>
+                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">🔐</div>
+                    <h3 class="font-bold mb-2 uppercase">8. Protocol Encryption</h3>
+                    <p class="text-white/80 text-xs">Industry-leading technology protecting your capital.</p>
                 </div>
                 <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
-                    <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl mb-6">⚖️</div>
-                    <h3 class="text-xl font-bold mb-3 uppercase">9. Automated Reinvestment</h3>
-                    <p class="text-white/80 text-sm leading-relaxed">Optionally enable auto-compounding to automatically reinvest your gains for maximized wealth growth.</p>
+                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">⚖️</div>
+                    <h3 class="font-bold mb-2 uppercase">9. Auto-Reinvestment</h3>
+                    <p class="text-white/80 text-xs">Optional compounding to maximize long-term wealth.</p>
                 </div>
                 <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
-                    <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl mb-6">⚡</div>
-                    <h3 class="text-xl font-bold mb-3 uppercase">10. Rapid Liquidity Access</h3>
-                    <p class="text-white/80 text-sm leading-relaxed">Experience high-speed withdrawal processing, ensuring your funds are available exactly when you need them.</p>
+                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">⚡</div>
+                    <h3 class="font-bold mb-2 uppercase">10. Rapid Liquidity</h3>
+                    <p class="text-white/80 text-xs">High-speed withdrawal processing for instant access.</p>
                 </div>
             </div>
         </div>
@@ -133,10 +154,8 @@
 
     <script>
         function toggleMenu() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('overlay');
-            sidebar.classList.toggle('open');
-            overlay.classList.toggle('open');
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('overlay').classList.toggle('open');
         }
     </script>
 </body>
