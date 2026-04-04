@@ -12,25 +12,78 @@
         #sidebar.open { transform: translateX(0); }
         #overlay { transition: opacity 0.3s ease; pointer-events: none; opacity: 0; }
         #overlay.open { pointer-events: auto; opacity: 1; }
+        
+        /* Modal Styles */
+        .modal { transition: opacity 0.3s ease, transform 0.3s ease; pointer-events: none; opacity: 0; transform: scale(0.95); }
+        .modal.open { pointer-events: auto; opacity: 1; transform: scale(1); }
+
         @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
         .ticker-content { display: inline-block; white-space: nowrap; animation: ticker 35s linear infinite; }
     </style>
 </head>
 <body class="bg-white text-gray-900 overflow-x-hidden">
 
-    <div id="overlay" onclick="toggleMenu()" class="fixed inset-0 bg-black/40 z-[60] backdrop-blur-sm"></div>
+    <div id="overlay" onclick="closeAll()" class="fixed inset-0 bg-black/40 z-[60] backdrop-blur-sm"></div>
+
+    <div id="signupModal" class="modal fixed inset-0 z-[80] flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-md rounded-[2.5rem] p-8 md:p-10 shadow-2xl relative">
+            <button onclick="closeAll()" class="absolute top-6 right-6 p-2 hover:bg-gray-100 rounded-full transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h2 class="text-3xl font-black uppercase mb-2">Create Account</h2>
+            <p class="text-gray-500 text-sm mb-8">Join fatCoinCapital for secure market access.</p>
+            <form class="space-y-4" onsubmit="event.preventDefault();">
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1 ml-2">Full Name</label>
+                    <input type="text" placeholder="Enter full name" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:border-blue-500 transition">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1 ml-2">Email Address</label>
+                    <input type="email" placeholder="name@email.com" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:border-blue-500 transition">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1 ml-2">Password</label>
+                    <input type="password" placeholder="••••••••" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:border-blue-500 transition">
+                </div>
+                <button type="submit" class="w-full py-5 bg-[#2b59ff] text-white rounded-2xl font-black uppercase tracking-widest shadow-lg hover:bg-blue-700 transition mt-4">Register Now</button>
+            </form>
+            <p class="text-center text-xs text-gray-400 mt-6 uppercase font-bold tracking-tighter">Already a member? <a href="#" onclick="openModal('login')" class="text-blue-600 underline">Login here</a></p>
+        </div>
+    </div>
+
+    <div id="loginModal" class="modal fixed inset-0 z-[80] flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-md rounded-[2.5rem] p-8 md:p-10 shadow-2xl relative">
+            <button onclick="closeAll()" class="absolute top-6 right-6 p-2 hover:bg-gray-100 rounded-full transition">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+            <h2 class="text-3xl font-black uppercase mb-2">Welcome Back</h2>
+            <p class="text-gray-500 text-sm mb-8">Access your investment terminal.</p>
+            <form class="space-y-4" onsubmit="event.preventDefault();">
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1 ml-2">Email Address</label>
+                    <input type="email" placeholder="name@email.com" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:border-blue-500 transition">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1 ml-2">Password</label>
+                    <input type="password" placeholder="••••••••" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:border-blue-500 transition">
+                </div>
+                <button type="submit" class="w-full py-5 bg-[#2b59ff] text-white rounded-2xl font-black uppercase tracking-widest shadow-lg hover:bg-blue-700 transition mt-4">Sign In</button>
+            </form>
+            <p class="text-center text-xs text-gray-400 mt-6 uppercase font-bold tracking-tighter">New here? <a href="#" onclick="openModal('signup')" class="text-blue-600 underline">Create account</a></p>
+        </div>
+    </div>
 
     <aside id="sidebar" class="fixed top-0 right-0 h-full w-[300px] bg-white z-[70] shadow-2xl flex flex-col border-l border-gray-100">
         <div class="p-6 flex justify-between items-center border-b border-gray-50">
             <span class="font-bold text-xl tracking-tight text-blue-600 uppercase">Menu</span>
-            <button onclick="toggleMenu()" class="p-2 hover:bg-gray-100 rounded-full transition">
+            <button onclick="closeAll()" class="p-2 hover:bg-gray-100 rounded-full transition">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
         </div>
         <nav class="p-6 space-y-6 flex-1 overflow-y-auto">
             <div class="space-y-3">
-                <button class="w-full py-4 px-6 bg-[#2b59ff] text-white rounded-2xl font-bold text-center uppercase tracking-wide">Sign up</button>
-                <button class="w-full py-4 px-6 bg-gray-100 text-gray-900 rounded-2xl font-bold text-center uppercase tracking-wide">Sign in</button>
+                <button onclick="openModal('signup')" class="w-full py-4 px-6 bg-[#2b59ff] text-white rounded-2xl font-bold text-center uppercase tracking-wide">Sign up</button>
+                <button onclick="openModal('login')" class="w-full py-4 px-6 bg-gray-100 text-gray-900 rounded-2xl font-bold text-center uppercase tracking-wide">Sign in</button>
             </div>
             <div class="flex flex-col gap-3 pt-4 border-t border-gray-50">
                 <button class="flex items-center justify-between w-full p-5 bg-[#2b59ff] text-white rounded-2xl shadow-md uppercase text-xs font-bold tracking-wider">Chat Support <span>💬</span></button>
@@ -48,7 +101,7 @@
             </div>
             
             <div class="flex items-center gap-3">
-                <button class="bg-[#2b59ff] text-white px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider shadow-lg hover:bg-blue-700 transition">
+                <button onclick="openModal('signup')" class="bg-[#2b59ff] text-white px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider shadow-lg hover:bg-blue-700 transition">
                     Sign Up
                 </button>
                 <button onclick="toggleMenu()" class="p-2.5 text-gray-800 bg-gray-50 rounded-xl border border-gray-200">
@@ -77,17 +130,17 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="bg-white/5 border border-gray-800 p-6 rounded-[2rem]">
                     <span class="text-[10px] bg-red-500/20 text-red-400 px-2 py-1 rounded font-bold mb-3 inline-block">CRITICAL</span>
-                    <h4 class="font-bold text-white mb-2">Drift Protocol $285M Heist</h4>
+                    <h4 class="font-bold text-white mb-2 uppercase">Drift Protocol $285M Heist</h4>
                     <p class="text-gray-400 text-xs">Major exploit on Solana triggers investigation into network vulnerabilities.</p>
                 </div>
                 <div class="bg-white/5 border border-gray-800 p-6 rounded-[2rem]">
                     <span class="text-[10px] bg-blue-500/20 text-blue-400 px-2 py-1 rounded font-bold mb-3 inline-block">INSTITUTIONAL</span>
-                    <h4 class="font-bold text-white mb-2">Morgan Stanley BTC ETF</h4>
+                    <h4 class="font-bold text-white mb-2 uppercase">Morgan Stanley BTC ETF</h4>
                     <p class="text-gray-400 text-xs">Anticipation grows for mid-April launch, boosting liquidity expectations.</p>
                 </div>
                 <div class="bg-white/5 border border-gray-800 p-6 rounded-[2rem]">
                     <span class="text-[10px] bg-green-500/20 text-green-400 px-2 py-1 rounded font-bold mb-3 inline-block">ANALYSIS</span>
-                    <h4 class="font-bold text-white mb-2">BTC Consolidation at $66k</h4>
+                    <h4 class="font-bold text-white mb-2 uppercase">BTC Consolidation at $66k</h4>
                     <p class="text-gray-400 text-xs">Market weighs geopolitical tensions against rising corporate accumulation.</p>
                 </div>
             </div>
@@ -162,6 +215,19 @@
         function toggleMenu() {
             document.getElementById('sidebar').classList.toggle('open');
             document.getElementById('overlay').classList.toggle('open');
+        }
+
+        function openModal(type) {
+            closeAll(); // Close sidebar/other modals first
+            document.getElementById(type + 'Modal').classList.add('open');
+            document.getElementById('overlay').classList.add('open');
+        }
+
+        function closeAll() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('signupModal').classList.remove('open');
+            document.getElementById('loginModal').classList.remove('open');
+            document.getElementById('overlay').classList.remove('open');
         }
     </script>
 </body>
