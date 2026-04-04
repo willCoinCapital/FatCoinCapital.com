@@ -3,124 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terminal | fatCoinCapital</title>
+    <title>Dashboard | fatCoinCapital</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #0a0b0d; color: #ffffff; }
-        .glass-card { background: rgba(23, 25, 30, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); border-radius: 2rem; }
-        .mono { font-family: 'JetBrains Mono', monospace; }
-        .text-gradient { background: linear-gradient(to right, #2b59ff, #6366f1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .step-active { background: #2b59ff; box-shadow: 0 0 15px rgba(43, 89, 255, 0.5); }
+        body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
+        .stats-card { border-radius: 2.5rem; }
+        .glass-nav { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); }
     </style>
 </head>
-<body class="pb-10">
+<body class="text-gray-900">
 
-    <header class="sticky top-0 z-50 bg-[#0a0b0d]/80 backdrop-blur-md border-b border-white/5 px-6 py-4">
-        <div class="max-w-5xl mx-auto flex justify-between items-center">
+    <header class="sticky top-0 z-50 glass-nav border-b border-gray-100 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-2">
-                <div class="w-8 h-8 bg-[#2b59ff] rounded-lg flex items-center justify-center font-bold text-sm">f</div>
-                <span class="text-lg font-extrabold tracking-tighter uppercase">fatCoinCapital</span>
+                <div class="w-8 h-8 bg-[#2b59ff] rounded-full flex items-center justify-center text-white font-bold text-sm">f</div>
+                <span class="text-xl font-bold tracking-tight uppercase">fatCoinCapital</span>
             </div>
             <div class="flex items-center gap-4">
-                <div class="hidden sm:block px-3 py-1 bg-green-500/10 border border-green-500/20 rounded-full">
-                    <span class="text-[10px] font-bold text-green-500 uppercase tracking-widest">● System Live</span>
-                </div>
-                <button onclick="logout()" class="w-10 h-10 bg-white/5 border border-white/10 rounded-full flex items-center justify-center font-bold text-[#2b59ff] hover:bg-red-500/10 transition">
-                    <span id="userInitials">JD</span>
+                <span class="hidden md:block text-[10px] font-black text-green-500 uppercase tracking-widest bg-green-50 px-3 py-1 rounded-full">● Live Connection</span>
+                <button onclick="logout()" title="Logout" class="w-10 h-10 bg-gray-100 rounded-full border-2 border-white shadow-sm flex items-center justify-center font-bold text-blue-600 hover:bg-red-50 hover:text-red-600 transition">
+                    <span id="userInitials">??</span>
                 </button>
             </div>
         </div>
     </header>
 
-    <main class="max-w-5xl mx-auto px-6 pt-8">
-        <div class="mb-8">
-            <h1 class="text-2xl font-black uppercase tracking-tight">Investment Terminal</h1>
-            <p class="text-gray-500 text-xs font-bold uppercase tracking-widest">Operator: <span id="userNameDisplay" class="text-white">John Doe</span></p>
+    <main class="max-w-7xl mx-auto px-6 py-10">
+        <div class="mb-10">
+            <h1 class="text-3xl font-black uppercase">Terminal Dashboard</h1>
+            <p class="text-gray-500 text-sm uppercase font-bold tracking-tighter">Welcome back, <span id="userNameDisplay" class="text-[#2b59ff]">Investor</span></p>
         </div>
 
-        <div class="glass-card p-8 mb-6 relative overflow-hidden">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-                <div>
-                    <p class="text-blue-500 font-bold tracking-widest text-[10px] uppercase mb-1">Net Account Value</p>
-                    <h2 class="text-5xl font-black mono text-green-400">$200.14</h2>
-                    <p class="text-xs text-gray-500 mt-1 font-bold">+0.07% Daily Accrual Active</p>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+            <div class="lg:col-span-2 bg-[#0a0b0d] stats-card p-10 text-white shadow-2xl border border-gray-800 relative overflow-hidden">
+                <div class="relative z-10">
+                    <p class="text-blue-500 font-bold tracking-widest text-xs uppercase mb-2">Total Account Value</p>
+                    <h2 class="text-5xl md:text-7xl font-black uppercase text-green-400">$200.14</h2>
+                    <div class="flex gap-6 mt-8">
+                        <div>
+                            <p class="text-[10px] text-gray-500 uppercase font-bold">Active Bonus</p>
+                            <p class="text-xl font-bold text-white">$200.00</p>
+                        </div>
+                        <div class="border-l border-gray-800 pl-6">
+                            <p class="text-[10px] text-gray-500 uppercase font-bold">Daily Yield</p>
+                            <p class="text-xl font-bold text-blue-400">+0.07%</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="flex gap-3">
-                    <button class="bg-[#2b59ff] px-6 py-3 rounded-xl font-bold text-sm uppercase tracking-wider hover:bg-blue-600 transition">Deposit</button>
-                    <button class="bg-white/5 border border-white/10 px-6 py-3 rounded-xl font-bold text-sm uppercase tracking-wider hover:bg-white/10 transition">Withdraw</button>
-                </div>
-            </div>
-            
-            <div class="h-48 w-full mt-4">
-                <canvas id="performanceChart"></canvas>
-            </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <div class="glass-card p-6 md:col-span-2">
-                <div class="flex justify-between items-center mb-6">
-                    <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest">Yield Release Cycle</p>
-                    <span class="text-[10px] font-bold text-blue-400 uppercase">Day 1 of 7</span>
-                </div>
-                <div class="flex justify-between items-center gap-2">
-                    <div class="h-2 flex-1 rounded-full step-active"></div>
-                    <div class="h-2 flex-1 rounded-full bg-white/5"></div>
-                    <div class="h-2 flex-1 rounded-full bg-white/5"></div>
-                    <div class="h-2 flex-1 rounded-full bg-white/5"></div>
-                    <div class="h-2 flex-1 rounded-full bg-white/5"></div>
-                    <div class="h-2 flex-1 rounded-full bg-white/5"></div>
-                    <div class="h-2 flex-1 rounded-full bg-white/5"></div>
-                </div>
-                <p class="text-[10px] text-gray-500 mt-4 font-medium uppercase tracking-tighter text-center">Next auto-reinvestment in <span class="text-white">18 Hours</span></p>
+                <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#2b59ff 1px, transparent 1px); background-size: 20px 20px;"></div>
             </div>
 
-            <div class="glass-card p-6 flex flex-col justify-between">
-                <p class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-4">Protocol Tier</p>
-                <div class="bg-blue-500/10 border border-blue-500/20 p-3 rounded-xl mb-4 text-center">
-                    <span class="text-blue-400 font-black uppercase text-sm">Starter</span>
-                </div>
-                <button class="text-[10px] font-bold text-white uppercase underline hover:text-blue-400 transition text-center">Upgrade For Higher Yield</button>
+            <div class="flex flex-col gap-4">
+                <button class="flex-1 bg-[#2b59ff] stats-card p-6 text-white flex flex-col justify-center items-center group hover:bg-blue-700 transition shadow-xl">
+                    <span class="text-3xl mb-2">📥</span>
+                    <span class="font-black uppercase tracking-widest">Deposit Capital</span>
+                </button>
+                <button class="flex-1 bg-white border-4 border-[#2b59ff] stats-card p-6 text-[#2b59ff] flex flex-col justify-center items-center hover:bg-blue-50 transition shadow-lg">
+                    <span class="text-3xl mb-2">📤</span>
+                    <span class="font-black uppercase tracking-widest">Rapid Withdrawal</span>
+                </button>
             </div>
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-            <div class="glass-card p-5 text-center">
-                <p class="text-[9px] font-bold text-gray-500 uppercase mb-2">Protocol</p>
-                <p class="text-sm font-black uppercase text-green-500">AES-256</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            <div class="bg-white p-8 stats-card shadow-sm border border-gray-100">
+                <p class="text-[10px] font-bold text-gray-400 uppercase mb-4">Protocol Status</p>
+                <h3 class="font-black text-xl uppercase mb-1">Encrypted</h3>
+                <p class="text-gray-500 text-xs font-medium">Standard Security Active</p>
             </div>
-            <div class="glass-card p-5 text-center">
-                <p class="text-[9px] font-bold text-gray-500 uppercase mb-2">Market</p>
-                <p class="text-sm font-black uppercase">Bullish</p>
+            <div class="bg-white p-8 stats-card shadow-sm border border-gray-100">
+                <p class="text-[10px] font-bold text-gray-400 uppercase mb-4">Market Trend</p>
+                <h3 class="font-black text-xl uppercase mb-1 text-green-500">Bullish</h3>
+                <p class="text-gray-500 text-xs font-medium">Updated: 2026.04.04</p>
             </div>
-            <div class="glass-card p-5 text-center">
-                <p class="text-[9px] font-bold text-gray-500 uppercase mb-2">Bonus</p>
-                <p class="text-sm font-black mono">$200.00</p>
+            <div class="bg-white p-8 stats-card shadow-sm border border-gray-100">
+                <p class="text-[10px] font-bold text-gray-400 uppercase mb-4">Active Plan</p>
+                <h3 class="font-black text-xl uppercase mb-1">7-Day Yield</h3>
+                <p class="text-gray-500 text-xs font-medium">Cycle Day 1/7</p>
             </div>
-            <div class="glass-card p-5 text-center">
-                <p class="text-[9px] font-bold text-gray-500 uppercase mb-2">Network</p>
-                <p class="text-sm font-black uppercase text-blue-500">Mainnet</p>
+            <div class="bg-white p-8 stats-card shadow-sm border border-gray-100">
+                <p class="text-[10px] font-bold text-gray-400 uppercase mb-4">Reward Tier</p>
+                <h3 class="font-black text-xl uppercase mb-1">Starter</h3>
+                <p class="text-blue-600 text-xs font-bold uppercase underline cursor-pointer">Upgrade Plan</p>
             </div>
         </div>
 
-        <div class="glass-card overflow-hidden">
-            <div class="p-6 border-b border-white/5 flex justify-between items-center">
-                <h3 class="font-black uppercase text-sm tracking-tight">Transaction Ledger</h3>
-                <span class="text-[10px] text-gray-500 font-bold uppercase">Live Updates</span>
+        <div class="bg-white stats-card shadow-2xl border border-gray-100 overflow-hidden">
+            <div class="p-8 border-b border-gray-50 flex justify-between items-center">
+                <h3 class="text-xl font-black uppercase">Live Transaction Ledger</h3>
+                <button class="text-[10px] font-bold text-[#2b59ff] uppercase tracking-widest">View All</button>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-left">
-                    <tbody class="divide-y divide-white/5">
-                        <tr class="hover:bg-white/[0.02] transition">
-                            <td class="px-6 py-4 text-[10px] mono text-gray-500">TXN-49201-FTC</td>
-                            <td class="px-6 py-4 text-xs font-bold uppercase">Sign-Up Bonus</td>
-                            <td class="px-6 py-4 text-right mono font-bold text-green-500">+$200.00</td>
+                    <thead>
+                        <tr class="bg-gray-50 text-[10px] font-black uppercase tracking-widest text-gray-400">
+                            <th class="px-8 py-4">Reference</th>
+                            <th class="px-8 py-4">Type</th>
+                            <th class="px-8 py-4">Status</th>
+                            <th class="px-8 py-4 text-right">Amount</th>
                         </tr>
-                        <tr class="hover:bg-white/[0.02] transition">
-                            <td class="px-6 py-4 text-[10px] mono text-gray-500">YLD-0404-LIVE</td>
-                            <td class="px-6 py-4 text-xs font-bold uppercase">Yield Accrual</td>
-                            <td class="px-6 py-4 text-right mono font-bold text-blue-400">+$0.14</td>
+                    </thead>
+                    <tbody class="divide-y divide-gray-50 font-medium">
+                        <tr>
+                            <td class="px-8 py-6 text-xs font-mono uppercase">TXN-49201-FTC</td>
+                            <td class="px-8 py-6 text-xs uppercase font-bold">Sign-Up Bonus</td>
+                            <td class="px-8 py-6"><span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[10px] font-bold uppercase">Completed</span></td>
+                            <td class="px-8 py-6 text-right font-black text-green-600">+$200.00</td>
+                        </tr>
+                        <tr>
+                            <td class="px-8 py-6 text-xs font-mono uppercase">YLD-0404-LIVE</td>
+                            <td class="px-8 py-6 text-xs uppercase font-bold">Daily Yield Accrual</td>
+                            <td class="px-8 py-6"><span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-[10px] font-bold uppercase">Processing</span></td>
+                            <td class="px-8 py-6 text-right font-black text-blue-600">+$0.14</td>
                         </tr>
                     </tbody>
                 </table>
@@ -128,54 +123,33 @@
         </div>
     </main>
 
-    <script>
-        // Data Loading
-        window.onload = function() {
-            const userName = localStorage.getItem('fatCoinUser') || "John Doe";
-            document.getElementById('userNameDisplay').innerText = userName;
-            const initials = userName.split(' ').map(n => n[0]).join('').toUpperCase();
-            document.getElementById('userInitials').innerText = initials;
+    <button class="fixed bottom-8 right-8 w-16 h-16 bg-[#2b59ff] text-white rounded-2xl shadow-2xl flex items-center justify-center text-2xl hover:scale-110 transition active:scale-95">
+        💬
+    </button>
 
-            // Initialize Performance Chart
-            const ctx = document.getElementById('performanceChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['12am', '4am', '8am', '12pm', '4pm', '8pm', 'Now'],
-                    datasets: [{
-                        label: 'Portfolio Value',
-                        data: [200.00, 200.02, 200.05, 200.08, 200.10, 200.12, 200.14],
-                        borderColor: '#2b59ff',
-                        borderWidth: 3,
-                        backgroundColor: (context) => {
-                            const gradient = context.chart.ctx.createLinearGradient(0, 0, 0, 200);
-                            gradient.addColorStop(0, 'rgba(43, 89, 255, 0.2)');
-                            gradient.addColorStop(1, 'rgba(43, 89, 255, 0)');
-                            return gradient;
-                        },
-                        fill: true,
-                        tension: 0.4,
-                        pointRadius: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        x: { display: false },
-                        y: { display: false }
-                    }
-                }
-            });
+    <script>
+        // ON LOAD: Fetch user data from localStorage
+        window.onload = function() {
+            const userName = localStorage.getItem('fatCoinUser');
+            
+            if (userName) {
+                // Update greeting
+                document.getElementById('userNameDisplay').innerText = userName;
+                
+                // Update Avatar Initials (e.g., "John Doe" -> "JD")
+                const initials = userName.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+                document.getElementById('userInitials').innerText = initials || '??';
+            }
         };
 
+        // Logout function to clear session and return to index
         function logout() {
-            if(confirm("Securely terminate session?")) {
+            if(confirm("Confirm: Securely disconnect from Terminal?")) {
                 localStorage.removeItem('fatCoinUser');
                 window.location.href = 'index.html';
             }
         }
     </script>
+
 </body>
 </html>
