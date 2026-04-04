@@ -10,6 +10,8 @@
         body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
         .stats-card { border-radius: 2.5rem; }
         .glass-nav { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); }
+        .action-menu { display: none; }
+        .action-menu.active { display: flex; }
     </style>
 </head>
 <body class="text-gray-900">
@@ -22,7 +24,7 @@
             </div>
             <div class="flex items-center gap-4">
                 <span class="hidden md:block text-[10px] font-black text-green-500 uppercase tracking-widest bg-green-50 px-3 py-1 rounded-full">● Live Connection</span>
-                <button onclick="logout()" title="Logout" class="w-10 h-10 bg-gray-100 rounded-full border-2 border-white shadow-sm flex items-center justify-center font-bold text-blue-600 hover:bg-red-50 hover:text-red-600 transition">
+                <button onclick="logout()" title="Logout" class="w-10 h-10 bg-gray-100 rounded-full border-2 border-white shadow-sm flex items-center justify-center font-bold text-blue-600">
                     <span id="userInitials">??</span>
                 </button>
             </div>
@@ -31,7 +33,7 @@
 
     <main class="max-w-7xl mx-auto px-6 py-10">
         <div class="mb-10">
-            <h1 class="text-3xl font-black uppercase">Terminal Dashboard</h1>
+            <h1 class="text-3xl font-black uppercase tracking-tight">Terminal Dashboard</h1>
             <p class="text-gray-500 text-sm uppercase font-bold tracking-tighter">Welcome back, <span id="userNameDisplay" class="text-[#2b59ff]">Investor</span></p>
         </div>
 
@@ -55,75 +57,105 @@
             </div>
         </div>
 
-        <div class="flex flex-col gap-3 mb-12">
+        <div class="flex flex-col gap-4 mb-12">
             
-            <div class="bg-white stats-card p-6 shadow-sm border border-gray-100 flex items-center justify-between group hover:border-[#2b59ff] transition-all cursor-pointer">
-                <div class="flex items-center gap-5">
-                    <div class="w-12 h-12 bg-[#F7F7F7] rounded-2xl flex items-center justify-center text-xl text-orange-500 font-bold shadow-sm">₿</div>
-                    <div>
-                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Bitcoin / USD</p>
-                        <h3 class="font-black text-lg uppercase leading-tight">$67,366.19</h3>
+            <div class="bg-white stats-card p-6 shadow-sm border border-gray-100 transition-all">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-5">
+                        <div class="w-12 h-12 bg-[#F7F7F7] rounded-2xl flex items-center justify-center text-xl text-orange-500 font-bold shadow-sm">₿</div>
+                        <div>
+                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">Bitcoin Wallet</p>
+                            <h3 class="font-black text-lg uppercase leading-tight">$0.00</h3>
+                        </div>
                     </div>
+                    <button onclick="toggleMenu('btcMenu')" class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-xl font-light hover:bg-blue-50 hover:text-blue-600 transition">+</button>
                 </div>
-                <div class="text-right">
-                    <span class="text-green-500 text-[10px] font-black uppercase tracking-widest">+1.2%</span>
-                    <p class="text-gray-400 text-[9px] font-bold uppercase tracking-tighter">Market Leader</p>
+                <div id="btcMenu" class="action-menu flex-col gap-2 pt-4 border-t border-gray-50">
+                    <button class="w-full py-3 bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest rounded-xl">Deposit BTC</button>
+                    <div class="flex gap-2">
+                        <button class="flex-1 py-3 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-xl">Withdraw</button>
+                        <button class="flex-1 py-3 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-xl">Invest</button>
+                    </div>
                 </div>
             </div>
 
-            <div class="bg-white stats-card p-6 shadow-sm border border-gray-100 flex items-center justify-between group hover:border-[#2b59ff] transition-all cursor-pointer">
-                <div class="flex items-center gap-5">
-                    <div class="w-12 h-12 bg-[#EEF3E1] rounded-2xl flex items-center justify-center text-xl text-blue-600 font-bold shadow-sm">Ξ</div>
-                    <div>
-                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Ethereum / USD</p>
-                        <h3 class="font-black text-lg uppercase leading-tight">$2,065.94</h3>
+            <div class="bg-white stats-card p-6 shadow-sm border border-gray-100 transition-all">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-5">
+                        <div class="w-12 h-12 bg-[#EEF3E1] rounded-2xl flex items-center justify-center text-xl text-blue-600 font-bold shadow-sm">Ξ</div>
+                        <div>
+                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">Ethereum Wallet</p>
+                            <h3 class="font-black text-lg uppercase leading-tight">$0.00</h3>
+                        </div>
                     </div>
+                    <button onclick="toggleMenu('ethMenu')" class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-xl font-light hover:bg-blue-50">+</button>
                 </div>
-                <div class="text-right">
-                    <span class="text-green-500 text-[10px] font-black uppercase tracking-widest">+1.4%</span>
-                    <p class="text-gray-400 text-[9px] font-bold uppercase tracking-tighter">Smart Contract</p>
+                <div id="ethMenu" class="action-menu flex-col gap-2 pt-4 border-t border-gray-50">
+                    <button class="w-full py-3 bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest rounded-xl">Deposit ETH</button>
+                    <div class="flex gap-2">
+                        <button class="flex-1 py-3 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-xl">Withdraw</button>
+                        <button class="flex-1 py-3 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-xl">Invest</button>
+                    </div>
                 </div>
             </div>
 
-            <div class="bg-white stats-card p-6 shadow-sm border border-gray-100 flex items-center justify-between group hover:border-[#2b59ff] transition-all cursor-pointer">
-                <div class="flex items-center gap-5">
-                    <div class="w-12 h-12 bg-[#DCEB7D] rounded-2xl flex items-center justify-center text-xl text-purple-600 font-bold shadow-sm">◎</div>
-                    <div>
-                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Solana / USD</p>
-                        <h3 class="font-black text-lg uppercase leading-tight">$80.82</h3>
+            <div class="bg-white stats-card p-6 shadow-sm border border-gray-100 transition-all">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-5">
+                        <div class="w-12 h-12 bg-[#DCEB7D] rounded-2xl flex items-center justify-center text-xl text-purple-600 font-bold shadow-sm">◎</div>
+                        <div>
+                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">Solana Wallet</p>
+                            <h3 class="font-black text-lg uppercase leading-tight">$0.00</h3>
+                        </div>
                     </div>
+                    <button onclick="toggleMenu('solMenu')" class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-xl font-light hover:bg-blue-50">+</button>
                 </div>
-                <div class="text-right">
-                    <span class="text-red-500 text-[10px] font-black uppercase tracking-widest">-2.7%</span>
-                    <p class="text-gray-400 text-[9px] font-bold uppercase tracking-tighter">High Performance</p>
+                <div id="solMenu" class="action-menu flex-col gap-2 pt-4 border-t border-gray-50">
+                    <button class="w-full py-3 bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest rounded-xl">Deposit SOL</button>
+                    <div class="flex gap-2">
+                        <button class="flex-1 py-3 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-xl">Withdraw</button>
+                        <button class="flex-1 py-3 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-xl">Invest</button>
+                    </div>
                 </div>
             </div>
 
-            <div class="bg-white stats-card p-6 shadow-sm border border-gray-100 flex items-center justify-between group hover:border-[#2b59ff] transition-all cursor-pointer">
-                <div class="flex items-center gap-5">
-                    <div class="w-12 h-12 bg-[#373634] rounded-2xl flex items-center justify-center text-xl text-white font-bold shadow-sm">🌀</div>
-                    <div>
-                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Yearn Finance / USD</p>
-                        <h3 class="font-black text-lg uppercase leading-tight">$2,414.81</h3>
+            <div class="bg-white stats-card p-6 shadow-sm border border-gray-100 transition-all">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-5">
+                        <div class="w-12 h-12 bg-[#373634] rounded-2xl flex items-center justify-center text-xl text-white font-bold shadow-sm">🌀</div>
+                        <div>
+                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">Yearn Balance</p>
+                            <h3 class="font-black text-lg uppercase leading-tight">$0.00</h3>
+                        </div>
                     </div>
+                    <button onclick="toggleMenu('yfiMenu')" class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-xl font-light hover:bg-blue-50">+</button>
                 </div>
-                <div class="text-right">
-                    <span class="text-red-400 text-[10px] font-black uppercase tracking-widest">-1.6%</span>
-                    <p class="text-gray-400 text-[9px] font-bold uppercase tracking-tighter">DeFi Yield</p>
+                <div id="yfiMenu" class="action-menu flex-col gap-2 pt-4 border-t border-gray-50">
+                    <button class="w-full py-3 bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest rounded-xl">Deposit YFI</button>
+                    <div class="flex gap-2">
+                        <button class="flex-1 py-3 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-xl">Withdraw</button>
+                        <button class="flex-1 py-3 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-xl">Invest</button>
+                    </div>
                 </div>
             </div>
 
-            <div class="bg-white stats-card p-6 shadow-sm border border-gray-100 flex items-center justify-between group hover:border-[#2b59ff] transition-all cursor-pointer">
-                <div class="flex items-center gap-5">
-                    <div class="w-12 h-12 bg-[#000000] rounded-2xl flex items-center justify-center text-xl text-yellow-500 font-bold shadow-sm">🟡</div>
-                    <div>
-                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Tether Gold / USD</p>
-                        <h3 class="font-black text-lg uppercase leading-tight">$4,635.57</h3>
+            <div class="bg-white stats-card p-6 shadow-sm border border-gray-100 transition-all">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-5">
+                        <div class="w-12 h-12 bg-[#000000] rounded-2xl flex items-center justify-center text-xl text-yellow-500 font-bold shadow-sm">🟡</div>
+                        <div>
+                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">XAUT Balance</p>
+                            <h3 class="font-black text-lg uppercase leading-tight">$0.00</h3>
+                        </div>
                     </div>
+                    <button onclick="toggleMenu('xautMenu')" class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-xl font-light hover:bg-blue-50">+</button>
                 </div>
-                <div class="text-right">
-                    <span class="text-green-400 text-[10px] font-black uppercase tracking-widest">+0.18%</span>
-                    <p class="text-gray-400 text-[9px] font-bold uppercase tracking-tighter">Safe Haven</p>
+                <div id="xautMenu" class="action-menu flex-col gap-2 pt-4 border-t border-gray-50">
+                    <button class="w-full py-3 bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest rounded-xl">Deposit XAUT</button>
+                    <div class="flex gap-2">
+                        <button class="flex-1 py-3 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-xl">Withdraw</button>
+                        <button class="flex-1 py-3 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-xl">Invest</button>
+                    </div>
                 </div>
             </div>
 
@@ -131,7 +163,7 @@
 
         <div class="bg-white stats-card shadow-2xl border border-gray-100 overflow-hidden">
             <div class="p-8 border-b border-gray-50 flex justify-between items-center">
-                <h3 class="text-xl font-black uppercase">Live Transaction Ledger</h3>
+                <h3 class="text-xl font-black uppercase tracking-tight">Live Transaction Ledger</h3>
                 <button class="text-[10px] font-bold text-[#2b59ff] uppercase tracking-widest">View All</button>
             </div>
             <div class="overflow-x-auto">
@@ -144,18 +176,12 @@
                             <th class="px-8 py-4 text-right">Amount</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-50 font-medium">
+                    <tbody class="divide-y divide-gray-50 font-medium text-sm">
                         <tr>
-                            <td class="px-8 py-6 text-xs font-mono uppercase">TXN-49201-FTC</td>
-                            <td class="px-8 py-6 text-xs uppercase font-bold">Sign-Up Bonus</td>
-                            <td class="px-8 py-6"><span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[10px] font-bold uppercase">Completed</span></td>
+                            <td class="px-8 py-6 font-mono uppercase text-gray-400 text-xs">TXN-49201-FTC</td>
+                            <td class="px-8 py-6 font-bold uppercase">Sign-Up Bonus</td>
+                            <td class="px-8 py-6"><span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[10px] font-black uppercase">Completed</span></td>
                             <td class="px-8 py-6 text-right font-black text-green-600">+$200.00</td>
-                        </tr>
-                        <tr>
-                            <td class="px-8 py-6 text-xs font-mono uppercase">YLD-0404-LIVE</td>
-                            <td class="px-8 py-6 text-xs uppercase font-bold">Daily Yield Accrual</td>
-                            <td class="px-8 py-6"><span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-[10px] font-bold uppercase">Processing</span></td>
-                            <td class="px-8 py-6 text-right font-black text-blue-600">+$0.14</td>
                         </tr>
                     </tbody>
                 </table>
@@ -168,6 +194,17 @@
     </button>
 
     <script>
+        function toggleMenu(id) {
+            const menu = document.getElementById(id);
+            const isActive = menu.classList.contains('active');
+            
+            // Close all other menus first
+            document.querySelectorAll('.action-menu').forEach(m => m.classList.remove('active'));
+            
+            // Toggle the clicked one
+            if (!isActive) menu.classList.add('active');
+        }
+
         window.onload = function() {
             const userName = localStorage.getItem('fatCoinUser');
             if (userName) {
