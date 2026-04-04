@@ -22,7 +22,9 @@
             </div>
             <div class="flex items-center gap-4">
                 <span class="hidden md:block text-[10px] font-black text-green-500 uppercase tracking-widest bg-green-50 px-3 py-1 rounded-full">● Live Connection</span>
-                <div class="w-10 h-10 bg-gray-100 rounded-full border-2 border-white shadow-sm flex items-center justify-center font-bold text-blue-600">JD</div>
+                <button onclick="logout()" title="Logout" class="w-10 h-10 bg-gray-100 rounded-full border-2 border-white shadow-sm flex items-center justify-center font-bold text-blue-600 hover:bg-red-50 hover:text-red-600 transition">
+                    <span id="userInitials">??</span>
+                </button>
             </div>
         </div>
     </header>
@@ -30,7 +32,7 @@
     <main class="max-w-7xl mx-auto px-6 py-10">
         <div class="mb-10">
             <h1 class="text-3xl font-black uppercase">Terminal Dashboard</h1>
-            <p class="text-gray-500 text-sm uppercase font-bold tracking-tighter">Welcome back, <span class="text-[#2b59ff]">John Doe</span></p>
+            <p class="text-gray-500 text-sm uppercase font-bold tracking-tighter">Welcome back, <span id="userNameDisplay" class="text-[#2b59ff]">Investor</span></p>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
@@ -83,7 +85,7 @@
             <div class="bg-white p-8 stats-card shadow-sm border border-gray-100">
                 <p class="text-[10px] font-bold text-gray-400 uppercase mb-4">Reward Tier</p>
                 <h3 class="font-black text-xl uppercase mb-1">Starter</h3>
-                <p class="text-blue-600 text-xs font-bold uppercase underline">Upgrade Plan</p>
+                <p class="text-blue-600 text-xs font-bold uppercase underline cursor-pointer">Upgrade Plan</p>
             </div>
         </div>
 
@@ -124,6 +126,30 @@
     <button class="fixed bottom-8 right-8 w-16 h-16 bg-[#2b59ff] text-white rounded-2xl shadow-2xl flex items-center justify-center text-2xl hover:scale-110 transition active:scale-95">
         💬
     </button>
+
+    <script>
+        // ON LOAD: Fetch user data from localStorage
+        window.onload = function() {
+            const userName = localStorage.getItem('fatCoinUser');
+            
+            if (userName) {
+                // Update greeting
+                document.getElementById('userNameDisplay').innerText = userName;
+                
+                // Update Avatar Initials (e.g., "John Doe" -> "JD")
+                const initials = userName.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+                document.getElementById('userInitials').innerText = initials || '??';
+            }
+        };
+
+        // Logout function to clear session and return to index
+        function logout() {
+            if(confirm("Confirm: Securely disconnect from Terminal?")) {
+                localStorage.removeItem('fatCoinUser');
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
 
 </body>
 </html>
