@@ -11,7 +11,6 @@
         .stats-card { border-radius: 2.5rem; transition: all 0.3s ease; }
         .glass-nav { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); }
         
-        /* The Fix: Ensuring the menu starts hidden and animates in */
         .action-menu { 
             display: none; 
             opacity: 0;
@@ -22,6 +21,10 @@
             display: flex; 
             opacity: 1;
             transform: translateY(0);
+        }
+        .address-box {
+            word-break: break-all;
+            font-family: monospace;
         }
     </style>
 </head>
@@ -79,15 +82,18 @@
                             <h3 class="font-black text-lg uppercase leading-tight">$0.00</h3>
                         </div>
                     </div>
-                    <button onclick="toggleMenu('btcMenu')" class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-2xl font-light hover:bg-[#2b59ff] hover:text-white transition-all shadow-sm">
-                        +
-                    </button>
+                    <button onclick="toggleMenu('btcMenu')" class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-2xl font-light hover:bg-[#2b59ff] hover:text-white transition-all shadow-sm">+</button>
                 </div>
-                <div id="btcMenu" class="action-menu flex-col gap-2 pt-6 mt-4 border-t border-gray-50">
-                    <button onclick="handleAction(event, 'Deposit', 'BTC')" class="w-full py-4 bg-[#2b59ff] text-white text-[10px] font-black uppercase tracking-widest rounded-2xl shadow-lg shadow-blue-100">Deposit BTC</button>
+                <div id="btcMenu" class="action-menu flex-col gap-3 pt-6 mt-4 border-t border-gray-50">
+                    <p class="text-[9px] font-black uppercase text-gray-400 tracking-widest">Network: BTC (SegWit)</p>
+                    <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                        <p class="text-[10px] text-gray-400 mb-2 uppercase font-bold">Your BTC Address</p>
+                        <p id="addr-BTC" class="address-box text-xs font-bold text-gray-700">bc1qyc92n060qq57klawgt6k9c2g24uvj5uk9rq9x8</p>
+                    </div>
+                    <button onclick="copyAddress('BTC')" class="w-full py-4 bg-[#2b59ff] text-white text-[10px] font-black uppercase tracking-widest rounded-2xl shadow-lg shadow-blue-100">Copy Address & Done</button>
                     <div class="flex gap-2">
                         <button onclick="handleAction(event, 'Withdraw', 'BTC')" class="flex-1 py-4 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-2xl">Withdraw</button>
-                        <button onclick="handleAction(event, 'Invest', 'BTC')" class="flex-1 py-4 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl">Invest Assets</button>
+                        <button onclick="handleAction(event, 'Invest', 'BTC')" class="flex-1 py-4 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl">Invest</button>
                     </div>
                 </div>
             </div>
@@ -103,12 +109,13 @@
                     </div>
                     <button onclick="toggleMenu('ethMenu')" class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-2xl font-light hover:bg-[#2b59ff] hover:text-white transition-all">+</button>
                 </div>
-                <div id="ethMenu" class="action-menu flex-col gap-2 pt-6 mt-4 border-t border-gray-50">
-                    <button onclick="handleAction(event, 'Deposit', 'ETH')" class="w-full py-4 bg-[#2b59ff] text-white text-[10px] font-black uppercase tracking-widest rounded-2xl shadow-lg shadow-blue-100">Deposit ETH</button>
-                    <div class="flex gap-2">
-                        <button onclick="handleAction(event, 'Withdraw', 'ETH')" class="flex-1 py-4 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-2xl">Withdraw</button>
-                        <button onclick="handleAction(event, 'Invest', 'ETH')" class="flex-1 py-4 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl">Invest Assets</button>
+                <div id="ethMenu" class="action-menu flex-col gap-3 pt-6 mt-4 border-t border-gray-50">
+                    <p class="text-[9px] font-black uppercase text-gray-400 tracking-widest">Network: ERC-20</p>
+                    <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                        <p class="text-[10px] text-gray-400 mb-2 uppercase font-bold">Your ETH Address</p>
+                        <p id="addr-ETH" class="address-box text-xs font-bold text-gray-700">0xb43FA34C1d534Ae81f714283CfE744AAcdbA6402</p>
                     </div>
+                    <button onclick="copyAddress('ETH')" class="w-full py-4 bg-[#2b59ff] text-white text-[10px] font-black uppercase tracking-widest rounded-2xl">Copy Address & Done</button>
                 </div>
             </div>
 
@@ -123,12 +130,13 @@
                     </div>
                     <button onclick="toggleMenu('solMenu')" class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-2xl font-light hover:bg-[#2b59ff] hover:text-white transition-all">+</button>
                 </div>
-                <div id="solMenu" class="action-menu flex-col gap-2 pt-6 mt-4 border-t border-gray-50">
-                    <button onclick="handleAction(event, 'Deposit', 'SOL')" class="w-full py-4 bg-[#2b59ff] text-white text-[10px] font-black uppercase tracking-widest rounded-2xl shadow-lg shadow-blue-100">Deposit SOL</button>
-                    <div class="flex gap-2">
-                        <button onclick="handleAction(event, 'Withdraw', 'SOL')" class="flex-1 py-4 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-2xl">Withdraw</button>
-                        <button onclick="handleAction(event, 'Invest', 'SOL')" class="flex-1 py-4 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl">Invest Assets</button>
+                <div id="solMenu" class="action-menu flex-col gap-3 pt-6 mt-4 border-t border-gray-50">
+                    <p class="text-[9px] font-black uppercase text-gray-400 tracking-widest">Network: Solana</p>
+                    <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                        <p class="text-[10px] text-gray-400 mb-2 uppercase font-bold">Your SOL Address</p>
+                        <p id="addr-SOL" class="address-box text-xs font-bold text-gray-700">6R9S21wwv8ea3LfqBz9E8MZrfJ4a7JWuX4jQtAPS51CR</p>
                     </div>
+                    <button onclick="copyAddress('SOL')" class="w-full py-4 bg-[#2b59ff] text-white text-[10px] font-black uppercase tracking-widest rounded-2xl">Copy Address & Done</button>
                 </div>
             </div>
 
@@ -138,17 +146,10 @@
                         <div class="w-12 h-12 bg-[#373634] rounded-2xl flex items-center justify-center text-xl text-white font-bold shadow-sm">🌀</div>
                         <div>
                             <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Yearn Balance</p>
-                            <h3 class="font-black text-lg uppercase leading-tight">$0.00</h3>
+                            <h3 class="font-black text-lg uppercase leading-tight">Coming Soon</h3>
                         </div>
                     </div>
-                    <button onclick="toggleMenu('yfiMenu')" class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-2xl font-light hover:bg-[#2b59ff] hover:text-white transition-all">+</button>
-                </div>
-                <div id="yfiMenu" class="action-menu flex-col gap-2 pt-6 mt-4 border-t border-gray-50">
-                    <button onclick="handleAction(event, 'Deposit', 'YFI')" class="w-full py-4 bg-[#2b59ff] text-white text-[10px] font-black uppercase tracking-widest rounded-2xl shadow-lg shadow-blue-100">Deposit YFI</button>
-                    <div class="flex gap-2">
-                        <button onclick="handleAction(event, 'Withdraw', 'YFI')" class="flex-1 py-4 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-2xl">Withdraw</button>
-                        <button onclick="handleAction(event, 'Invest', 'YFI')" class="flex-1 py-4 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl">Invest Assets</button>
-                    </div>
+                    <button class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-2xl font-light opacity-50 cursor-not-allowed">?</button>
                 </div>
             </div>
 
@@ -157,18 +158,19 @@
                     <div class="flex items-center gap-5">
                         <div class="w-12 h-12 bg-[#000000] rounded-2xl flex items-center justify-center text-xl text-yellow-500 font-bold shadow-sm">🟡</div>
                         <div>
-                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">XAUT Balance</p>
+                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">XAUT Balance (Gold)</p>
                             <h3 class="font-black text-lg uppercase leading-tight">$0.00</h3>
                         </div>
                     </div>
                     <button onclick="toggleMenu('xautMenu')" class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-2xl font-light hover:bg-[#2b59ff] hover:text-white transition-all">+</button>
                 </div>
-                <div id="xautMenu" class="action-menu flex-col gap-2 pt-6 mt-4 border-t border-gray-50">
-                    <button onclick="handleAction(event, 'Deposit', 'XAUT')" class="w-full py-4 bg-[#2b59ff] text-white text-[10px] font-black uppercase tracking-widest rounded-2xl shadow-lg shadow-blue-100">Deposit XAUT</button>
-                    <div class="flex gap-2">
-                        <button onclick="handleAction(event, 'Withdraw', 'XAUT')" class="flex-1 py-4 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-2xl">Withdraw</button>
-                        <button onclick="handleAction(event, 'Invest', 'XAUT')" class="flex-1 py-4 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl">Invest Assets</button>
+                <div id="xautMenu" class="action-menu flex-col gap-3 pt-6 mt-4 border-t border-gray-50">
+                    <p class="text-[9px] font-black uppercase text-gray-400 tracking-widest">Network: ERC-20</p>
+                    <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                        <p class="text-[10px] text-gray-400 mb-2 uppercase font-bold">Your XAUT Address</p>
+                        <p id="addr-XAUT" class="address-box text-xs font-bold text-gray-700">0xb43FA34C1d534Ae81f714283CfE744AAcdbA6402</p>
                     </div>
+                    <button onclick="copyAddress('XAUT')" class="w-full py-4 bg-[#2b59ff] text-white text-[10px] font-black uppercase tracking-widest rounded-2xl">Copy Address & Done</button>
                 </div>
             </div>
 
@@ -202,105 +204,80 @@
         </div>
     </main>
 
-    <button class="fixed bottom-8 right-8 w-16 h-16 bg-[#2b59ff] text-white rounded-2xl shadow-2xl flex items-center justify-center text-2xl hover:scale-110 transition active:scale-95">
-        💬
-    </button>
-
     <script>
-        // FIXED TOGGLE LOGIC
         function toggleMenu(id) {
             const targetMenu = document.getElementById(id);
             const allMenus = document.querySelectorAll('.action-menu');
             
             if (targetMenu.classList.contains('active')) {
-                targetMenu.classList.remove('active');
-                setTimeout(() => { 
-                    if (!targetMenu.classList.contains('active')) {
-                        targetMenu.style.display = 'none'; 
-                    }
-                }, 300);
+                closeMenu(targetMenu);
             } else {
-                allMenus.forEach(menu => {
-                    menu.classList.remove('active');
-                    menu.style.display = 'none';
-                });
-                
+                allMenus.forEach(menu => closeMenu(menu));
                 targetMenu.style.display = 'flex';
-                setTimeout(() => {
-                    targetMenu.classList.add('active');
-                }, 10);
+                setTimeout(() => targetMenu.classList.add('active'), 10);
             }
         }
 
-        // --- NEW ACTION LOGIC ---
+        function closeMenu(menu) {
+            menu.classList.remove('active');
+            setTimeout(() => { 
+                if (!menu.classList.contains('active')) menu.style.display = 'none'; 
+            }, 300);
+        }
+
+        function copyAddress(asset) {
+            const addr = document.getElementById(`addr-${asset}`).innerText;
+            navigator.clipboard.writeText(addr).then(() => {
+                alert(`${asset} Address copied to clipboard!`);
+                // Act as "Done" button
+                const menuId = asset.toLowerCase() + 'Menu';
+                closeMenu(document.getElementById(menuId));
+            });
+        }
+
         function handleAction(e, type, asset) {
-            if (e && e.stopPropagation) {
-                e.stopPropagation();
-            }
-
+            if (e && e.stopPropagation) e.stopPropagation();
             const amount = prompt(`Enter ${asset} amount to ${type.toLowerCase()}:`);
-            
-            if (amount === null || amount === "" || isNaN(amount) || parseFloat(amount) <= 0) {
-                alert("Invalid amount. Please enter a positive number.");
-                return;
+            if (amount && !isNaN(amount)) {
+                processTransaction(e.target, type, asset, parseFloat(amount));
             }
-
-            processTransaction(e.target, type, asset, parseFloat(amount));
         }
 
         async function processTransaction(button, type, asset, amount) {
             const originalText = button.innerText;
             button.innerText = "PROCESSING...";
             button.disabled = true;
-
-            try {
-                // Simulate network/database delay
-                await new Promise(resolve => setTimeout(resolve, 1500));
-
-                alert(`Successfully ${type === 'Deposit' ? 'deposited' : 'withdrawn'} ${amount} ${asset}.`);
-                
-                updateLedger(type, asset, amount);
-
-            } catch (error) {
-                alert("Transaction failed: " + error.message);
-            } finally {
-                button.innerText = originalText;
-                button.disabled = false;
-            }
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            alert(`Request for ${amount} ${asset} received.`);
+            updateLedger(type, asset, amount);
+            button.innerText = originalText;
+            button.disabled = false;
         }
 
         function updateLedger(type, asset, amount) {
             const tbody = document.getElementById('ledgerBody');
-            const newRow = document.createElement('tr');
-            const txId = "TXN-" + Math.floor(Math.random() * 90000 + 10000) + "-FTC";
-            
-            newRow.innerHTML = `
-                <td class="px-8 py-6 font-mono uppercase text-gray-400 text-xs">${txId}</td>
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td class="px-8 py-6 font-mono text-gray-400 text-xs uppercase">TXN-${Math.floor(Math.random()*90000)}-FTC</td>
                 <td class="px-8 py-6 font-bold uppercase">${type} ${asset}</td>
-                <td class="px-8 py-6"><span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-[10px] font-black uppercase">Pending</span></td>
-                <td class="px-8 py-6 text-right font-black ${type === 'Deposit' ? 'text-green-600' : 'text-red-600'}">
-                    ${type === 'Deposit' ? '+' : '-'}$${amount.toFixed(2)}
-                </td>
+                <td class="px-8 py-6"><span class="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-[10px] font-black uppercase">Pending</span></td>
+                <td class="px-8 py-6 text-right font-black ${type==='Deposit'?'text-green-600':'text-red-600'}">${type==='Deposit'?'+':'-'}$${amount}</td>
             `;
-            tbody.prepend(newRow); // Adds the new transaction to the top of the list
+            tbody.prepend(row);
         }
 
         window.onload = function() {
-            const userName = localStorage.getItem('fatCoinUser');
-            if (userName) {
-                document.getElementById('userNameDisplay').innerText = userName;
-                const initials = userName.trim().split(/\s+/).map(n => n[0]).join('').toUpperCase().substring(0, 2);
-                document.getElementById('userInitials').innerText = initials || '??';
-            }
+            const user = localStorage.getItem('fatCoinUser') || "Investor";
+            document.getElementById('userNameDisplay').innerText = user;
+            document.getElementById('userInitials').innerText = user.substring(0,2).toUpperCase();
         };
 
         function logout() {
-            if(confirm("Confirm: Securely disconnect from Terminal?")) {
+            if(confirm("Logout?")) {
                 localStorage.removeItem('fatCoinUser');
                 window.location.href = 'index.html';
             }
         }
     </script>
-
 </body>
 </html>
