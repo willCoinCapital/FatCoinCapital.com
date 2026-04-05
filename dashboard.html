@@ -60,101 +60,101 @@
         <div class="flex flex-col gap-4 mb-12">
             
             <div class="bg-white stats-card p-6 shadow-sm border border-gray-100 transition-all">
-                <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center justify-between mb-2">
                     <div class="flex items-center gap-5">
                         <div class="w-12 h-12 bg-[#F7F7F7] rounded-2xl flex items-center justify-center text-xl text-orange-500 font-bold shadow-sm">₿</div>
                         <div>
                             <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">Bitcoin Wallet</p>
-                            <h3 class="font-black text-lg uppercase leading-tight">$0.00</h3>
+                            <h3 class="font-black text-lg uppercase leading-tight" id="btcBalance">$0.00</h3>
                         </div>
                     </div>
-                    <button onclick="toggleMenu('btcMenu')" class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-xl font-light hover:bg-blue-50 hover:text-blue-600 transition">+</button>
+                    <button onclick="toggleMenu('btcMenu')" class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-xl font-light hover:bg-blue-50 hover:text-blue-600 transition shadow-sm">+</button>
                 </div>
-                <div id="btcMenu" class="action-menu flex-col gap-2 pt-4 border-t border-gray-50">
-                    <button class="w-full py-3 bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest rounded-xl">Deposit BTC</button>
+                <div id="btcMenu" class="action-menu flex-col gap-2 pt-4 border-t border-gray-50 mt-2">
+                    <button class="w-full py-3 bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-blue-700 transition">Deposit BTC</button>
                     <div class="flex gap-2">
-                        <button class="flex-1 py-3 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-xl">Withdraw</button>
-                        <button class="flex-1 py-3 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-xl">Invest</button>
+                        <button class="flex-1 py-3 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-gray-200 transition">Withdraw</button>
+                        <button class="flex-1 py-3 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-green-600 transition">Invest Assets</button>
                     </div>
                 </div>
             </div>
 
             <div class="bg-white stats-card p-6 shadow-sm border border-gray-100 transition-all">
-                <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center justify-between mb-2">
                     <div class="flex items-center gap-5">
                         <div class="w-12 h-12 bg-[#EEF3E1] rounded-2xl flex items-center justify-center text-xl text-blue-600 font-bold shadow-sm">Ξ</div>
                         <div>
                             <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">Ethereum Wallet</p>
-                            <h3 class="font-black text-lg uppercase leading-tight">$0.00</h3>
+                            <h3 class="font-black text-lg uppercase leading-tight" id="ethBalance">$0.00</h3>
                         </div>
                     </div>
-                    <button onclick="toggleMenu('ethMenu')" class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-xl font-light hover:bg-blue-50">+</button>
+                    <button onclick="toggleMenu('ethMenu')" class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-xl font-light hover:bg-blue-50 hover:text-blue-600 transition shadow-sm">+</button>
                 </div>
-                <div id="ethMenu" class="action-menu flex-col gap-2 pt-4 border-t border-gray-50">
-                    <button class="w-full py-3 bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest rounded-xl">Deposit ETH</button>
+                <div id="ethMenu" class="action-menu flex-col gap-2 pt-4 border-t border-gray-50 mt-2">
+                    <button class="w-full py-3 bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-blue-700 transition">Deposit ETH</button>
                     <div class="flex gap-2">
-                        <button class="flex-1 py-3 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-xl">Withdraw</button>
-                        <button class="flex-1 py-3 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-xl">Invest</button>
+                        <button class="flex-1 py-3 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-gray-200 transition">Withdraw</button>
+                        <button class="flex-1 py-3 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-green-600 transition">Invest Assets</button>
                     </div>
                 </div>
             </div>
 
             <div class="bg-white stats-card p-6 shadow-sm border border-gray-100 transition-all">
-                <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center justify-between mb-2">
                     <div class="flex items-center gap-5">
                         <div class="w-12 h-12 bg-[#DCEB7D] rounded-2xl flex items-center justify-center text-xl text-purple-600 font-bold shadow-sm">◎</div>
                         <div>
                             <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">Solana Wallet</p>
-                            <h3 class="font-black text-lg uppercase leading-tight">$0.00</h3>
+                            <h3 class="font-black text-lg uppercase leading-tight" id="solBalance">$0.00</h3>
                         </div>
                     </div>
-                    <button onclick="toggleMenu('solMenu')" class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-xl font-light hover:bg-blue-50">+</button>
+                    <button onclick="toggleMenu('solMenu')" class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-xl font-light hover:bg-blue-50 hover:text-blue-600 transition shadow-sm">+</button>
                 </div>
-                <div id="solMenu" class="action-menu flex-col gap-2 pt-4 border-t border-gray-50">
-                    <button class="w-full py-3 bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest rounded-xl">Deposit SOL</button>
+                <div id="solMenu" class="action-menu flex-col gap-2 pt-4 border-t border-gray-50 mt-2">
+                    <button class="w-full py-3 bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-blue-700 transition">Deposit SOL</button>
                     <div class="flex gap-2">
-                        <button class="flex-1 py-3 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-xl">Withdraw</button>
-                        <button class="flex-1 py-3 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-xl">Invest</button>
+                        <button class="flex-1 py-3 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-gray-200 transition">Withdraw</button>
+                        <button class="flex-1 py-3 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-green-600 transition">Invest Assets</button>
                     </div>
                 </div>
             </div>
 
             <div class="bg-white stats-card p-6 shadow-sm border border-gray-100 transition-all">
-                <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center justify-between mb-2">
                     <div class="flex items-center gap-5">
                         <div class="w-12 h-12 bg-[#373634] rounded-2xl flex items-center justify-center text-xl text-white font-bold shadow-sm">🌀</div>
                         <div>
                             <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">Yearn Balance</p>
-                            <h3 class="font-black text-lg uppercase leading-tight">$0.00</h3>
+                            <h3 class="font-black text-lg uppercase leading-tight" id="yfiBalance">$0.00</h3>
                         </div>
                     </div>
-                    <button onclick="toggleMenu('yfiMenu')" class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-xl font-light hover:bg-blue-50">+</button>
+                    <button onclick="toggleMenu('yfiMenu')" class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-xl font-light hover:bg-blue-50 hover:text-blue-600 transition shadow-sm">+</button>
                 </div>
-                <div id="yfiMenu" class="action-menu flex-col gap-2 pt-4 border-t border-gray-50">
-                    <button class="w-full py-3 bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest rounded-xl">Deposit YFI</button>
+                <div id="yfiMenu" class="action-menu flex-col gap-2 pt-4 border-t border-gray-50 mt-2">
+                    <button class="w-full py-3 bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-blue-700 transition">Deposit YFI</button>
                     <div class="flex gap-2">
-                        <button class="flex-1 py-3 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-xl">Withdraw</button>
-                        <button class="flex-1 py-3 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-xl">Invest</button>
+                        <button class="flex-1 py-3 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-gray-200 transition">Withdraw</button>
+                        <button class="flex-1 py-3 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-green-600 transition">Invest Assets</button>
                     </div>
                 </div>
             </div>
 
             <div class="bg-white stats-card p-6 shadow-sm border border-gray-100 transition-all">
-                <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center justify-between mb-2">
                     <div class="flex items-center gap-5">
                         <div class="w-12 h-12 bg-[#000000] rounded-2xl flex items-center justify-center text-xl text-yellow-500 font-bold shadow-sm">🟡</div>
                         <div>
                             <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-1">XAUT Balance</p>
-                            <h3 class="font-black text-lg uppercase leading-tight">$0.00</h3>
+                            <h3 class="font-black text-lg uppercase leading-tight" id="xautBalance">$0.00</h3>
                         </div>
                     </div>
-                    <button onclick="toggleMenu('xautMenu')" class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-xl font-light hover:bg-blue-50">+</button>
+                    <button onclick="toggleMenu('xautMenu')" class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-xl font-light hover:bg-blue-50 hover:text-blue-600 transition shadow-sm">+</button>
                 </div>
-                <div id="xautMenu" class="action-menu flex-col gap-2 pt-4 border-t border-gray-50">
-                    <button class="w-full py-3 bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest rounded-xl">Deposit XAUT</button>
+                <div id="xautMenu" class="action-menu flex-col gap-2 pt-4 border-t border-gray-50 mt-2">
+                    <button class="w-full py-3 bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-blue-700 transition">Deposit XAUT</button>
                     <div class="flex gap-2">
-                        <button class="flex-1 py-3 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-xl">Withdraw</button>
-                        <button class="flex-1 py-3 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-xl">Invest</button>
+                        <button class="flex-1 py-3 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-gray-200 transition">Withdraw</button>
+                        <button class="flex-1 py-3 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-green-600 transition">Invest Assets</button>
                     </div>
                 </div>
             </div>
