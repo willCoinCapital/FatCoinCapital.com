@@ -124,17 +124,17 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="bg-white/5 border border-gray-800 p-6 rounded-[2rem]">
                     <span class="text-[10px] bg-red-500/20 text-red-400 px-2 py-1 rounded font-bold mb-3 inline-block">CRITICAL</span>
-                    <h4 class="font-bold text-white mb-2 uppercase">Drift Protocol $285M Heist</h4>
+                    <h4 class="font-bold text-white mb-2 uppercase">Drift Heist</h4>
                     <p class="text-gray-400 text-xs">Major exploit on Solana triggers investigation.</p>
                 </div>
                 <div class="bg-white/5 border border-gray-800 p-6 rounded-[2rem]">
                     <span class="text-[10px] bg-blue-500/20 text-blue-400 px-2 py-1 rounded font-bold mb-3 inline-block">INSTITUTIONAL</span>
-                    <h4 class="font-bold text-white mb-2 uppercase">Morgan Stanley BTC ETF</h4>
-                    <p class="text-gray-400 text-xs">Launch boosts liquidity expectations.</p>
+                    <h4 class="font-bold text-white mb-2 uppercase">Morgan Stanley</h4>
+                    <p class="text-gray-400 text-xs">ETF launch boosts liquidity expectations.</p>
                 </div>
                 <div class="bg-white/5 border border-gray-800 p-6 rounded-[2rem]">
                     <span class="text-[10px] bg-green-500/20 text-green-400 px-2 py-1 rounded font-bold mb-3 inline-block">ANALYSIS</span>
-                    <h4 class="font-bold text-white mb-2 uppercase">BTC Consolidation</h4>
+                    <h4 class="font-bold text-white mb-2 uppercase">Consolidation</h4>
                     <p class="text-gray-400 text-xs">Market weighs geopolitical tensions.</p>
                 </div>
             </div>
@@ -153,33 +153,33 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
                     <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">🏛️</div>
-                    <h3 class="font-bold mb-2 uppercase">1. Digital Wealth Infrastructure</h3>
-                    <p class="text-white/80 text-xs">Automated performance tracking and global secure infrastructure.</p>
+                    <h3 class="font-bold mb-2 uppercase text-sm">1. Digital Wealth Infrastructure</h3>
+                    <p class="text-white/80 text-[10px]">Automated performance tracking and secure infra.</p>
                 </div>
                 <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
                     <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">⚙️</div>
-                    <h3 class="font-bold mb-2 uppercase">2. Smart Investment Engine</h3>
-                    <p class="text-white/80 text-xs">Strategic allocation into high-potential crypto opportunities.</p>
+                    <h3 class="font-bold mb-2 uppercase text-sm">2. Smart Investment Engine</h3>
+                    <p class="text-white/80 text-[10px]">Strategic allocation into crypto opportunities.</p>
                 </div>
                 <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
                     <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">📱</div>
-                    <h3 class="font-bold mb-2 uppercase">3. Beginner-Friendly Dashboard</h3>
-                    <p class="text-white/80 text-xs">Track growth with ease through a high-clarity interface.</p>
+                    <h3 class="font-bold mb-2 uppercase text-sm">3. Beginner Dashboard</h3>
+                    <p class="text-white/80 text-[10px]">Track growth with high-clarity interface.</p>
                 </div>
                 <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
                     <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">📅</div>
-                    <h3 class="font-bold mb-2 uppercase">4. 7-Day Yield Plans</h3>
-                    <p class="text-white/80 text-xs">Short-term cycles with automated profit distribution.</p>
+                    <h3 class="font-bold mb-2 uppercase text-sm">4. 7-Day Yield Plans</h3>
+                    <p class="text-white/80 text-[10px]">Short-term cycles with profit distribution.</p>
                 </div>
                 <div class="p-8 rounded-[2.5rem] border-4 border-[#2b59ff] bg-white text-blue-900 shadow-2xl">
                     <div class="w-10 h-10 bg-[#2b59ff] text-white rounded-xl flex items-center justify-center mb-6">🎁</div>
-                    <h3 class="font-bold mb-2 uppercase">5. Instant $200 Bonus</h3>
-                    <p class="text-gray-600 text-xs font-medium">New users receive a starting balance immediately upon registration.</p>
+                    <h3 class="font-bold mb-2 uppercase text-sm">5. Instant $200 Bonus</h3>
+                    <p class="text-gray-600 text-[10px] font-medium">Starting balance immediately upon registration.</p>
                 </div>
                 <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
                     <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">📑</div>
-                    <h3 class="font-bold mb-2 uppercase">6. Real-Time History</h3>
-                    <p class="text-white/80 text-xs">Full transparency for every deposit and earning.</p>
+                    <h3 class="font-bold mb-2 uppercase text-sm">6. Real-Time History</h3>
+                    <p class="text-white/80 text-[10px]">Full transparency for every deposit.</p>
                 </div>
             </div>
         </div>
@@ -203,18 +203,19 @@
         }
         document.getElementById('registrationForm').onsubmit = function(e) {
             e.preventDefault();
-            const nameInput = document.getElementById('regName').value;
-            if (nameInput.trim() !== "") {
-                localStorage.setItem('fatCoinUser', nameInput);
+            const name = document.getElementById('regName').value;
+            if(name.trim() !== "") {
+                localStorage.setItem('fatCoinUser', name);
                 window.location.href = 'dashboard.html';
             }
         };
         document.getElementById('loginForm').onsubmit = function(e) {
             e.preventDefault();
-            const emailInput = document.getElementById('loginEmail').value;
-            localStorage.setItem('fatCoinUser', emailInput.split('@')[0]);
+            const email = document.getElementById('loginEmail').value;
+            localStorage.setItem('fatCoinUser', email.split('@')[0]);
             window.location.href = 'dashboard.html';
         };
     </script>
 </body>
 </html>
+
