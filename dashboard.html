@@ -8,21 +8,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
-        .stats-card { border-radius: 2.5rem; transition: all 0.2s ease-in-out; }
+        .stats-card { border-radius: 2.5rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .glass-nav { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); }
         
-        /* Revised Menu Logic */
+        /* Fixed Menu Logic */
         .action-menu { 
             max-height: 0;
             overflow: hidden;
             opacity: 0;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex; /* Always flex, but height 0 hides it */
+            display: flex;
             flex-direction: column;
         }
 
         .action-menu.active { 
-            max-height: 300px; /* Large enough to fit content */
+            max-height: 500px; /* Increased to ensure no clipping */
             opacity: 1;
             margin-top: 1.5rem;
             padding-top: 1.5rem;
@@ -31,7 +31,7 @@
 
         .tile-active {
             border-color: #2b59ff !important;
-            background-color: #f0f4ff !important;
+            box-shadow: 0 20px 25px -5px rgba(43, 89, 255, 0.1), 0 10px 10px -5px rgba(43, 89, 255, 0.04) !important;
         }
     </style>
 </head>
@@ -79,6 +79,7 @@
         </div>
 
         <div class="flex flex-col gap-4 mb-12">
+            
             <div id="btcTile" class="bg-white stats-card p-6 shadow-sm border border-gray-100 cursor-pointer" onclick="toggleMenu('btcMenu', 'btcTile')">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-5">
@@ -88,13 +89,13 @@
                             <h3 class="font-black text-lg uppercase leading-tight">$0.00</h3>
                         </div>
                     </div>
-                    <button class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-2xl font-light hover:bg-[#2b59ff] hover:text-white transition-all">+</button>
+                    <div class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-2xl font-light hover:bg-[#2b59ff] hover:text-white transition-all">+</div>
                 </div>
-                <div id="btcMenu" class="action-menu gap-2">
-                    <button onclick="event.stopPropagation()" class="w-full py-4 bg-[#2b59ff] text-white text-[10px] font-black uppercase tracking-widest rounded-2xl shadow-lg">Deposit BTC</button>
+                <div id="btcMenu" class="action-menu gap-2" onclick="event.stopPropagation()">
+                    <button onclick="handleAction('Deposit', 'BTC')" class="w-full py-4 bg-[#2b59ff] text-white text-[10px] font-black uppercase tracking-widest rounded-2xl shadow-lg">Deposit BTC</button>
                     <div class="flex gap-2">
-                        <button onclick="event.stopPropagation()" class="flex-1 py-4 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-2xl">Withdraw</button>
-                        <button onclick="event.stopPropagation()" class="flex-1 py-4 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl">Invest Assets</button>
+                        <button onclick="handleAction('Withdraw', 'BTC')" class="flex-1 py-4 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-2xl">Withdraw</button>
+                        <button onclick="handleAction('Invest', 'BTC')" class="flex-1 py-4 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl">Invest Assets</button>
                     </div>
                 </div>
             </div>
@@ -108,13 +109,13 @@
                             <h3 class="font-black text-lg uppercase leading-tight">$0.00</h3>
                         </div>
                     </div>
-                    <button class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-2xl font-light hover:bg-[#2b59ff] hover:text-white transition-all">+</button>
+                    <div class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-2xl font-light">+</div>
                 </div>
-                <div id="ethMenu" class="action-menu gap-2">
-                    <button onclick="event.stopPropagation()" class="w-full py-4 bg-[#2b59ff] text-white text-[10px] font-black uppercase tracking-widest rounded-2xl shadow-lg">Deposit ETH</button>
+                <div id="ethMenu" class="action-menu gap-2" onclick="event.stopPropagation()">
+                    <button onclick="handleAction('Deposit', 'ETH')" class="w-full py-4 bg-[#2b59ff] text-white text-[10px] font-black uppercase tracking-widest rounded-2xl shadow-lg">Deposit ETH</button>
                     <div class="flex gap-2">
-                        <button onclick="event.stopPropagation()" class="flex-1 py-4 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-2xl">Withdraw</button>
-                        <button onclick="event.stopPropagation()" class="flex-1 py-4 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl">Invest Assets</button>
+                        <button onclick="handleAction('Withdraw', 'ETH')" class="flex-1 py-4 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-2xl">Withdraw</button>
+                        <button onclick="handleAction('Invest', 'ETH')" class="flex-1 py-4 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl">Invest Assets</button>
                     </div>
                 </div>
             </div>
@@ -128,13 +129,13 @@
                             <h3 class="font-black text-lg uppercase leading-tight">$0.00</h3>
                         </div>
                     </div>
-                    <button class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-2xl font-light hover:bg-[#2b59ff] hover:text-white transition-all">+</button>
+                    <div class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-2xl font-light">+</div>
                 </div>
-                <div id="solMenu" class="action-menu gap-2">
-                    <button onclick="event.stopPropagation()" class="w-full py-4 bg-[#2b59ff] text-white text-[10px] font-black uppercase tracking-widest rounded-2xl shadow-lg">Deposit SOL</button>
+                <div id="solMenu" class="action-menu gap-2" onclick="event.stopPropagation()">
+                    <button onclick="handleAction('Deposit', 'SOL')" class="w-full py-4 bg-[#2b59ff] text-white text-[10px] font-black uppercase tracking-widest rounded-2xl shadow-lg">Deposit SOL</button>
                     <div class="flex gap-2">
-                        <button onclick="event.stopPropagation()" class="flex-1 py-4 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-2xl">Withdraw</button>
-                        <button onclick="event.stopPropagation()" class="flex-1 py-4 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl">Invest Assets</button>
+                        <button onclick="handleAction('Withdraw', 'SOL')" class="flex-1 py-4 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-2xl">Withdraw</button>
+                        <button onclick="handleAction('Invest', 'SOL')" class="flex-1 py-4 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl">Invest Assets</button>
                     </div>
                 </div>
             </div>
@@ -148,13 +149,13 @@
                             <h3 class="font-black text-lg uppercase leading-tight">$0.00</h3>
                         </div>
                     </div>
-                    <button class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-2xl font-light hover:bg-[#2b59ff] hover:text-white transition-all">+</button>
+                    <div class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-2xl font-light">+</div>
                 </div>
-                <div id="yfiMenu" class="action-menu gap-2">
-                    <button onclick="event.stopPropagation()" class="w-full py-4 bg-[#2b59ff] text-white text-[10px] font-black uppercase tracking-widest rounded-2xl shadow-lg">Deposit YFI</button>
+                <div id="yfiMenu" class="action-menu gap-2" onclick="event.stopPropagation()">
+                    <button onclick="handleAction('Deposit', 'YFI')" class="w-full py-4 bg-[#2b59ff] text-white text-[10px] font-black uppercase tracking-widest rounded-2xl shadow-lg">Deposit YFI</button>
                     <div class="flex gap-2">
-                        <button onclick="event.stopPropagation()" class="flex-1 py-4 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-2xl">Withdraw</button>
-                        <button onclick="event.stopPropagation()" class="flex-1 py-4 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl">Invest Assets</button>
+                        <button onclick="handleAction('Withdraw', 'YFI')" class="flex-1 py-4 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-2xl">Withdraw</button>
+                        <button onclick="handleAction('Invest', 'YFI')" class="flex-1 py-4 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl">Invest Assets</button>
                     </div>
                 </div>
             </div>
@@ -168,13 +169,13 @@
                             <h3 class="font-black text-lg uppercase leading-tight">$0.00</h3>
                         </div>
                     </div>
-                    <button class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-2xl font-light hover:bg-[#2b59ff] hover:text-white transition-all">+</button>
+                    <div class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-2xl font-light">+</div>
                 </div>
-                <div id="xautMenu" class="action-menu gap-2">
-                    <button onclick="event.stopPropagation()" class="w-full py-4 bg-[#2b59ff] text-white text-[10px] font-black uppercase tracking-widest rounded-2xl shadow-lg">Deposit XAUT</button>
+                <div id="xautMenu" class="action-menu gap-2" onclick="event.stopPropagation()">
+                    <button onclick="handleAction('Deposit', 'XAUT')" class="w-full py-4 bg-[#2b59ff] text-white text-[10px] font-black uppercase tracking-widest rounded-2xl shadow-lg">Deposit XAUT</button>
                     <div class="flex gap-2">
-                        <button onclick="event.stopPropagation()" class="flex-1 py-4 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-2xl">Withdraw</button>
-                        <button onclick="event.stopPropagation()" class="flex-1 py-4 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl">Invest Assets</button>
+                        <button onclick="handleAction('Withdraw', 'XAUT')" class="flex-1 py-4 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-2xl">Withdraw</button>
+                        <button onclick="handleAction('Invest', 'XAUT')" class="flex-1 py-4 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl">Invest Assets</button>
                     </div>
                 </div>
             </div>
@@ -208,25 +209,27 @@
         </div>
     </main>
 
-    <button class="fixed bottom-8 right-8 w-16 h-16 bg-[#2b59ff] text-white rounded-2xl shadow-2xl flex items-center justify-center text-2xl hover:scale-110 transition active:scale-95">
-        💬
-    </button>
-
     <script>
         function toggleMenu(menuId, tileId) {
             const targetMenu = document.getElementById(menuId);
             const targetTile = document.getElementById(tileId);
             const isActive = targetMenu.classList.contains('active');
             
-            // Close all
+            // Close all first to prevent multiple open menus
             document.querySelectorAll('.action-menu').forEach(menu => menu.classList.remove('active'));
             document.querySelectorAll('.stats-card').forEach(tile => tile.classList.remove('tile-active'));
             
-            // Toggle clicked
+            // Toggle the one we clicked
             if (!isActive) {
                 targetMenu.classList.add('active');
                 targetTile.classList.add('tile-active');
             }
+        }
+
+        // Dedicated function for the buttons to prevent them from closing the menu
+        function handleAction(type, asset) {
+            alert(type + " request for " + asset + " initiated. Processing...");
+            // You can replace the alert with actual navigation or logic here
         }
 
         window.onload = function() {
