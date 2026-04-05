@@ -7,154 +7,116 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; overflow-x: hidden; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
         .stats-card { border-radius: 2.5rem; transition: all 0.3s ease; }
-        .glass-nav { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); }
         #sidebar { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); z-index: 100; }
         .sidebar-closed { transform: translateX(100%); }
         .sidebar-open { transform: translateX(0); }
-        #sidebar-overlay { transition: opacity 0.3s ease; pointer-events: none; }
-        #sidebar-overlay.active { opacity: 1; pointer-events: auto; }
         .action-menu { display: none; opacity: 0; transform: translateY(-10px); transition: all 0.3s ease; }
         .action-menu.active { display: flex; opacity: 1; transform: translateY(0); }
-        .address-box { word-break: break-all; font-family: monospace; }
     </style>
 </head>
 <body class="text-gray-900">
 
-    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 opacity-0 z-[60]"></div>
+    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 opacity-0 pointer-events-none z-[60]"></div>
 
     <div id="sidebar" class="fixed top-0 right-0 h-full w-72 bg-white shadow-2xl sidebar-closed z-[70] flex flex-col p-8">
         <div class="flex justify-between items-center mb-10">
             <span class="font-black uppercase tracking-widest text-[10px] text-gray-400">Navigation</span>
-            <button onclick="toggleSidebar()" class="text-gray-400 hover:text-black transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
+            <button onclick="toggleSidebar()"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg></button>
         </div>
         <nav class="flex flex-col gap-6">
-            <a href="#" class="text-lg font-bold hover:text-[#2b59ff] transition-colors uppercase tracking-tight">Home</a>
-            <a href="#" class="text-lg font-bold hover:text-[#2b59ff] transition-colors uppercase tracking-tight">Account</a>
-            <a href="#" class="text-lg font-bold hover:text-[#2b59ff] transition-colors uppercase tracking-tight">Investment</a>
-            <hr class="border-gray-100 my-4">
-            <button onclick="logout()" class="text-left text-red-500 font-bold uppercase tracking-tight">Logout</button>
+            <a href="#" class="text-lg font-bold hover:text-[#2b59ff] uppercase">Home</a>
+            <a href="#" class="text-lg font-bold hover:text-[#2b59ff] uppercase">Support</a>
+            <button onclick="logout()" class="text-left text-red-500 font-bold uppercase">Logout</button>
         </nav>
     </div>
 
-    <header class="sticky top-0 z-50 glass-nav border-b border-gray-100 px-6 py-4">
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 px-6 py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-2">
-                <div class="w-8 h-8 bg-[#2b59ff] rounded-full flex items-center justify-center text-white font-bold text-sm">f</div>
-                <span class="text-xl font-bold tracking-tight uppercase">fatCoinCapital</span>
+                <div class="w-8 h-8 bg-[#2b59ff] rounded-full flex items-center justify-center text-white font-bold">f</div>
+                <span class="text-xl font-bold uppercase tracking-tight">fatCoinCapital</span>
             </div>
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-gray-100 rounded-full border-2 border-white shadow-sm flex items-center justify-center font-bold text-blue-600">
-                    <span id="userInitials">??</span>
-                </div>
-                <button onclick="toggleSidebar()" class="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-50 border border-gray-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-                    </svg>
+                <div class="w-10 h-10 bg-gray-100 rounded-full border-2 border-white flex items-center justify-center font-bold text-blue-600"><span id="userInitials">??</span></div>
+                <button onclick="toggleSidebar()" class="w-10 h-10 bg-gray-50 border border-gray-200 rounded-xl flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
                 </button>
             </div>
         </div>
     </header>
 
     <main class="max-w-7xl mx-auto px-6 py-10">
-        <div class="mb-10">
-            <h1 class="text-3xl font-black uppercase tracking-tight">Welcome, <span id="userNameDisplay" class="text-[#2b59ff]">Investor</span></h1>
-        </div>
+        <h1 class="text-3xl font-black uppercase mb-10">Welcome, <span id="userNameDisplay" class="text-[#2b59ff]">Investor</span></h1>
 
-        <div class="mb-8">
-            <div class="bg-[#0a0b0d] stats-card p-10 text-white shadow-2xl border border-gray-800 relative overflow-hidden">
-                <div class="relative z-10">
-                    <h2 class="text-5xl md:text-7xl font-black uppercase text-green-400">$200.14</h2>
-                    <div class="flex gap-6 mt-8">
-                        <div><p class="text-[10px] text-gray-500 uppercase font-bold">Active Bonus</p><p class="text-xl font-bold">$200.00</p></div>
-                        <div class="border-l border-gray-800 pl-6"><p class="text-[10px] text-gray-500 uppercase font-bold">Daily Yield</p><p class="text-xl font-bold text-blue-400">+0.07%</p></div>
-                    </div>
-                </div>
+        <div class="bg-[#0a0b0d] stats-card p-10 text-white shadow-2xl mb-12">
+            <p class="text-blue-500 font-bold tracking-widest text-[10px] uppercase mb-4">Total Portfolio Value</p>
+            <h2 class="text-5xl md:text-7xl font-black uppercase text-green-400">$200.14</h2>
+            <div class="flex gap-6 mt-8">
+                <div><p class="text-[10px] text-gray-500 uppercase font-bold">Active Bonus</p><p class="text-xl font-bold">$200.00</p></div>
+                <div class="border-l border-gray-800 pl-6"><p class="text-[10px] text-gray-500 uppercase font-bold">Yield Rate</p><p class="text-xl font-bold text-blue-400">0.07%</p></div>
             </div>
         </div>
 
-        <div class="flex flex-col gap-4 mb-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
             <div class="bg-[#2b59ff] stats-card p-6 border border-blue-400/20">
                 <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-5">
-                        <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-xl text-orange-400 font-bold">₿</div>
-                        <div><p class="text-[10px] font-bold text-blue-100 uppercase tracking-widest">Bitcoin Wallet</p><h3 class="font-black text-lg text-white">$0.00</h3></div>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-orange-400">₿</div>
+                        <div><p class="text-[10px] font-bold text-blue-100 uppercase">Bitcoin Wallet</p><h3 class="font-black text-white">$0.00</h3></div>
                     </div>
-                    <button onclick="toggleMenu('btcMenu')" class="w-10 h-10 rounded-full bg-white/10 text-white">+</button>
+                    <button onclick="toggleMenu('btcMenu')" class="w-10 h-10 rounded-full bg-white/10 text-white font-black">+</button>
                 </div>
                 <div id="btcMenu" class="action-menu flex-col gap-3 pt-6 mt-4 border-t border-white/10">
-                    <p id="addr-BTC" class="address-box text-xs font-bold text-white">bc1qyc92n060qq57klawgt6k9c2g24uvj5uk9rq9x8</p>
+                    <p id="addr-BTC" class="text-[10px] text-white font-mono break-all">bc1qyc92n060qq57klawgt6k9c2g24uvj5uk9rq9x8</p>
                     <button onclick="copyAddress('BTC')" class="w-full py-4 bg-white text-[#2b59ff] font-black rounded-2xl">Copy Address</button>
                 </div>
             </div>
-
-            <div class="bg-[#2b59ff] stats-card p-6 border border-blue-400/20">
+            <div class="bg-[#2b59ff] stats-card p-6 border border-blue-400/20 text-white">
                 <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-5">
-                        <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-xl text-blue-200 font-bold">Ξ</div>
-                        <div><p class="text-[10px] font-bold text-blue-100 uppercase tracking-widest">Ethereum Wallet</p><h3 class="font-black text-lg text-white">$0.00</h3></div>
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-blue-200">Ξ</div>
+                        <div><p class="text-[10px] font-bold text-blue-100 uppercase">Ethereum Wallet</p><h3 class="font-black text-white">$0.00</h3></div>
                     </div>
-                    <button onclick="toggleMenu('ethMenu')" class="w-10 h-10 rounded-full bg-white/10 text-white">+</button>
+                    <button onclick="toggleMenu('ethMenu')" class="w-10 h-10 rounded-full bg-white/10 text-white font-black">+</button>
                 </div>
                 <div id="ethMenu" class="action-menu flex-col gap-3 pt-6 mt-4 border-t border-white/10">
-                    <p id="addr-ETH" class="address-box text-xs font-bold text-white">0xb43FA34C1d534Ae81f714283CfE744AAcdbA6402</p>
+                    <p id="addr-ETH" class="text-[10px] text-white font-mono break-all">0xb43FA34C1d534Ae81f714283CfE744AAcdbA6402</p>
                     <button onclick="copyAddress('ETH')" class="w-full py-4 bg-white text-[#2b59ff] font-black rounded-2xl">Copy Address</button>
                 </div>
             </div>
+        </div>
 
-            <div class="bg-[#2b59ff] stats-card p-6 border border-blue-400/20">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-5">
-                        <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-xl text-purple-300 font-bold">◎</div>
-                        <div><p class="text-[10px] font-bold text-blue-100 uppercase tracking-widest">Solana Wallet</p><h3 class="font-black text-lg text-white">$0.00</h3></div>
-                    </div>
-                    <button onclick="toggleMenu('solMenu')" class="w-10 h-10 rounded-full bg-white/10 text-white">+</button>
-                </div>
-                <div id="solMenu" class="action-menu flex-col gap-3 pt-6 mt-4 border-t border-white/10">
-                    <p id="addr-SOL" class="address-box text-xs font-bold text-white">6R9S21wwv8ea3LfqBz9E8MZrfJ4a7JWuX4jQtAPS51CR</p>
-                    <button onclick="copyAddress('SOL')" class="w-full py-4 bg-white text-[#2b59ff] font-black rounded-2xl">Copy Address</button>
-                </div>
+        <h3 class="text-xl font-black uppercase mb-6">Active Investment Cycles</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+            <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-gray-100">
+                <p class="text-[10px] font-black text-blue-600 mb-2 uppercase">Starter Plan</p>
+                <h4 class="font-black text-lg mb-4">50% AFTER 7 DAYS</h4>
+                <button class="w-full py-3 bg-gray-900 text-white rounded-xl font-bold text-xs uppercase">Select Cycle</button>
             </div>
-
-            <div class="bg-[#2b59ff] stats-card p-6 border border-blue-400/20">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-5">
-                        <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-xl text-yellow-400 font-bold">🟡</div>
-                        <div><p class="text-[10px] font-bold text-blue-100 uppercase tracking-widest">XAUT Balance (Gold)</p><h3 class="font-black text-lg text-white">$0.00</h3></div>
-                    </div>
-                    <button onclick="toggleMenu('xautMenu')" class="w-10 h-10 rounded-full bg-white/10 text-white">+</button>
-                </div>
-                <div id="xautMenu" class="action-menu flex-col gap-3 pt-6 mt-4 border-t border-white/10">
-                    <p id="addr-XAUT" class="address-box text-xs font-bold text-white">0xb43FA34C1d534Ae81f714283CfE744AAcdbA6402</p>
-                    <button onclick="copyAddress('XAUT')" class="w-full py-4 bg-white text-[#2b59ff] font-black rounded-2xl">Copy Address</button>
-                </div>
+            <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-gray-100">
+                <p class="text-[10px] font-black text-blue-600 mb-2 uppercase">Growth Plan</p>
+                <h4 class="font-black text-lg mb-4">100% AFTER 14 DAYS</h4>
+                <button class="w-full py-3 bg-gray-900 text-white rounded-xl font-bold text-xs uppercase">Select Cycle</button>
+            </div>
+            <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-gray-100">
+                <p class="text-[10px] font-black text-blue-600 mb-2 uppercase">Pro Plan</p>
+                <h4 class="font-black text-lg mb-4">250% AFTER 30 DAYS</h4>
+                <button class="w-full py-3 bg-gray-900 text-white rounded-xl font-bold text-xs uppercase">Select Cycle</button>
             </div>
         </div>
 
         <div class="bg-white stats-card shadow-2xl border border-gray-100 overflow-hidden">
             <div class="p-8 border-b border-gray-50 flex justify-between items-center">
-                <h3 class="text-xl font-black uppercase tracking-tight">Live Transaction Ledger</h3>
+                <h3 class="text-xl font-black uppercase">Live Ledger</h3>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full text-left">
-                    <thead>
-                        <tr class="bg-gray-50 text-[10px] font-black uppercase tracking-widest text-gray-400">
-                            <th class="px-8 py-4">Reference</th>
-                            <th class="px-8 py-4">Type</th>
-                            <th class="px-8 py-4">Status</th>
-                            <th class="px-8 py-4 text-right">Amount</th>
-                        </tr>
-                    </thead>
                     <tbody id="ledgerBody" class="divide-y divide-gray-50 font-medium text-sm">
                         <tr>
-                            <td class="px-8 py-6 font-mono uppercase text-gray-400 text-xs">TXN-49201-FTC</td>
+                            <td class="px-8 py-6 font-mono text-gray-400 text-[10px]">TXN-BONUS-LIVE</td>
                             <td class="px-8 py-6 font-bold uppercase">Sign-Up Bonus</td>
-                            <td class="px-8 py-6"><span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-[10px] font-black uppercase">Completed</span></td>
                             <td class="px-8 py-6 text-right font-black text-green-600">+$200.00</td>
                         </tr>
                     </tbody>
@@ -166,29 +128,28 @@
     <script>
         window.onload = function() {
             const user = localStorage.getItem('fatCoinUser');
-            if (!user) { window.location.href = 'index.html'; return; }
+            if(!user) { window.location.href = 'index.html'; return; }
             document.getElementById('userNameDisplay').innerText = user;
-            const initials = user.split(' ').map(n => n[0]).join('').toUpperCase();
-            document.getElementById('userInitials').innerText = initials.substring(0, 2);
+            const parts = user.split(' ');
+            const initials = parts.length > 1 ? (parts[0][0] + parts[1][0]) : parts[0][0];
+            document.getElementById('userInitials').innerText = initials.toUpperCase();
         };
         function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            sidebar.classList.toggle('sidebar-closed'); sidebar.classList.toggle('sidebar-open');
-            overlay.classList.toggle('active');
+            document.getElementById('sidebar').classList.toggle('sidebar-closed');
+            document.getElementById('sidebar').classList.toggle('sidebar-open');
         }
         function toggleMenu(id) {
             const menu = document.getElementById(id);
             const isActive = menu.classList.contains('active');
-            document.querySelectorAll('.action-menu').forEach(m => { m.classList.remove('active'); m.style.display = 'none'; });
-            if (!isActive) { menu.style.display = 'flex'; setTimeout(() => menu.classList.add('active'), 10); }
+            document.querySelectorAll('.action-menu').forEach(m => { m.classList.remove('active'); m.style.display='none'; });
+            if(!isActive) { menu.style.display='flex'; setTimeout(()=>menu.classList.add('active'),10); }
         }
         function copyAddress(asset) {
             const addr = document.getElementById(`addr-${asset}`).innerText;
-            navigator.clipboard.writeText(addr).then(() => { alert(asset + " address copied!"); });
+            navigator.clipboard.writeText(addr).then(() => alert(asset + " copied!"));
         }
         function logout() {
-            if (confirm("Logout from terminal?")) { localStorage.removeItem('fatCoinUser'); window.location.href = 'index.html'; }
+            if(confirm("Logout?")) { localStorage.removeItem('fatCoinUser'); window.location.href='index.html'; }
         }
     </script>
 </body>
