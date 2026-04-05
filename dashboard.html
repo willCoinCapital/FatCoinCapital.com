@@ -47,14 +47,14 @@
 
     <main class="max-w-7xl mx-auto px-6 py-10">
         <div class="mb-10">
-            <h1 class="text-3xl font-black uppercase tracking-tight">Terminal Dashboard</h1>
-            <p class="text-gray-500 text-sm uppercase font-bold tracking-tighter">Welcome back, <span id="userNameDisplay" class="text-[#2b59ff]">Investor</span></p>
+            <h1 class="text-3xl font-black uppercase tracking-tight">
+                Welcome, <span id="userNameDisplay" class="text-[#2b59ff]">Investor</span>
+            </h1>
         </div>
 
         <div class="mb-8">
             <div class="bg-[#0a0b0d] stats-card p-10 text-white shadow-2xl border border-gray-800 relative overflow-hidden">
                 <div class="relative z-10">
-                    <p class="text-blue-500 font-bold tracking-widest text-xs uppercase mb-2">Total Account Value</p>
                     <h2 class="text-5xl md:text-7xl font-black uppercase text-green-400">$200.14</h2>
                     <div class="flex gap-6 mt-8">
                         <div>
@@ -255,7 +255,6 @@
             }
         }
 
-        // New Withdrawal Logic: Address then Amount
         function handleWithdraw(e, asset) {
             if (e && e.stopPropagation) e.stopPropagation();
             
@@ -293,7 +292,6 @@
             const tbody = document.getElementById('ledgerBody');
             const row = document.createElement('tr');
             
-            // Shorten reference for display if it looks like a wallet address
             let displayRef = refText;
             if (refText.length > 15) {
                 displayRef = refText.substring(0, 6) + "..." + refText.slice(-4);
