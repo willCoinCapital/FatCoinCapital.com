@@ -124,101 +124,101 @@
         </div>
 
         <div class="flex flex-col gap-4 mb-12">
-            <div class="bg-white stats-card p-6 shadow-sm border border-gray-100">
+            <div class="bg-[#2b59ff] stats-card p-6 shadow-sm border border-blue-400/20">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-5">
-                        <div class="w-12 h-12 bg-[#F7F7F7] rounded-2xl flex items-center justify-center text-xl text-orange-500 font-bold shadow-sm">₿</div>
+                        <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-xl text-orange-400 font-bold shadow-sm">₿</div>
                         <div>
-                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Bitcoin Wallet</p>
-                            <h3 class="font-black text-lg uppercase leading-tight">$0.00</h3>
+                            <p class="text-[10px] font-bold text-blue-100 uppercase tracking-widest mb-1">Bitcoin Wallet</p>
+                            <h3 class="font-black text-lg uppercase leading-tight text-white">$0.00</h3>
                         </div>
                     </div>
-                    <button onclick="toggleMenu('btcMenu')" class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-2xl font-light hover:bg-[#2b59ff] hover:text-white transition-all shadow-sm">+</button>
+                    <button onclick="toggleMenu('btcMenu')" class="w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-2xl font-light text-white hover:bg-white hover:text-[#2b59ff] transition-all shadow-sm">+</button>
                 </div>
-                <div id="btcMenu" class="action-menu flex-col gap-3 pt-6 mt-4 border-t border-gray-50">
-                    <p class="text-[9px] font-black uppercase text-gray-400 tracking-widest">Network: BTC (SegWit)</p>
-                    <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
-                        <p class="text-[10px] text-gray-400 mb-2 uppercase font-bold">Your BTC Address</p>
-                        <p id="addr-BTC" class="address-box text-xs font-bold text-gray-700">bc1qyc92n060qq57klawgt6k9c2g24uvj5uk9rq9x8</p>
+                <div id="btcMenu" class="action-menu flex-col gap-3 pt-6 mt-4 border-t border-white/10">
+                    <p class="text-[9px] font-black uppercase text-blue-100 tracking-widest">Network: BTC (SegWit)</p>
+                    <div class="bg-black/10 p-4 rounded-xl border border-white/5">
+                        <p class="text-[10px] text-blue-100 mb-2 uppercase font-bold">Your BTC Address</p>
+                        <p id="addr-BTC" class="address-box text-xs font-bold text-white">bc1qyc92n060qq57klawgt6k9c2g24uvj5uk9rq9x8</p>
                     </div>
-                    <button onclick="copyAddress('BTC')" class="w-full py-4 bg-[#2b59ff] text-white text-[10px] font-black uppercase tracking-widest rounded-2xl shadow-lg shadow-blue-100">Copy Address & Done</button>
+                    <button onclick="copyAddress('BTC')" class="w-full py-4 bg-white text-[#2b59ff] text-[10px] font-black uppercase tracking-widest rounded-2xl shadow-lg">Copy Address & Done</button>
                     <div class="flex gap-2">
-                        <button onclick="handleWithdraw(event, 'BTC')" class="flex-1 py-4 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-2xl">Withdraw</button>
+                        <button onclick="handleWithdraw(event, 'BTC')" class="flex-1 py-4 bg-white/10 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl">Withdraw</button>
                         <button onclick="handleAction(event, 'Invest', 'BTC')" class="flex-1 py-4 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl">Invest</button>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white stats-card p-6 shadow-sm border border-gray-100">
+            <div class="bg-[#2b59ff] stats-card p-6 shadow-sm border border-blue-400/20">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-5">
-                        <div class="w-12 h-12 bg-[#EEF3E1] rounded-2xl flex items-center justify-center text-xl text-blue-600 font-bold shadow-sm">Ξ</div>
+                        <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-xl text-blue-200 font-bold shadow-sm">Ξ</div>
                         <div>
-                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Ethereum Wallet</p>
-                            <h3 class="font-black text-lg uppercase leading-tight">$0.00</h3>
+                            <p class="text-[10px] font-bold text-blue-100 uppercase tracking-widest mb-1">Ethereum Wallet</p>
+                            <h3 class="font-black text-lg uppercase leading-tight text-white">$0.00</h3>
                         </div>
                     </div>
-                    <button onclick="toggleMenu('ethMenu')" class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-2xl font-light hover:bg-[#2b59ff] hover:text-white transition-all">+</button>
+                    <button onclick="toggleMenu('ethMenu')" class="w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-2xl font-light text-white hover:bg-white hover:text-[#2b59ff] transition-all">+</button>
                 </div>
-                <div id="ethMenu" class="action-menu flex-col gap-3 pt-6 mt-4 border-t border-gray-50">
-                    <p class="text-[9px] font-black uppercase text-gray-400 tracking-widest">Network: ERC-20</p>
-                    <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
-                        <p class="text-[10px] text-gray-400 mb-2 uppercase font-bold">Your ETH Address</p>
-                        <p id="addr-ETH" class="address-box text-xs font-bold text-gray-700">0xb43FA34C1d534Ae81f714283CfE744AAcdbA6402</p>
+                <div id="ethMenu" class="action-menu flex-col gap-3 pt-6 mt-4 border-t border-white/10">
+                    <p class="text-[9px] font-black uppercase text-blue-100 tracking-widest">Network: ERC-20</p>
+                    <div class="bg-black/10 p-4 rounded-xl border border-white/5">
+                        <p class="text-[10px] text-blue-100 mb-2 uppercase font-bold">Your ETH Address</p>
+                        <p id="addr-ETH" class="address-box text-xs font-bold text-white">0xb43FA34C1d534Ae81f714283CfE744AAcdbA6402</p>
                     </div>
-                    <button onclick="copyAddress('ETH')" class="w-full py-4 bg-[#2b59ff] text-white text-[10px] font-black uppercase tracking-widest rounded-2xl shadow-lg shadow-blue-100">Copy Address & Done</button>
+                    <button onclick="copyAddress('ETH')" class="w-full py-4 bg-white text-[#2b59ff] text-[10px] font-black uppercase tracking-widest rounded-2xl shadow-lg">Copy Address & Done</button>
                     <div class="flex gap-2">
-                        <button onclick="handleWithdraw(event, 'ETH')" class="flex-1 py-4 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-2xl">Withdraw</button>
+                        <button onclick="handleWithdraw(event, 'ETH')" class="flex-1 py-4 bg-white/10 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl">Withdraw</button>
                         <button onclick="handleAction(event, 'Invest', 'ETH')" class="flex-1 py-4 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl">Invest</button>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white stats-card p-6 shadow-sm border border-gray-100">
+            <div class="bg-[#2b59ff] stats-card p-6 shadow-sm border border-blue-400/20">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-5">
-                        <div class="w-12 h-12 bg-[#DCEB7D] rounded-2xl flex items-center justify-center text-xl text-purple-600 font-bold shadow-sm">◎</div>
+                        <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-xl text-purple-300 font-bold shadow-sm">◎</div>
                         <div>
-                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Solana Wallet</p>
-                            <h3 class="font-black text-lg uppercase leading-tight">$0.00</h3>
+                            <p class="text-[10px] font-bold text-blue-100 uppercase tracking-widest mb-1">Solana Wallet</p>
+                            <h3 class="font-black text-lg uppercase leading-tight text-white">$0.00</h3>
                         </div>
                     </div>
-                    <button onclick="toggleMenu('solMenu')" class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-2xl font-light hover:bg-[#2b59ff] hover:text-white transition-all">+</button>
+                    <button onclick="toggleMenu('solMenu')" class="w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-2xl font-light text-white hover:bg-white hover:text-[#2b59ff] transition-all">+</button>
                 </div>
-                <div id="solMenu" class="action-menu flex-col gap-3 pt-6 mt-4 border-t border-gray-50">
-                    <p class="text-[9px] font-black uppercase text-gray-400 tracking-widest">Network: Solana</p>
-                    <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
-                        <p class="text-[10px] text-gray-400 mb-2 uppercase font-bold">Your SOL Address</p>
-                        <p id="addr-SOL" class="address-box text-xs font-bold text-gray-700">6R9S21wwv8ea3LfqBz9E8MZrfJ4a7JWuX4jQtAPS51CR</p>
+                <div id="solMenu" class="action-menu flex-col gap-3 pt-6 mt-4 border-t border-white/10">
+                    <p class="text-[9px] font-black uppercase text-blue-100 tracking-widest">Network: Solana</p>
+                    <div class="bg-black/10 p-4 rounded-xl border border-white/5">
+                        <p class="text-[10px] text-blue-100 mb-2 uppercase font-bold">Your SOL Address</p>
+                        <p id="addr-SOL" class="address-box text-xs font-bold text-white">6R9S21wwv8ea3LfqBz9E8MZrfJ4a7JWuX4jQtAPS51CR</p>
                     </div>
-                    <button onclick="copyAddress('SOL')" class="w-full py-4 bg-[#2b59ff] text-white text-[10px] font-black uppercase tracking-widest rounded-2xl shadow-lg shadow-blue-100">Copy Address & Done</button>
+                    <button onclick="copyAddress('SOL')" class="w-full py-4 bg-white text-[#2b59ff] text-[10px] font-black uppercase tracking-widest rounded-2xl shadow-lg">Copy Address & Done</button>
                     <div class="flex gap-2">
-                        <button onclick="handleWithdraw(event, 'SOL')" class="flex-1 py-4 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-2xl">Withdraw</button>
+                        <button onclick="handleWithdraw(event, 'SOL')" class="flex-1 py-4 bg-white/10 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl">Withdraw</button>
                         <button onclick="handleAction(event, 'Invest', 'SOL')" class="flex-1 py-4 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl">Invest</button>
                     </div>
                 </div>
             </div>
 
-            <div class="bg-white stats-card p-6 shadow-sm border border-gray-100">
+            <div class="bg-[#2b59ff] stats-card p-6 shadow-sm border border-blue-400/20">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-5">
-                        <div class="w-12 h-12 bg-[#000000] rounded-2xl flex items-center justify-center text-xl text-yellow-500 font-bold shadow-sm">🟡</div>
+                        <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-xl text-yellow-400 font-bold shadow-sm">🟡</div>
                         <div>
-                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">XAUT Balance (Gold)</p>
-                            <h3 class="font-black text-lg uppercase leading-tight">$0.00</h3>
+                            <p class="text-[10px] font-bold text-blue-100 uppercase tracking-widest mb-1">XAUT Balance (Gold)</p>
+                            <h3 class="font-black text-lg uppercase leading-tight text-white">$0.00</h3>
                         </div>
                     </div>
-                    <button onclick="toggleMenu('xautMenu')" class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-2xl font-light hover:bg-[#2b59ff] hover:text-white transition-all">+</button>
+                    <button onclick="toggleMenu('xautMenu')" class="w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-2xl font-light text-white hover:bg-white hover:text-[#2b59ff] transition-all">+</button>
                 </div>
-                <div id="xautMenu" class="action-menu flex-col gap-3 pt-6 mt-4 border-t border-gray-50">
-                    <p class="text-[9px] font-black uppercase text-gray-400 tracking-widest">Network: ERC-20</p>
-                    <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
-                        <p class="text-[10px] text-gray-400 mb-2 uppercase font-bold">Your XAUT Address</p>
-                        <p id="addr-XAUT" class="address-box text-xs font-bold text-gray-700">0xb43FA34C1d534Ae81f714283CfE744AAcdbA6402</p>
+                <div id="xautMenu" class="action-menu flex-col gap-3 pt-6 mt-4 border-t border-white/10">
+                    <p class="text-[9px] font-black uppercase text-blue-100 tracking-widest">Network: ERC-20</p>
+                    <div class="bg-black/10 p-4 rounded-xl border border-white/5">
+                        <p class="text-[10px] text-blue-100 mb-2 uppercase font-bold">Your XAUT Address</p>
+                        <p id="addr-XAUT" class="address-box text-xs font-bold text-white">0xb43FA34C1d534Ae81f714283CfE744AAcdbA6402</p>
                     </div>
-                    <button onclick="copyAddress('XAUT')" class="w-full py-4 bg-[#2b59ff] text-white text-[10px] font-black uppercase tracking-widest rounded-2xl shadow-lg shadow-blue-100">Copy Address & Done</button>
+                    <button onclick="copyAddress('XAUT')" class="w-full py-4 bg-white text-[#2b59ff] text-[10px] font-black uppercase tracking-widest rounded-2xl shadow-lg">Copy Address & Done</button>
                     <div class="flex gap-2">
-                        <button onclick="handleWithdraw(event, 'XAUT')" class="flex-1 py-4 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-2xl">Withdraw</button>
+                        <button onclick="handleWithdraw(event, 'XAUT')" class="flex-1 py-4 bg-white/10 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl">Withdraw</button>
                         <button onclick="handleAction(event, 'Invest', 'XAUT')" class="flex-1 py-4 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl">Invest</button>
                     </div>
                 </div>
