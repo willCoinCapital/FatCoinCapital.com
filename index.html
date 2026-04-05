@@ -12,11 +12,8 @@
         #sidebar.open { transform: translateX(0); }
         #overlay { transition: opacity 0.3s ease; pointer-events: none; opacity: 0; }
         #overlay.open { pointer-events: auto; opacity: 1; }
-        
-        /* Modal Styles */
         .modal { transition: opacity 0.3s ease, transform 0.3s ease; pointer-events: none; opacity: 0; transform: scale(0.95); }
         .modal.open { pointer-events: auto; opacity: 1; transform: scale(1); }
-
         @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
         .ticker-content { display: inline-block; white-space: nowrap; animation: ticker 35s linear infinite; }
     </style>
@@ -32,18 +29,18 @@
             </button>
             <h2 class="text-3xl font-black uppercase mb-2">Create Account</h2>
             <p class="text-gray-500 text-sm mb-8">Join fatCoinCapital for secure market access.</p>
-            <form class="space-y-4" onsubmit="event.preventDefault();">
+            <form id="registrationForm" class="space-y-4">
                 <div>
                     <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1 ml-2">Full Name</label>
-                    <input type="text" placeholder="Enter full name" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:border-blue-500 transition">
+                    <input type="text" id="regName" placeholder="Enter full name" required class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:border-blue-500 transition">
                 </div>
                 <div>
                     <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1 ml-2">Email Address</label>
-                    <input type="email" placeholder="name@email.com" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:border-blue-500 transition">
+                    <input type="email" placeholder="name@email.com" required class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:border-blue-500 transition">
                 </div>
                 <div>
                     <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1 ml-2">Password</label>
-                    <input type="password" placeholder="••••••••" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:border-blue-500 transition">
+                    <input type="password" placeholder="••••••••" required class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:border-blue-500 transition">
                 </div>
                 <button type="submit" class="w-full py-5 bg-[#2b59ff] text-white rounded-2xl font-black uppercase tracking-widest shadow-lg hover:bg-blue-700 transition mt-4">Register Now</button>
             </form>
@@ -58,14 +55,14 @@
             </button>
             <h2 class="text-3xl font-black uppercase mb-2">Welcome Back</h2>
             <p class="text-gray-500 text-sm mb-8">Access your investment terminal.</p>
-            <form class="space-y-4" onsubmit="event.preventDefault();">
+            <form id="loginForm" class="space-y-4">
                 <div>
                     <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1 ml-2">Email Address</label>
-                    <input type="email" placeholder="name@email.com" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:border-blue-500 transition">
+                    <input type="email" id="loginEmail" placeholder="name@email.com" required class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:border-blue-500 transition">
                 </div>
                 <div>
                     <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1 ml-2">Password</label>
-                    <input type="password" placeholder="••••••••" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:border-blue-500 transition">
+                    <input type="password" placeholder="••••••••" required class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:border-blue-500 transition">
                 </div>
                 <button type="submit" class="w-full py-5 bg-[#2b59ff] text-white rounded-2xl font-black uppercase tracking-widest shadow-lg hover:bg-blue-700 transition mt-4">Sign In</button>
             </form>
@@ -99,11 +96,8 @@
                 <div class="w-8 h-8 bg-[#2b59ff] rounded-full flex items-center justify-center text-white font-bold text-sm">f</div>
                 <span class="text-xl font-bold tracking-tight">fatCoinCapital</span>
             </div>
-            
             <div class="flex items-center gap-3">
-                <button onclick="openModal('signup')" class="bg-[#2b59ff] text-white px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider shadow-lg hover:bg-blue-700 transition">
-                    Sign Up
-                </button>
+                <button onclick="openModal('signup')" class="bg-[#2b59ff] text-white px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider shadow-lg hover:bg-blue-700 transition">Sign Up</button>
                 <button onclick="toggleMenu()" class="p-2.5 text-gray-800 bg-gray-50 rounded-xl border border-gray-200">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
                 </button>
@@ -116,7 +110,7 @@
             <div class="bg-[#0a0b0d] text-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl border border-gray-800">
                 <p class="text-blue-500 font-bold tracking-widest text-xs uppercase mb-2">Live Briefing</p>
                 <h2 class="text-4xl md:text-6xl font-black uppercase text-green-400">BTC PRICE: $66,804.14</h2>
-                <p class="text-gray-400 text-sm mt-4 font-mono uppercase">Update: 2026.04.04 | Trend: Bullish</p>
+                <p class="text-gray-400 text-sm mt-4 font-mono uppercase">Update: 2026.04.05 | Trend: Bullish</p>
             </div>
         </div>
 
@@ -131,17 +125,17 @@
                 <div class="bg-white/5 border border-gray-800 p-6 rounded-[2rem]">
                     <span class="text-[10px] bg-red-500/20 text-red-400 px-2 py-1 rounded font-bold mb-3 inline-block">CRITICAL</span>
                     <h4 class="font-bold text-white mb-2 uppercase">Drift Protocol $285M Heist</h4>
-                    <p class="text-gray-400 text-xs">Major exploit on Solana triggers investigation into network vulnerabilities.</p>
+                    <p class="text-gray-400 text-xs">Major exploit on Solana triggers investigation.</p>
                 </div>
                 <div class="bg-white/5 border border-gray-800 p-6 rounded-[2rem]">
                     <span class="text-[10px] bg-blue-500/20 text-blue-400 px-2 py-1 rounded font-bold mb-3 inline-block">INSTITUTIONAL</span>
                     <h4 class="font-bold text-white mb-2 uppercase">Morgan Stanley BTC ETF</h4>
-                    <p class="text-gray-400 text-xs">Anticipation grows for mid-April launch, boosting liquidity expectations.</p>
+                    <p class="text-gray-400 text-xs">Launch boosts liquidity expectations.</p>
                 </div>
                 <div class="bg-white/5 border border-gray-800 p-6 rounded-[2rem]">
                     <span class="text-[10px] bg-green-500/20 text-green-400 px-2 py-1 rounded font-bold mb-3 inline-block">ANALYSIS</span>
-                    <h4 class="font-bold text-white mb-2 uppercase">BTC Consolidation at $66k</h4>
-                    <p class="text-gray-400 text-xs">Market weighs geopolitical tensions against rising corporate accumulation.</p>
+                    <h4 class="font-bold text-white mb-2 uppercase">BTC Consolidation</h4>
+                    <p class="text-gray-400 text-xs">Market weighs geopolitical tensions.</p>
                 </div>
             </div>
         </div>
@@ -153,62 +147,6 @@
                 <span class="mx-10 text-green-400">CLAIM $200 BONUS ON SIGN-UP</span>
             </div>
         </div>
-
-        <div class="mb-10">
-            <h3 class="text-3xl font-black mb-10 text-center uppercase">How fatCoinCapital Works</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
-                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">🏛️</div>
-                    <h3 class="font-bold mb-2 uppercase">1. Digital Wealth Infrastructure</h3>
-                    <p class="text-white/80 text-xs">Automated performance tracking and global secure infrastructure.</p>
-                </div>
-                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
-                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">⚙️</div>
-                    <h3 class="font-bold mb-2 uppercase">2. Smart Investment Engine</h3>
-                    <p class="text-white/80 text-xs">Strategic allocation into high-potential crypto opportunities.</p>
-                </div>
-                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
-                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">📱</div>
-                    <h3 class="font-bold mb-2 uppercase">3. Beginner-Friendly Dashboard</h3>
-                    <p class="text-white/80 text-xs">Track growth with ease through a high-clarity interface.</p>
-                </div>
-                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
-                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">📅</div>
-                    <h3 class="font-bold mb-2 uppercase">4. 7-Day Yield Plans</h3>
-                    <p class="text-white/80 text-xs">Short-term cycles with automated profit distribution.</p>
-                </div>
-                <div class="p-8 rounded-[2.5rem] border-4 border-[#2b59ff] bg-white text-blue-900 shadow-2xl">
-                    <div class="w-10 h-10 bg-[#2b59ff] text-white rounded-xl flex items-center justify-center mb-6">🎁</div>
-                    <h3 class="font-bold mb-2 uppercase">5. Instant $200 Bonus</h3>
-                    <p class="text-gray-600 text-xs font-medium">New users receive a starting balance immediately upon registration.</p>
-                </div>
-                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
-                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">📑</div>
-                    <h3 class="font-bold mb-2 uppercase">6. Real-Time History</h3>
-                    <p class="text-white/80 text-xs">Full transparency for every deposit and earning.</p>
-                </div>
-                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
-                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">📈</div>
-                    <h3 class="font-bold mb-2 uppercase">7. Diversified Asset Selection</h3>
-                    <p class="text-white/80 text-xs">Curated top-performing assets for sustainable growth.</p>
-                </div>
-                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
-                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">🔐</div>
-                    <h3 class="font-bold mb-2 uppercase">8. Protocol Encryption</h3>
-                    <p class="text-white/80 text-xs">Industry-leading technology protecting your capital.</p>
-                </div>
-                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
-                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">⚖️</div>
-                    <h3 class="font-bold mb-2 uppercase">9. Auto-Reinvestment</h3>
-                    <p class="text-white/80 text-xs">Optional compounding to maximize long-term wealth.</p>
-                </div>
-                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
-                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">⚡</div>
-                    <h3 class="font-bold mb-2 uppercase">10. Rapid Liquidity</h3>
-                    <p class="text-white/80 text-xs">High-speed withdrawal processing for instant access.</p>
-                </div>
-            </div>
-        </div>
     </main>
 
     <script>
@@ -218,7 +156,7 @@
         }
 
         function openModal(type) {
-            closeAll(); // Close sidebar/other modals first
+            closeAll();
             document.getElementById(type + 'Modal').classList.add('open');
             document.getElementById('overlay').classList.add('open');
         }
@@ -229,6 +167,26 @@
             document.getElementById('loginModal').classList.remove('open');
             document.getElementById('overlay').classList.remove('open');
         }
+
+        // --- NEW REGISTRATION LOGIC ---
+        document.getElementById('registrationForm').onsubmit = function(e) {
+            e.preventDefault();
+            const nameValue = document.getElementById('regName').value;
+            if (nameValue.trim() !== "") {
+                localStorage.setItem('fatCoinUser', nameValue);
+                window.location.href = 'dashboard.html';
+            }
+        };
+
+        document.getElementById('loginForm').onsubmit = function(e) {
+            e.preventDefault();
+            const emailValue = document.getElementById('loginEmail').value;
+            const existingUser = localStorage.getItem('fatCoinUser');
+            if (!existingUser) {
+                localStorage.setItem('fatCoinUser', emailValue.split('@')[0]);
+            }
+            window.location.href = 'dashboard.html';
+        };
     </script>
 </body>
 </html>
