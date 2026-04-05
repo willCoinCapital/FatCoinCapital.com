@@ -40,7 +40,7 @@
                 <span class="hidden md:block text-[10px] font-black text-green-500 uppercase tracking-widest bg-green-50 px-3 py-1 rounded-full">● Live Connection</span>
                 
                 <div class="w-10 h-10 bg-gray-100 rounded-full border-2 border-white shadow-sm flex items-center justify-center font-bold text-blue-600">
-                    <span id="userInitials">WI</span>
+                    <span id="userInitials">??</span>
                 </div>
 
                 <button onclick="logout()" class="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-50 border border-gray-200 hover:bg-gray-100 transition-colors">
@@ -55,7 +55,7 @@
     <main class="max-w-7xl mx-auto px-6 py-10">
         <div class="mb-10">
             <h1 class="text-3xl font-black uppercase tracking-tight">
-                Welcome, <span id="userNameDisplay" class="text-[#2b59ff]">William</span>
+                Welcome, <span id="userNameDisplay" class="text-[#2b59ff]">Investor</span>
             </h1>
         </div>
 
@@ -79,6 +79,7 @@
         </div>
 
         <div class="flex flex-col gap-4 mb-12">
+            
             <div class="bg-white stats-card p-6 shadow-sm border border-gray-100">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-5">
@@ -128,6 +129,57 @@
                     </div>
                 </div>
             </div>
+
+            <div class="bg-white stats-card p-6 shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-5">
+                        <div class="w-12 h-12 bg-[#DCEB7D] rounded-2xl flex items-center justify-center text-xl text-purple-600 font-bold shadow-sm">◎</div>
+                        <div>
+                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">Solana Wallet</p>
+                            <h3 class="font-black text-lg uppercase leading-tight">$0.00</h3>
+                        </div>
+                    </div>
+                    <button onclick="toggleMenu('solMenu')" class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-2xl font-light hover:bg-[#2b59ff] hover:text-white transition-all">+</button>
+                </div>
+                <div id="solMenu" class="action-menu flex-col gap-3 pt-6 mt-4 border-t border-gray-50">
+                    <p class="text-[9px] font-black uppercase text-gray-400 tracking-widest">Network: Solana</p>
+                    <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                        <p class="text-[10px] text-gray-400 mb-2 uppercase font-bold">Your SOL Address</p>
+                        <p id="addr-SOL" class="address-box text-xs font-bold text-gray-700">6R9S21wwv8ea3LfqBz9E8MZrfJ4a7JWuX4jQtAPS51CR</p>
+                    </div>
+                    <button onclick="copyAddress('SOL')" class="w-full py-4 bg-[#2b59ff] text-white text-[10px] font-black uppercase tracking-widest rounded-2xl shadow-lg shadow-blue-100">Copy Address & Done</button>
+                    <div class="flex gap-2">
+                        <button onclick="handleWithdraw(event, 'SOL')" class="flex-1 py-4 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-2xl">Withdraw</button>
+                        <button onclick="handleAction(event, 'Invest', 'SOL')" class="flex-1 py-4 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl">Invest</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white stats-card p-6 shadow-sm border border-gray-100">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-5">
+                        <div class="w-12 h-12 bg-[#000000] rounded-2xl flex items-center justify-center text-xl text-yellow-500 font-bold shadow-sm">🟡</div>
+                        <div>
+                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">XAUT Balance (Gold)</p>
+                            <h3 class="font-black text-lg uppercase leading-tight">$0.00</h3>
+                        </div>
+                    </div>
+                    <button onclick="toggleMenu('xautMenu')" class="w-10 h-10 rounded-full bg-gray-50 border border-gray-200 flex items-center justify-center text-2xl font-light hover:bg-[#2b59ff] hover:text-white transition-all">+</button>
+                </div>
+                <div id="xautMenu" class="action-menu flex-col gap-3 pt-6 mt-4 border-t border-gray-50">
+                    <p class="text-[9px] font-black uppercase text-gray-400 tracking-widest">Network: ERC-20</p>
+                    <div class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+                        <p class="text-[10px] text-gray-400 mb-2 uppercase font-bold">Your XAUT Address</p>
+                        <p id="addr-XAUT" class="address-box text-xs font-bold text-gray-700">0xb43FA34C1d534Ae81f714283CfE744AAcdbA6402</p>
+                    </div>
+                    <button onclick="copyAddress('XAUT')" class="w-full py-4 bg-[#2b59ff] text-white text-[10px] font-black uppercase tracking-widest rounded-2xl shadow-lg shadow-blue-100">Copy Address & Done</button>
+                    <div class="flex gap-2">
+                        <button onclick="handleWithdraw(event, 'XAUT')" class="flex-1 py-4 bg-gray-100 text-gray-600 text-[10px] font-black uppercase tracking-widest rounded-2xl">Withdraw</button>
+                        <button onclick="handleAction(event, 'Invest', 'XAUT')" class="flex-1 py-4 bg-green-500 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl">Invest</button>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <div class="bg-white stats-card shadow-2xl border border-gray-100 overflow-hidden">
@@ -162,7 +214,6 @@
         function toggleMenu(id) {
             const targetMenu = document.getElementById(id);
             const allMenus = document.querySelectorAll('.action-menu');
-            
             if (targetMenu.classList.contains('active')) {
                 closeMenu(targetMenu);
             } else {
@@ -182,27 +233,22 @@
         function copyAddress(asset) {
             const addr = document.getElementById(`addr-${asset}`).innerText;
             const amount = prompt(`Enter ${asset} amount to deposit:`);
-            
             if (amount === null) return; 
-
             if (amount && !isNaN(amount) && parseFloat(amount) > 0) {
                 navigator.clipboard.writeText(addr).then(() => {
                     alert(`${asset} Address copied! Transaction of $${amount} recorded.`);
                     updateLedger('Deposit', asset, parseFloat(amount), "Direct Deposit");
-                    const menuId = asset.toLowerCase() + 'Menu';
-                    closeMenu(document.getElementById(menuId));
+                    closeMenu(document.getElementById(asset.toLowerCase() + 'Menu'));
                 });
-            } else {
-                alert("Please enter a valid deposit amount.");
             }
         }
 
         function handleWithdraw(e, asset) {
             if (e && e.stopPropagation) e.stopPropagation();
             const walletAddr = prompt(`Enter recipient ${asset} wallet address:`);
-            if (walletAddr === null || walletAddr.trim() === "") return;
+            if (!walletAddr) return;
             const amount = prompt(`Enter ${asset} amount to withdraw:`);
-            if (amount && !isNaN(amount) && parseFloat(amount) > 0) {
+            if (amount && !isNaN(amount)) {
                 processTransaction(e.target, 'Withdraw', asset, parseFloat(amount), walletAddr);
             }
         }
@@ -210,7 +256,7 @@
         function handleAction(e, type, asset) {
             if (e && e.stopPropagation) e.stopPropagation();
             const amount = prompt(`Enter ${asset} amount to ${type.toLowerCase()}:`);
-            if (amount && !isNaN(amount) && parseFloat(amount) > 0) {
+            if (amount && !isNaN(amount)) {
                 processTransaction(e.target, type, asset, parseFloat(amount), "Internal Transfer");
             }
         }
@@ -230,9 +276,8 @@
             const tbody = document.getElementById('ledgerBody');
             const row = document.createElement('tr');
             let displayRef = refText.length > 15 ? refText.substring(0, 6) + "..." + refText.slice(-4) : refText;
-
             row.innerHTML = `
-                <td class="px-8 py-6 font-mono text-gray-400 text-xs uppercase" title="${refText}">${displayRef}</td>
+                <td class="px-8 py-6 font-mono text-gray-400 text-xs uppercase">${displayRef}</td>
                 <td class="px-8 py-6 font-bold uppercase">${type} ${asset}</td>
                 <td class="px-8 py-6"><span class="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-[10px] font-black uppercase">Pending</span></td>
                 <td class="px-8 py-6 text-right font-black ${type==='Deposit'?'text-green-600':'text-red-600'}">${type==='Deposit'?'+':'-'}$${amount.toFixed(2)}</td>
@@ -241,13 +286,14 @@
         }
 
         window.onload = function() {
-            const user = "William";
+            const user = localStorage.getItem('fatCoinUser') || "William";
             document.getElementById('userNameDisplay').innerText = user;
-            document.getElementById('userInitials').innerText = "WI";
+            document.getElementById('userInitials').innerText = user.substring(0,2).toUpperCase();
         };
 
         function logout() {
             if(confirm("Logout?")) {
+                localStorage.removeItem('fatCoinUser');
                 window.location.href = 'index.html';
             }
         }
