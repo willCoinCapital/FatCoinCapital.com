@@ -26,7 +26,7 @@
     <div id="overlay" onclick="closeAll()" class="fixed inset-0 bg-black/40 z-[60] backdrop-blur-sm"></div>
 
     <div id="signupModal" class="modal fixed inset-0 z-[80] flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-md rounded-[2.5rem] p-8 md:p-10 shadow-2xl relative">
+        <div class="bg-white w-full max-w-md rounded-[2.5rem] p-8 md:p-10 shadow-2xl relative border border-gray-100">
             <button onclick="closeAll()" class="absolute top-6 right-6 p-2 hover:bg-gray-100 rounded-full transition">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
@@ -35,7 +35,7 @@
             <form class="space-y-4" onsubmit="handleRegistration(event)">
                 <div>
                     <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1 ml-2">Full Name</label>
-                    <input type="text" required placeholder="Enter full name" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:border-blue-500 transition">
+                    <input type="text" id="regName" required placeholder="Enter full name" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:border-blue-500 transition">
                 </div>
                 <div>
                     <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1 ml-2">Email Address</label>
@@ -45,14 +45,14 @@
                     <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1 ml-2">Password</label>
                     <input type="password" required placeholder="••••••••" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:border-blue-500 transition">
                 </div>
-                <button type="submit" class="w-full py-5 bg-[#2b59ff] text-white rounded-2xl font-black uppercase tracking-widest shadow-lg hover:bg-blue-700 transition mt-4">Register Now</button>
+                <button type="submit" id="regBtn" class="w-full py-5 bg-[#2b59ff] text-white rounded-2xl font-black uppercase tracking-widest shadow-lg hover:bg-blue-700 transition mt-4">Register Now</button>
             </form>
             <p class="text-center text-xs text-gray-400 mt-6 uppercase font-bold tracking-tighter">Already a member? <a href="#" onclick="openModal('login')" class="text-blue-600 underline">Login here</a></p>
         </div>
     </div>
 
     <div id="loginModal" class="modal fixed inset-0 z-[80] flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-md rounded-[2.5rem] p-8 md:p-10 shadow-2xl relative">
+        <div class="bg-white w-full max-w-md rounded-[2.5rem] p-8 md:p-10 shadow-2xl relative border border-gray-100">
             <button onclick="closeAll()" class="absolute top-6 right-6 p-2 hover:bg-gray-100 rounded-full transition">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
@@ -67,13 +67,13 @@
                     <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1 ml-2">Password</label>
                     <input type="password" required placeholder="••••••••" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:border-blue-500 transition">
                 </div>
-                <button type="submit" class="w-full py-5 bg-[#2b59ff] text-white rounded-2xl font-black uppercase tracking-widest shadow-lg hover:bg-blue-700 transition mt-4">Sign In</button>
+                <button type="submit" id="loginBtn" class="w-full py-5 bg-[#2b59ff] text-white rounded-2xl font-black uppercase tracking-widest shadow-lg hover:bg-blue-700 transition mt-4">Sign In</button>
             </form>
             <p class="text-center text-xs text-gray-400 mt-6 uppercase font-bold tracking-tighter">New here? <a href="#" onclick="openModal('signup')" class="text-blue-600 underline">Create account</a></p>
         </div>
     </div>
 
-    <aside id="sidebar" class="fixed top-0 right-0 h-full w-[300px] bg-white z-[70] shadow-2xl flex flex-col border-l border-gray-100">
+    <aside id="sidebar" class="fixed top-0 right-0 h-full w-80 bg-white z-[70] shadow-2xl flex flex-col border-l border-gray-100">
         <div class="p-6 flex justify-between items-center border-b border-gray-50">
             <span class="font-bold text-xl tracking-tight text-blue-600 uppercase">Menu</span>
             <button onclick="closeAll()" class="p-2 hover:bg-gray-100 rounded-full transition">
@@ -113,10 +113,10 @@
 
     <main class="max-w-6xl mx-auto px-4 pb-24">
         <div class="pt-8 mb-10">
-            <div class="bg-[#0a0b0d] text-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl border border-gray-800">
+            <div class="bg-[#0a0b0d] text-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl border border-gray-800 relative overflow-hidden">
                 <p class="text-blue-500 font-bold tracking-widest text-xs uppercase mb-2">Live Briefing</p>
                 <h2 class="text-4xl md:text-6xl font-black uppercase text-green-400">BTC PRICE: $66,804.14</h2>
-                <p class="text-gray-400 text-sm mt-4 font-mono uppercase">Update: 2026.04.04 | Trend: Bullish</p>
+                <p class="text-gray-400 text-sm mt-4 font-mono uppercase">Update: 2026.04.05 | Trend: Bullish</p>
             </div>
         </div>
 
@@ -159,53 +159,18 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
                     <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">🏛️</div>
-                    <h3 class="font-bold mb-2 uppercase">1. Digital Wealth Infrastructure</h3>
-                    <p class="text-white/80 text-xs">Automated performance tracking and global secure infrastructure.</p>
-                </div>
-                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
-                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">⚙️</div>
-                    <h3 class="font-bold mb-2 uppercase">2. Smart Investment Engine</h3>
-                    <p class="text-white/80 text-xs">Strategic allocation into high-potential crypto opportunities.</p>
-                </div>
-                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
-                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">📱</div>
-                    <h3 class="font-bold mb-2 uppercase">3. Beginner-Friendly Dashboard</h3>
-                    <p class="text-white/80 text-xs">Track growth with ease through a high-clarity interface.</p>
-                </div>
-                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
-                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">📅</div>
-                    <h3 class="font-bold mb-2 uppercase">4. 7-Day Yield Plans</h3>
-                    <p class="text-white/80 text-xs">Short-term cycles with automated profit distribution.</p>
+                    <h3 class="font-bold mb-2 uppercase text-sm">1. Wealth Infrastructure</h3>
+                    <p class="text-white/80 text-[10px]">Automated performance tracking and global secure infrastructure.</p>
                 </div>
                 <div class="p-8 rounded-[2.5rem] border-4 border-[#2b59ff] bg-white text-blue-900 shadow-2xl">
                     <div class="w-10 h-10 bg-[#2b59ff] text-white rounded-xl flex items-center justify-center mb-6">🎁</div>
-                    <h3 class="font-bold mb-2 uppercase">5. Instant $200 Bonus</h3>
-                    <p class="text-gray-600 text-xs font-medium">New users receive a starting balance immediately upon registration.</p>
-                </div>
-                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
-                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">📑</div>
-                    <h3 class="font-bold mb-2 uppercase">6. Real-Time History</h3>
-                    <p class="text-white/80 text-xs">Full transparency for every deposit and earning.</p>
-                </div>
-                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
-                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">📈</div>
-                    <h3 class="font-bold mb-2 uppercase">7. Diversified Asset Selection</h3>
-                    <p class="text-white/80 text-xs">Curated top-performing assets for sustainable growth.</p>
-                </div>
-                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
-                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">🔐</div>
-                    <h3 class="font-bold mb-2 uppercase">8. Protocol Encryption</h3>
-                    <p class="text-white/80 text-xs">Industry-leading technology protecting your capital.</p>
-                </div>
-                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
-                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">⚖️</div>
-                    <h3 class="font-bold mb-2 uppercase">9. Auto-Reinvestment</h3>
-                    <p class="text-white/80 text-xs">Optional compounding to maximize long-term wealth.</p>
+                    <h3 class="font-bold mb-2 uppercase text-sm">2. Instant $200 Bonus</h3>
+                    <p class="text-gray-600 text-[10px] font-medium">New users receive a starting balance immediately upon registration.</p>
                 </div>
                 <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
                     <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">⚡</div>
-                    <h3 class="font-bold mb-2 uppercase">10. Rapid Liquidity</h3>
-                    <p class="text-white/80 text-xs">High-speed withdrawal processing for instant access.</p>
+                    <h3 class="font-bold mb-2 uppercase text-sm">3. Rapid Liquidity</h3>
+                    <p class="text-white/80 text-[10px]">High-speed withdrawal processing for instant capital access.</p>
                 </div>
             </div>
         </div>
@@ -230,32 +195,25 @@
             document.getElementById('overlay').classList.remove('open');
         }
 
-        /* NEW: Handle registration and move to dashboard */
         function handleRegistration(event) {
             event.preventDefault();
-            
-            // Get name from the first input field
-            const fullName = event.target.querySelector('input[type="text"]').value;
-            const submitBtn = event.target.querySelector('button[type="submit"]');
+            const fullName = document.getElementById('regName').value;
+            const submitBtn = document.getElementById('regBtn');
 
-            // Professional "Processing" state
             submitBtn.innerText = "AUTHENTICATING PROTOCOLS...";
             submitBtn.style.opacity = "0.6";
             submitBtn.disabled = true;
 
-            // Save name for the dashboard to display
             localStorage.setItem('fatCoinUser', fullName || 'Investor');
 
-            // 1.5s delay for a high-end terminal feel, then redirect
             setTimeout(() => {
                 window.location.href = 'dashboard.html';
             }, 1500);
         }
 
-        /* NEW: Handle login (similar logic) */
         function handleLogin(event) {
             event.preventDefault();
-            const submitBtn = event.target.querySelector('button[type="submit"]');
+            const submitBtn = document.getElementById('loginBtn');
             
             submitBtn.innerText = "CONNECTING TO TERMINAL...";
             submitBtn.style.opacity = "0.6";
@@ -268,4 +226,3 @@
     </script>
 </body>
 </html>
-
