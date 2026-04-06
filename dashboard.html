@@ -12,17 +12,29 @@
         #sidebar { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); z-index: 100; }
         .sidebar-closed { transform: translateX(100%); }
         .sidebar-open { transform: translateX(0); }
-        
-        /* New Menu Animation */
         .action-menu { display: none; opacity: 0; transform: translateY(-10px); transition: all 0.3s ease; }
         .action-menu.active { display: flex; opacity: 1; transform: translateY(0); }
-        
-        .btn-action { @apply flex-1 py-3 rounded-xl font-bold text-[10px] uppercase tracking-wider transition-all; }
     </style>
 </head>
-<body class="text-gray-900">
+<body class="text-gray-900 overflow-x-hidden">
 
-    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 opacity-0 pointer-events-none z-[60]"></div>
+    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 opacity-0 pointer-events-none z-[60] transition-opacity"></div>
+
+    <div id="sidebar" class="fixed top-0 right-0 h-full w-72 bg-white shadow-2xl sidebar-closed z-[70] flex flex-col p-8">
+        <div class="flex justify-between items-center mb-10">
+            <span class="font-black uppercase tracking-widest text-[10px] text-gray-400">Menu</span>
+            <button onclick="toggleSidebar()" class="p-2 hover:bg-gray-100 rounded-full">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+        </div>
+        <nav class="flex flex-col gap-6">
+            <a href="#" class="text-lg font-bold hover:text-[#2b59ff] uppercase">Dashboard</a>
+            <a href="#" class="text-lg font-bold hover:text-[#2b59ff] uppercase">Profile Settings</a>
+            <a href="#" class="text-lg font-bold hover:text-[#2b59ff] uppercase">Support</a>
+            <hr class="border-gray-100">
+            <button onclick="logout()" class="text-left text-red-500 font-bold uppercase">Logout</button>
+        </nav>
+    </div>
 
     <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 px-6 py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
@@ -32,17 +44,17 @@
             </div>
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 bg-gray-100 rounded-full border-2 border-white flex items-center justify-center font-bold text-blue-600"><span id="userInitials">??</span></div>
-                <button onclick="toggleSidebar()" class="w-10 h-10 bg-gray-50 border border-gray-200 rounded-xl flex items-center justify-center">
+                <button onclick="toggleSidebar()" class="w-10 h-10 bg-gray-50 border border-gray-200 rounded-xl flex items-center justify-center hover:bg-gray-100 transition">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
                 </button>
             </div>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-6 py-10">
+    <main class="max-w-7xl mx-auto px-6 py-10 pb-32">
         <h1 class="text-3xl font-black uppercase mb-10">Welcome, <span id="userNameDisplay" class="text-[#2b59ff]">Investor</span></h1>
 
-        <div class="flex flex-col gap-4 mb-12">
+        <div class="flex flex-col gap-4 mb-16">
             
             <div class="bg-[#2b59ff] stats-card p-6 shadow-lg text-white">
                 <div class="flex items-center justify-between">
@@ -50,13 +62,13 @@
                         <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-orange-400 font-bold">₿</div>
                         <div><p class="text-[10px] font-bold text-blue-100 uppercase">Bitcoin</p><h3 class="font-black text-xl">$0.00</h3></div>
                     </div>
-                    <button onclick="toggleMenu('btcMenu')" class="w-10 h-10 rounded-full bg-white/20 font-black text-xl">+</button>
+                    <button onclick="toggleMenu('btcMenu')" class="w-10 h-10 rounded-full bg-white/20 font-black text-xl hover:bg-white/30 transition">+</button>
                 </div>
                 <div id="btcMenu" class="action-menu flex-col gap-4 pt-6 mt-4 border-t border-white/10">
                     <div class="flex gap-2">
-                        <button class="flex-1 py-3 bg-white text-[#2b59ff] rounded-xl font-black text-[10px] uppercase">Deposit</button>
-                        <button class="flex-1 py-3 bg-blue-400 text-white rounded-xl font-black text-[10px] uppercase">Invest</button>
-                        <button class="flex-1 py-3 bg-blue-800 text-white rounded-xl font-black text-[10px] uppercase">Withdraw</button>
+                        <button onclick="handleAction('Deposit', 'BTC')" class="flex-1 py-3 bg-white text-[#2b59ff] rounded-xl font-black text-[10px] uppercase">Deposit</button>
+                        <button onclick="handleAction('Invest', 'BTC')" class="flex-1 py-3 bg-blue-400 text-white rounded-xl font-black text-[10px] uppercase">Invest</button>
+                        <button onclick="handleAction('Withdraw', 'BTC')" class="flex-1 py-3 bg-blue-900 text-white rounded-xl font-black text-[10px] uppercase">Withdraw</button>
                     </div>
                     <div class="bg-black/20 p-3 rounded-xl flex justify-between items-center">
                         <p id="addr-BTC" class="text-[9px] font-mono opacity-70 truncate mr-2">bc1qyc92n060qq57klawgt6k9c2g24uvj5uk9rq9x8</p>
@@ -71,13 +83,13 @@
                         <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-blue-200 font-bold">Ξ</div>
                         <div><p class="text-[10px] font-bold text-blue-100 uppercase">Ethereum</p><h3 class="font-black text-xl">$0.00</h3></div>
                     </div>
-                    <button onclick="toggleMenu('ethMenu')" class="w-10 h-10 rounded-full bg-white/20 font-black text-xl">+</button>
+                    <button onclick="toggleMenu('ethMenu')" class="w-10 h-10 rounded-full bg-white/20 font-black text-xl hover:bg-white/30 transition">+</button>
                 </div>
                 <div id="ethMenu" class="action-menu flex-col gap-4 pt-6 mt-4 border-t border-white/10">
                     <div class="flex gap-2">
-                        <button class="flex-1 py-3 bg-white text-[#2b59ff] rounded-xl font-black text-[10px] uppercase">Deposit</button>
-                        <button class="flex-1 py-3 bg-blue-400 text-white rounded-xl font-black text-[10px] uppercase">Invest</button>
-                        <button class="flex-1 py-3 bg-blue-800 text-white rounded-xl font-black text-[10px] uppercase">Withdraw</button>
+                        <button onclick="handleAction('Deposit', 'ETH')" class="flex-1 py-3 bg-white text-[#2b59ff] rounded-xl font-black text-[10px] uppercase">Deposit</button>
+                        <button onclick="handleAction('Invest', 'ETH')" class="flex-1 py-3 bg-blue-400 text-white rounded-xl font-black text-[10px] uppercase">Invest</button>
+                        <button onclick="handleAction('Withdraw', 'ETH')" class="flex-1 py-3 bg-blue-900 text-white rounded-xl font-black text-[10px] uppercase">Withdraw</button>
                     </div>
                     <div class="bg-black/20 p-3 rounded-xl flex justify-between items-center">
                         <p id="addr-ETH" class="text-[9px] font-mono opacity-70 truncate mr-2">0xb43FA34C1d534Ae81f714283CfE744AAcdbA6402</p>
@@ -92,13 +104,13 @@
                         <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-purple-300 font-bold">◎</div>
                         <div><p class="text-[10px] font-bold text-blue-100 uppercase">Solana</p><h3 class="font-black text-xl">$0.00</h3></div>
                     </div>
-                    <button onclick="toggleMenu('solMenu')" class="w-10 h-10 rounded-full bg-white/20 font-black text-xl">+</button>
+                    <button onclick="toggleMenu('solMenu')" class="w-10 h-10 rounded-full bg-white/20 font-black text-xl hover:bg-white/30 transition">+</button>
                 </div>
                 <div id="solMenu" class="action-menu flex-col gap-4 pt-6 mt-4 border-t border-white/10">
                     <div class="flex gap-2">
-                        <button class="flex-1 py-3 bg-white text-[#2b59ff] rounded-xl font-black text-[10px] uppercase">Deposit</button>
-                        <button class="flex-1 py-3 bg-blue-400 text-white rounded-xl font-black text-[10px] uppercase">Invest</button>
-                        <button class="flex-1 py-3 bg-blue-800 text-white rounded-xl font-black text-[10px] uppercase">Withdraw</button>
+                        <button onclick="handleAction('Deposit', 'SOL')" class="flex-1 py-3 bg-white text-[#2b59ff] rounded-xl font-black text-[10px] uppercase">Deposit</button>
+                        <button onclick="handleAction('Invest', 'SOL')" class="flex-1 py-3 bg-blue-400 text-white rounded-xl font-black text-[10px] uppercase">Invest</button>
+                        <button onclick="handleAction('Withdraw', 'SOL')" class="flex-1 py-3 bg-blue-900 text-white rounded-xl font-black text-[10px] uppercase">Withdraw</button>
                     </div>
                     <div class="bg-black/20 p-3 rounded-xl flex justify-between items-center">
                         <p id="addr-SOL" class="text-[9px] font-mono opacity-70 truncate mr-2">6R9S21wwv8ea3LfqBz9E8MZrfJ4a7JWuX4jQtAPS51CR</p>
@@ -106,65 +118,78 @@
                     </div>
                 </div>
             </div>
-
-            <div class="bg-[#2b59ff] stats-card p-6 shadow-lg text-white">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-yellow-400 font-bold">🟡</div>
-                        <div><p class="text-[10px] font-bold text-blue-100 uppercase">Gold (XAUT)</p><h3 class="font-black text-xl">$0.00</h3></div>
-                    </div>
-                    <button onclick="toggleMenu('xautMenu')" class="w-10 h-10 rounded-full bg-white/20 font-black text-xl">+</button>
-                </div>
-                <div id="xautMenu" class="action-menu flex-col gap-4 pt-6 mt-4 border-t border-white/10">
-                    <div class="flex gap-2">
-                        <button class="flex-1 py-3 bg-white text-[#2b59ff] rounded-xl font-black text-[10px] uppercase">Deposit</button>
-                        <button class="flex-1 py-3 bg-blue-400 text-white rounded-xl font-black text-[10px] uppercase">Invest</button>
-                        <button class="flex-1 py-3 bg-blue-800 text-white rounded-xl font-black text-[10px] uppercase">Withdraw</button>
-                    </div>
-                    <div class="bg-black/20 p-3 rounded-xl flex justify-between items-center">
-                        <p id="addr-XAUT" class="text-[9px] font-mono opacity-70 truncate mr-2">0xb43FA34C1d534Ae81f714283CfE744AAcdbA6402</p>
-                        <button onclick="copyAddress('XAUT')" class="text-[9px] font-bold underline uppercase">Copy</button>
-                    </div>
-                </div>
-            </div>
-
         </div>
 
-        <h3 class="text-xl font-black uppercase mb-6">Active Investment Cycles</h3>
-        </main>
+        <h3 class="text-xl font-black uppercase mb-8">Active Investment Cycles</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white p-8 rounded-[2.5rem] shadow-sm border border-gray-100">
+                <p class="text-[10px] font-black text-blue-600 mb-2 uppercase">Starter Plan</p>
+                <h4 class="font-black text-xl mb-6">50% AFTER 7 DAYS</h4>
+                <button onclick="handleAction('Select', 'Starter Plan')" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-bold text-xs uppercase tracking-widest">Select Cycle</button>
+            </div>
+            <div class="bg-white p-8 rounded-[2.5rem] shadow-sm border border-gray-100">
+                <p class="text-[10px] font-black text-blue-600 mb-2 uppercase">Growth Plan</p>
+                <h4 class="font-black text-xl mb-6">100% AFTER 14 DAYS</h4>
+                <button onclick="handleAction('Select', 'Growth Plan')" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-bold text-xs uppercase tracking-widest">Select Cycle</button>
+            </div>
+            <div class="bg-white p-8 rounded-[2.5rem] shadow-sm border border-gray-100">
+                <p class="text-[10px] font-black text-blue-600 mb-2 uppercase">Pro Plan</p>
+                <h4 class="font-black text-xl mb-6">250% AFTER 30 DAYS</h4>
+                <button onclick="handleAction('Select', 'Pro Plan')" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-bold text-xs uppercase tracking-widest">Select Cycle</button>
+            </div>
+        </div>
+    </main>
 
     <script>
         window.onload = function() {
-            const user = localStorage.getItem('fatCoinUser') || "Investor";
+            const user = localStorage.getItem('fatCoinUser') || "Dami Krane";
             document.getElementById('userNameDisplay').innerText = user;
             const parts = user.trim().split(' ');
             const initials = parts.length > 1 ? (parts[0][0] + parts[parts.length - 1][0]) : parts[0][0];
             document.getElementById('userInitials').innerText = initials.toUpperCase();
         };
 
+        function toggleSidebar() {
+            const sb = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            const isOpen = sb.classList.contains('sidebar-open');
+            
+            if(isOpen) {
+                sb.classList.replace('sidebar-open', 'sidebar-closed');
+                overlay.style.opacity = "0";
+                overlay.classList.add('pointer-events-none');
+            } else {
+                sb.classList.replace('sidebar-closed', 'sidebar-open');
+                overlay.style.opacity = "1";
+                overlay.classList.remove('pointer-events-none');
+            }
+        }
+
         function toggleMenu(id) {
             const menu = document.getElementById(id);
             const isActive = menu.classList.contains('active');
-            
-            // Close all other menus first
             document.querySelectorAll('.action-menu').forEach(m => { 
                 m.classList.remove('active'); 
                 m.style.display = 'none'; 
             });
-
-            // Open the clicked one
             if(!isActive) { 
                 menu.style.display = 'flex'; 
                 setTimeout(() => menu.classList.add('active'), 10); 
             }
         }
 
+        function handleAction(type, asset) {
+            alert(type + " request initiated for " + asset + ". Connecting to secure gateway...");
+        }
+
         function copyAddress(asset) {
             const addr = document.getElementById(`addr-${asset}`).innerText;
             navigator.clipboard.writeText(addr).then(() => alert(asset + " address copied!"));
         }
-        
-        function toggleSidebar() { /* Same logic as before */ }
+
+        function logout() {
+            if(confirm("Logout?")) { localStorage.removeItem('fatCoinUser'); window.location.href='index.html'; }
+        }
     </script>
 </body>
 </html>
