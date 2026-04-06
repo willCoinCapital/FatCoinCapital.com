@@ -21,6 +21,9 @@
         .modal { display: none; position: fixed; inset: 0; z-index: 200; align-items: center; justify-content: center; padding: 1.5rem; }
         .modal.active { display: flex; }
         .modal-content { background: white; width: 100%; max-width: 400px; border-radius: 2.5rem; padding: 2.5rem; position: relative; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
+
+        /* Icon Styling */
+        .coin-icon { width: 28px; height: 28px; object-fit: contain; }
     </style>
 </head>
 <body class="text-gray-900 overflow-x-hidden">
@@ -109,7 +112,9 @@
             <div class="bg-[#2b59ff] stats-card p-6 shadow-lg text-white">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-orange-400 font-bold">₿</div>
+                        <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center">
+                            <img src="https://i.ibb.co/L6V2y8Z/btc-icon.png" alt="BTC" class="coin-icon">
+                        </div>
                         <div><p class="text-[10px] font-bold text-blue-100 uppercase">Bitcoin</p><h3 class="font-black text-xl">$0.00</h3></div>
                     </div>
                     <button onclick="toggleMenu('btcMenu')" class="w-10 h-10 rounded-full bg-white/20 font-black text-xl hover:bg-white/30 transition">+</button>
@@ -125,7 +130,9 @@
             <div class="bg-[#2b59ff] stats-card p-6 shadow-lg text-white">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-blue-200 font-bold">Ξ</div>
+                        <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center">
+                            <img src="https://i.ibb.co/mS6Yp7P/eth-icon.png" alt="ETH" class="coin-icon">
+                        </div>
                         <div><p class="text-[10px] font-bold text-blue-100 uppercase">Ethereum</p><h3 class="font-black text-xl">$0.00</h3></div>
                     </div>
                     <button onclick="toggleMenu('ethMenu')" class="w-10 h-10 rounded-full bg-white/20 font-black text-xl hover:bg-white/30 transition">+</button>
@@ -141,7 +148,9 @@
             <div class="bg-[#2b59ff] stats-card p-6 shadow-lg text-white">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-purple-300 font-bold">◎</div>
+                        <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center">
+                            <img src="https://i.ibb.co/8XYP5Z7/sol-icon.png" alt="SOL" class="coin-icon">
+                        </div>
                         <div><p class="text-[10px] font-bold text-blue-100 uppercase">Solana</p><h3 class="font-black text-xl">$0.00</h3></div>
                     </div>
                     <button onclick="toggleMenu('solMenu')" class="w-10 h-10 rounded-full bg-white/20 font-black text-xl hover:bg-white/30 transition">+</button>
@@ -157,7 +166,9 @@
             <div class="bg-[#2b59ff] stats-card p-6 shadow-lg text-white">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-yellow-400 font-bold">🟡</div>
+                        <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center">
+                            <img src="https://i.ibb.co/vB3zXf9/xaut-icon.png" alt="XAUT" class="coin-icon">
+                        </div>
                         <div><p class="text-[10px] font-bold text-blue-100 uppercase">Gold (XAUT)</p><h3 class="font-black text-xl">$0.00</h3></div>
                     </div>
                     <button onclick="toggleMenu('xautMenu')" class="w-10 h-10 rounded-full bg-white/20 font-black text-xl hover:bg-white/30 transition">+</button>
