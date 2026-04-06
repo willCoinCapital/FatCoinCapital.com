@@ -23,7 +23,7 @@
         .modal-content { background: white; width: 100%; max-width: 400px; border-radius: 2.5rem; padding: 2.5rem; position: relative; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
 
         /* Icon Styling */
-        .coin-icon { width: 28px; height: 28px; object-fit: contain; }
+        .coin-icon { width: 32px; height: 32px; object-fit: contain; }
     </style>
 </head>
 <body class="text-gray-900 overflow-x-hidden">
@@ -96,7 +96,7 @@
     </header>
 
     <main class="max-w-7xl mx-auto px-6 py-10 pb-32">
-        <h1 class="text-3xl font-black uppercase mb-10">Welcome, <span id="userNameDisplay" class="text-[#2b59ff]">Dami Krane</span></h1>
+        <h1 class="text-3xl font-black uppercase mb-10">Welcome, <span id="userNameDisplay" class="text-[#2b59ff]">User</span></h1>
 
         <div class="bg-[#0a0b0d] stats-card p-10 text-white shadow-2xl mb-12 border border-gray-800">
             <p class="text-blue-500 font-bold tracking-widest text-[10px] uppercase mb-4">Total Portfolio Value</p>
@@ -113,7 +113,7 @@
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-4">
                         <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center">
-                            <img src="https://i.ibb.co/L6V2y8Z/btc-icon.png" alt="BTC" class="coin-icon">
+                            <img src="btc.png" alt="BTC" class="coin-icon">
                         </div>
                         <div><p class="text-[10px] font-bold text-blue-100 uppercase">Bitcoin</p><h3 class="font-black text-xl">$0.00</h3></div>
                     </div>
@@ -131,7 +131,7 @@
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-4">
                         <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center">
-                            <img src="https://i.ibb.co/mS6Yp7P/eth-icon.png" alt="ETH" class="coin-icon">
+                            <img src="eth.png" alt="ETH" class="coin-icon">
                         </div>
                         <div><p class="text-[10px] font-bold text-blue-100 uppercase">Ethereum</p><h3 class="font-black text-xl">$0.00</h3></div>
                     </div>
@@ -149,7 +149,7 @@
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-4">
                         <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center">
-                            <img src="https://i.ibb.co/8XYP5Z7/sol-icon.png" alt="SOL" class="coin-icon">
+                            <img src="sol.png" alt="SOL" class="coin-icon">
                         </div>
                         <div><p class="text-[10px] font-bold text-blue-100 uppercase">Solana</p><h3 class="font-black text-xl">$0.00</h3></div>
                     </div>
@@ -167,7 +167,7 @@
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-4">
                         <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center">
-                            <img src="https://i.ibb.co/vB3zXf9/xaut-icon.png" alt="XAUT" class="coin-icon">
+                            <img src="xaut.png" alt="XAUT" class="coin-icon">
                         </div>
                         <div><p class="text-[10px] font-bold text-blue-100 uppercase">Gold (XAUT)</p><h3 class="font-black text-xl">$0.00</h3></div>
                     </div>
@@ -224,7 +224,7 @@
         let currentAddr = "";
 
         window.onload = function() {
-            const user = localStorage.getItem('fatCoinUser') || "Dami Krane";
+            const user = localStorage.getItem('fatCoinUser') || "User";
             document.getElementById('userNameDisplay').innerText = user;
             const parts = user.trim().split(' ');
             const initials = parts.length > 1 ? (parts[0][0] + parts[parts.length - 1][0]) : parts[0][0];
@@ -301,7 +301,6 @@
             document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
             document.getElementById('global-overlay').style.opacity = "0";
             document.getElementById('global-overlay').classList.add('pointer-events-none');
-            // Clear inputs on close
             document.getElementById('depAmount').value = "";
             document.getElementById('withAmount').value = "";
             document.getElementById('withRecipient').value = "";
