@@ -17,9 +17,11 @@
         @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
         .ticker-content { display: inline-block; white-space: nowrap; animation: ticker 35s linear infinite; }
         
-        /* Style for new feed cards */
-        .feed-card { transition: transform 0.3s ease; border-radius: 2.5rem; overflow: hidden; background: white; border: 1px solid #f3f4f6; shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); }
+        .feed-card { transition: transform 0.3s ease; border-radius: 2.5rem; overflow: hidden; background: white; border: 1px solid #f3f4f6; }
         .feed-card:hover { transform: translateY(-5px); }
+        
+        /* Custom styling to make the widget fit your aesthetic */
+        .widget-container { border-radius: 2.5rem; overflow: hidden; background: #0a0b0d; border: 1px solid #1f2937; }
     </style>
 </head>
 <body class="bg-white text-gray-900 overflow-x-hidden">
@@ -110,11 +112,17 @@
     </header>
 
     <main class="max-w-6xl mx-auto px-4 pb-24">
+        
         <div class="pt-8 mb-10">
-            <div class="bg-[#0a0b0d] text-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl border border-gray-800">
-                <p class="text-blue-500 font-bold tracking-widest text-xs uppercase mb-2">Live Briefing</p>
-                <h2 class="text-4xl md:text-6xl font-black uppercase text-green-400">BTC PRICE: $66,804.14</h2>
-                <p class="text-gray-400 text-sm mt-4 font-mono uppercase">Update: 2026.04.05 | Trend: Bullish</p>
+            <div class="widget-container shadow-2xl p-2 md:p-6">
+                <script src="https://widgets.coingecko.com/gecko-coin-compare-chart-widget.js"></script>
+                <gecko-coin-compare-chart-widget 
+                    coin-ids="bitcoin" 
+                    v-on:24h="true" 
+                    locale="en" 
+                    dark-mode="true" 
+                    transparent-background="true">
+                </gecko-coin-compare-chart-widget>
             </div>
         </div>
 
@@ -147,7 +155,6 @@
         <div class="mb-20">
             <h3 class="text-3xl font-black uppercase mb-10 text-center tracking-tighter">Terminal Intelligence Feed</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                
                 <div class="feed-card shadow-lg">
                     <img src="asset-growth.png" alt="Asset Growth" class="w-full aspect-video object-cover">
                     <div class="p-8">
@@ -173,28 +180,13 @@
                         <button onclick="openModal('signup')" class="text-blue-600 font-black uppercase text-xs tracking-widest underline">View Strategy</button>
                     </div>
                 </div>
-
-                <div class="feed-card shadow-lg">
-                    <img src="peak-velocity.png" alt="Peak Velocity" class="w-full aspect-video object-cover">
-                    <div class="p-8">
-                        <h4 class="text-2xl font-black uppercase mb-3 text-blue-600">Institutional Scale</h4>
-                        <p class="text-gray-500 text-sm leading-relaxed font-medium">Design infrastructure optimized for high-net-worth performance.</p>
-                    </div>
-                </div>
-
-                <div class="feed-card shadow-lg">
-                    <img src="trust-partnership.png" alt="Trust Partnership" class="w-full aspect-video object-cover">
-                    <div class="p-8">
-                        <h4 class="text-2xl font-black uppercase mb-3">Global Community</h4>
-                        <p class="text-gray-500 text-sm leading-relaxed font-medium">Secured terminal infrastructure for 10,000+ elite investors.</p>
-                    </div>
-                </div>
             </div>
         </div>
+
         <div class="bg-black text-white py-4 rounded-2xl mb-16 overflow-hidden border-y border-blue-500/20">
             <div class="ticker-content font-bold text-xs tracking-widest uppercase">
                 <span class="mx-10 text-blue-500">LIVE FEED:</span>
-                <span>BTC TRADING AT $66,804.14</span>
+                <span>MARKET CYCLES SYNCED</span>
                 <span class="mx-10 text-green-400">CLAIM $200 BONUS ON SIGN-UP</span>
             </div>
         </div>
@@ -212,25 +204,10 @@
                     <h3 class="font-bold mb-2 uppercase text-sm">2. Smart Investment Engine</h3>
                     <p class="text-white/80 text-[10px]">Strategic allocation into crypto opportunities.</p>
                 </div>
-                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
-                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">📱</div>
-                    <h3 class="font-bold mb-2 uppercase text-sm">3. Beginner Dashboard</h3>
-                    <p class="text-white/80 text-[10px]">Track growth with high-clarity interface.</p>
-                </div>
-                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
-                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">📅</div>
-                    <h3 class="font-bold mb-2 uppercase text-sm">4. 7-Day Yield Plans</h3>
-                    <p class="text-white/80 text-[10px]">Short-term cycles with profit distribution.</p>
-                </div>
                 <div class="p-8 rounded-[2.5rem] border-4 border-[#2b59ff] bg-white text-blue-900 shadow-2xl">
                     <div class="w-10 h-10 bg-[#2b59ff] text-white rounded-xl flex items-center justify-center mb-6">🎁</div>
-                    <h3 class="font-bold mb-2 uppercase text-sm">5. Instant $200 Bonus</h3>
+                    <h3 class="font-bold mb-2 uppercase text-sm">3. Instant $200 Bonus</h3>
                     <p class="text-gray-600 text-[10px] font-medium">Starting balance immediately upon registration.</p>
-                </div>
-                <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
-                    <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">📑</div>
-                    <h3 class="font-bold mb-2 uppercase text-sm">6. Real-Time History</h3>
-                    <p class="text-white/80 text-[10px]">Full transparency for every deposit.</p>
                 </div>
             </div>
         </div>
@@ -252,6 +229,7 @@
             document.getElementById('loginModal').classList.remove('open');
             document.getElementById('overlay').classList.remove('open');
         }
+        
         document.getElementById('registrationForm').onsubmit = function(e) {
             e.preventDefault();
             const name = document.getElementById('regName').value;
@@ -260,6 +238,7 @@
                 window.location.href = 'dashboard.html';
             }
         };
+        
         document.getElementById('loginForm').onsubmit = function(e) {
             e.preventDefault();
             const email = document.getElementById('loginEmail').value;
