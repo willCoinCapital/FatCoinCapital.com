@@ -5,34 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard | fatCoinCapital</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://widgets.coingecko.com/gecko-coin-ticker-widget.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
-        .stats-card { border-radius: 2.5rem; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .stats-card:hover { transform: translateY(-5px); }
-        
+        .stats-card { border-radius: 2.5rem; transition: all 0.3s ease; }
         #sidebar { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); z-index: 100; }
         .sidebar-closed { transform: translateX(100%); }
         .sidebar-open { transform: translateX(0); }
         
-        .modal { display: none; position: fixed; inset: 0; z-index: 200; align-items: center; justify-content: center; padding: 1rem; }
-        .modal.active { display: flex; animation: modalIn 0.3s ease-out; }
-        @keyframes modalIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        /* Action Menu Logic */
+        .action-menu { display: none; opacity: 0; transform: translateY(-10px); transition: all 0.3s ease; }
+        .action-menu.active { display: flex; opacity: 1; transform: translateY(0); }
         
-        .modal-content { background: white; width: 100%; max-width: 440px; border-radius: 2.5rem; padding: 2rem; position: relative; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); max-height: 90vh; overflow-y: auto; }
-        .terminal-content { background: #0a0b0d; color: white; border: 1px solid #1f2937; }
+        /* Modal Logic */
+        .modal { display: none; position: fixed; inset: 0; z-index: 200; align-items: center; justify-content: center; padding: 1.5rem; }
+        .modal.active { display: flex; }
+        .modal-content { background: white; width: 100%; max-width: 400px; border-radius: 2.5rem; padding: 2.5rem; position: relative; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
 
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        /* Icon Styling */
+        .coin-icon { width: 32px; height: 32px; object-fit: contain; }
 
+        /* Navigation Transitions */
         .page-section { display: none; }
         .page-section.active { display: block; animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .market-card-alive { cursor: pointer; transition: all 0.3s ease; border: 1px solid #1f2937; }
-        .market-card-alive:active { scale: 0.97; }
-        .market-card-alive:hover { border-color: #3b82f6; box-shadow: 0 0 20px rgba(59, 130, 246, 0.15); }
+        /* Scroller Styles */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .snap-inline { scroll-snap-type: x mandatory; scroll-behavior: smooth; }
+        .snap-item { scroll-snap-align: center; flex-shrink: 0; }
     </style>
 </head>
 <body class="text-gray-900 overflow-x-hidden">
@@ -40,79 +42,23 @@
     <div id="global-overlay" onclick="closeAllModals()" class="fixed inset-0 bg-black/60 opacity-0 pointer-events-none z-[150] transition-opacity backdrop-blur-sm"></div>
     <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/40 opacity-0 pointer-events-none z-[60]"></div>
 
-    <div id="coinDetailModal" class="modal">
-        <div class="modal-content terminal-content no-scrollbar">
-            <div class="flex justify-between items-center mb-6">
-                <div class="flex items-center gap-3">
-                    <img id="detailIcon" src="" class="w-8 h-8 rounded-full" alt="">
-                    <div>
-                        <h2 id="detailName" class="text-xl font-black uppercase leading-none">Bitcoin</h2>
-                        <p id="detailSymbol" class="text-[10px] font-bold text-gray-500 tracking-widest uppercase">BTC/USD</p>
-                    </div>
-                </div>
-                <button onclick="closeAllModals()" class="text-gray-500 hover:text-white transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                </button>
-            </div>
-
-            <div class="mb-8">
-                <h3 id="detailPrice" class="text-4xl font-black text-white">$0.00</h3>
-                <p class="text-green-400 text-xs font-bold mt-1">Live Market Rate</p>
-            </div>
-
-            <div class="grid grid-cols-2 gap-3 mb-8">
-                <div class="bg-gray-900/50 p-4 rounded-2xl border border-gray-800">
-                    <p class="text-[9px] text-gray-500 font-black uppercase mb-1">Market Cap Rank</p>
-                    <p id="detailRank" class="font-bold text-sm">#1</p>
-                </div>
-                <div class="bg-gray-900/50 p-4 rounded-2xl border border-gray-800">
-                    <p class="text-[9px] text-gray-500 font-black uppercase mb-1">24h High/Low</p>
-                    <p id="detailRange" class="font-bold text-[10px]">---</p>
-                </div>
-            </div>
-
-            <div class="bg-gray-900 p-6 rounded-[2rem] border border-gray-800 mb-8">
-                <p id="calcLabel" class="text-[9px] text-blue-500 font-black uppercase mb-4 text-center">Value Calculator</p>
-                <div class="space-y-3">
-                    <div class="relative">
-                        <input type="number" id="calcCoinInput" oninput="calculateValue('coin')" placeholder="0.00" class="w-full bg-black border border-gray-800 p-4 rounded-xl text-white font-bold focus:border-blue-500 outline-none">
-                        <span id="calcSymbol" class="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-black text-gray-500">BTC</span>
-                    </div>
-                    <div class="flex justify-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" /></svg></div>
-                    <div class="relative">
-                        <input type="number" id="calcUsdInput" oninput="calculateValue('usd')" placeholder="0.00" class="w-full bg-black border border-gray-100/10 p-4 rounded-xl text-white font-bold focus:border-blue-500 outline-none">
-                        <span class="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-black text-gray-500">USD</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-4">
-                <button id="detailSendBtn" class="flex items-center justify-center gap-3 py-4 bg-white text-black rounded-2xl font-black text-[11px] uppercase tracking-widest hover:bg-gray-200 transition">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg>
-                    Send
-                </button>
-                <button id="detailReceiveBtn" class="flex items-center justify-center gap-3 py-4 bg-gray-800 text-white rounded-2xl font-black text-[11px] uppercase tracking-widest hover:bg-gray-700 transition">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
-                    Receive
-                </button>
-            </div>
-        </div>
-    </div>
-
     <div id="depositModal" class="modal">
         <div class="modal-content">
             <div class="flex justify-between items-start mb-2">
                 <h2 class="text-2xl font-black uppercase">Deposit <span id="depAsset" class="text-blue-600">---</span></h2>
                 <button onclick="closeAllModals()" class="text-gray-400 hover:text-black transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
                 </button>
             </div>
+            <p class="text-gray-400 text-[10px] font-bold uppercase mb-6">Enter amount to view wallet address</p>
             <input type="number" id="depAmount" placeholder="Amount ($)" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl mb-4 focus:outline-none focus:border-blue-500 font-bold text-lg">
             <div class="bg-blue-50 p-4 rounded-2xl mb-6 border border-blue-100">
                 <p class="text-[9px] font-black text-blue-600 uppercase mb-1">Company Receiving Address:</p>
                 <p id="modalAddr" class="text-[10px] font-mono break-all text-gray-700 leading-relaxed">---</p>
             </div>
-            <button onclick="completeDeposit()" class="w-full py-4 bg-[#2b59ff] text-white rounded-2xl font-black uppercase tracking-widest shadow-lg">Copy Address & Done</button>
+            <button id="depDoneBtn" onclick="completeDeposit()" class="w-full py-4 bg-[#2b59ff] text-white rounded-2xl font-black uppercase tracking-widest shadow-lg active:scale-95 transition">Copy Address & Done</button>
         </div>
     </div>
 
@@ -121,12 +67,15 @@
             <div class="flex justify-between items-start mb-2">
                 <h2 class="text-2xl font-black uppercase">Withdraw <span id="withAsset" class="text-red-500">---</span></h2>
                 <button onclick="closeAllModals()" class="text-gray-400 hover:text-black transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
                 </button>
             </div>
+            <p class="text-gray-400 text-[10px] font-bold uppercase mb-6">Internal Fund Transfer</p>
             <input type="number" id="withAmount" placeholder="Amount ($)" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl mb-3 focus:outline-none focus:border-red-500 font-bold text-lg">
             <input type="text" id="withRecipient" placeholder="Your Wallet Address" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl mb-6 focus:outline-none focus:border-red-500 text-xs">
-            <button onclick="completeWithdrawal()" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black uppercase tracking-widest shadow-lg">Submit Request</button>
+            <button id="withDoneBtn" onclick="completeWithdrawal()" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black uppercase tracking-widest shadow-lg active:scale-95 transition">Submit Request</button>
         </div>
     </div>
 
@@ -136,9 +85,27 @@
             <button onclick="toggleSidebar()"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg></button>
         </div>
         <nav class="flex flex-col gap-3">
-            <button onclick="switchPage('dashboard')" class="bg-[#2b59ff] text-white p-5 rounded-3xl text-sm font-bold hover:bg-blue-600 transition uppercase text-left">Dashboard</button>
-            <button onclick="switchPage('settings')" class="bg-[#2b59ff] text-white p-5 rounded-3xl text-sm font-bold hover:bg-blue-600 transition uppercase text-left">Settings</button>
-            <button onclick="logout()" class="text-left text-red-500 font-bold uppercase mt-4">Logout</button>
+            <button onclick="switchPage('home')" class="bg-[#2b59ff] text-white p-5 rounded-3xl text-sm font-bold hover:bg-blue-600 transition uppercase flex items-center gap-4 text-left">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" /></svg>
+                Home
+            </button>
+            <button onclick="switchPage('dashboard')" class="bg-[#2b59ff] text-white p-5 rounded-3xl text-sm font-bold hover:bg-blue-600 transition uppercase flex items-center gap-4 text-left">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" /></svg>
+                Dashboard
+            </button>
+            <button onclick="switchPage('settings')" class="bg-[#2b59ff] text-white p-5 rounded-3xl text-sm font-bold hover:bg-blue-600 transition uppercase flex items-center gap-4 text-left">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287 1.561 1.561 0 000-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" /></svg>
+                Settings
+            </button>
+            <button onclick="switchPage('support')" class="bg-[#2b59ff] text-white p-5 rounded-3xl text-sm font-bold hover:bg-blue-600 transition uppercase flex items-center gap-4 text-left">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" /></svg>
+                Support
+            </button>
+            <div class="my-4"></div>
+            <button onclick="logout()" class="text-left text-red-500 font-bold uppercase flex items-center gap-3 ml-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd" /></svg>
+                Logout
+            </button>
         </nav>
     </div>
 
@@ -149,7 +116,7 @@
                 <span class="text-xl font-bold uppercase tracking-tight">fatCoinCapital</span>
             </div>
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-gray-100 rounded-full border-2 border-white flex items-center justify-center font-bold text-blue-600"><span id="userInitials">FT</span></div>
+                <div class="w-10 h-10 bg-gray-100 rounded-full border-2 border-white flex items-center justify-center font-bold text-blue-600"><span id="userInitials">DK</span></div>
                 <button onclick="toggleSidebar()" class="w-10 h-10 bg-gray-50 border border-gray-200 rounded-xl flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
                 </button>
@@ -158,7 +125,26 @@
     </header>
 
     <main class="max-w-7xl mx-auto px-6 py-10 pb-32">
+
+        <div id="section-home" class="page-section">
+            <h1 class="text-4xl font-black uppercase mb-2">Platform Feed</h1>
+            <p class="text-blue-600 font-bold uppercase tracking-widest text-[10px] mb-10">Real-time terminal updates</p>
+            
+            <div class="flex flex-col gap-8 max-w-2xl">
+                <div class="bg-white stats-card p-8 shadow-xl border border-gray-100">
+                    <h3 class="text-2xl font-black uppercase mb-4 text-[#2b59ff]">Arbitrage Advantage</h3>
+                    <p class="text-gray-500 leading-relaxed font-medium">fatCoinCapital connects directly to 14 liquidity providers, ensuring that your investment cycles are powered by the most efficient market spreads available in the ecosystem.</p>
+                </div>
+                <div class="bg-white stats-card p-8 shadow-xl border border-gray-100">
+                    <h3 class="text-2xl font-black uppercase mb-4 text-[#2b59ff]">Security Infrastructure</h3>
+                    <p class="text-gray-500 leading-relaxed font-medium">All terminal sessions are protected with AES-256 encryption. Your wallet data and transaction logs are purged every 24 hours for maximum user privacy.</p>
+                </div>
+            </div>
+        </div>
+
         <div id="section-dashboard" class="page-section active">
+            <h1 class="text-3xl font-black uppercase mb-10">Welcome, <span id="userNameDisplay" class="text-[#2b59ff]">User</span></h1>
+
             <div class="bg-[#0a0b0d] stats-card p-10 text-white shadow-2xl mb-12 border border-gray-800">
                 <p class="text-blue-500 font-bold tracking-widest text-[10px] uppercase mb-4">Total Portfolio Value</p>
                 <h2 class="text-5xl md:text-7xl font-black uppercase text-green-400">$200.14</h2>
@@ -168,77 +154,246 @@
                 </div>
             </div>
 
-            <div class="mb-12">
-                <div class="flex justify-between items-center mb-6 px-2">
-                    <h3 class="text-xs font-black uppercase tracking-[0.2em] text-gray-400">Live Market Intelligence</h3>
-                    <span class="text-[9px] font-bold text-blue-500 uppercase">Swipe to explore →</span>
+            <div class="mb-10">
+                <div class="flex justify-between items-end mb-6">
+                    <h3 class="text-xs font-black text-gray-400 uppercase tracking-widest">Market Intelligence</h3>
+                    <span class="text-[10px] font-bold text-blue-600 uppercase tracking-tighter animate-pulse">Swipe to explore →</span>
                 </div>
                 
-                <div class="flex overflow-x-auto snap-x no-scrollbar gap-4 pb-4">
-                    <div onclick="openCoinDetails('bitcoin')" class="market-card-alive bg-[#0a0b0d] p-8 rounded-[2.5rem] shadow-2xl min-w-[340px] flex-shrink-0">
-                        <gecko-coin-ticker-widget coin-id="bitcoin" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-ticker-widget>
-                        <div class="grid grid-cols-2 gap-4 mt-8">
-                            <div class="flex flex-col items-center gap-2"><div class="w-12 h-12 bg-black rounded-2xl flex items-center justify-center border border-gray-800"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg></div><span class="text-[8px] font-black uppercase text-gray-500">Send</span></div>
-                            <div class="flex flex-col items-center gap-2"><div class="w-12 h-12 bg-black rounded-2xl flex items-center justify-center border border-gray-800"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M12 5v14M19 12l-7 7-7-7"/></svg></div><span class="text-[8px] font-black uppercase text-gray-500">Receive</span></div>
+                <div id="asset-ledger" class="flex gap-6 overflow-x-auto no-scrollbar snap-inline pb-8 -mx-2 px-2">
+                    
+                    <div class="snap-item w-[85%] md:w-[380px] bg-[#0a0b0d] rounded-[2.5rem] p-8 text-white border border-gray-800 shadow-2xl">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="flex items-center gap-3">
+                                <img src="btc.png" class="coin-icon" alt="BTC">
+                                <div><p class="text-sm font-bold">Bitcoin</p><p class="text-[10px] text-gray-500 font-bold uppercase">BTC/USD</p></div>
+                            </div>
+                            <div class="w-6 h-6 bg-green-500/20 rounded-full flex items-center justify-center"><div class="w-2 h-2 bg-green-500 rounded-full"></div></div>
+                        </div>
+                        <div class="mb-8">
+                            <h2 class="text-4xl font-black tracking-tight mb-1">$77,251.00 <span class="text-sm text-green-400 font-bold ml-2">▲ 3.4%</span></h2>
+                            <div class="space-y-3 mt-6">
+                                <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-[10px] text-gray-500 uppercase font-bold">Market Cap Rank</span><span class="text-[10px] font-black">#1</span></div>
+                                <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-[10px] text-gray-500 uppercase font-bold">24h Volume</span><span class="text-[10px] font-black">$67,628,584k</span></div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button onclick="openDeposit('BTC', 'bc1qyc92n060qq57klawgt6k9c2g24uvj5uk9rq9x8')" class="py-4 bg-gray-900 rounded-2xl flex flex-col items-center justify-center hover:bg-gray-800 transition">
+                                <svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                                <span class="text-[9px] font-black uppercase">Deposit</span>
+                            </button>
+                            <button onclick="openWithdraw('BTC')" class="py-4 bg-gray-900 rounded-2xl flex flex-col items-center justify-center hover:bg-gray-800 transition">
+                                <svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
+                                <span class="text-[9px] font-black uppercase">Withdraw</span>
+                            </button>
                         </div>
                     </div>
 
-                    <div onclick="openCoinDetails('ethereum')" class="market-card-alive bg-[#0a0b0d] p-8 rounded-[2.5rem] shadow-2xl min-w-[340px] flex-shrink-0">
-                        <gecko-coin-ticker-widget coin-id="ethereum" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-ticker-widget>
-                        <div class="grid grid-cols-2 gap-4 mt-8">
-                            <div class="flex flex-col items-center gap-2"><div class="w-12 h-12 bg-black rounded-2xl flex items-center justify-center border border-gray-800"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg></div><span class="text-[8px] font-black uppercase text-gray-500">Send</span></div>
-                            <div class="flex flex-col items-center gap-2"><div class="w-12 h-12 bg-black rounded-2xl flex items-center justify-center border border-gray-800"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M12 5v14M19 12l-7 7-7-7"/></svg></div><span class="text-[8px] font-black uppercase text-gray-500">Receive</span></div>
+                    <div class="snap-item w-[85%] md:w-[380px] bg-[#0a0b0d] rounded-[2.5rem] p-8 text-white border border-gray-800 shadow-2xl">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="flex items-center gap-3">
+                                <img src="eth.png" class="coin-icon" alt="ETH">
+                                <div><p class="text-sm font-bold">Ethereum</p><p class="text-[10px] text-gray-500 font-bold uppercase">ETH/USD</p></div>
+                            </div>
+                            <div class="w-6 h-6 bg-blue-500/20 rounded-full flex items-center justify-center"><div class="w-2 h-2 bg-blue-500 rounded-full"></div></div>
+                        </div>
+                        <div class="mb-8">
+                            <h2 class="text-4xl font-black tracking-tight mb-1">$2,414.12 <span class="text-sm text-green-400 font-bold ml-2">▲ 1.2%</span></h2>
+                            <div class="space-y-3 mt-6">
+                                <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-[10px] text-gray-500 uppercase font-bold">Market Cap Rank</span><span class="text-[10px] font-black">#2</span></div>
+                                <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-[10px] text-gray-500 uppercase font-bold">24h Volume</span><span class="text-[10px] font-black">$18,201,442k</span></div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button onclick="openDeposit('ETH', '0xb43FA34C1d534Ae81f714283CfE744AAcdbA6402')" class="py-4 bg-gray-900 rounded-2xl flex flex-col items-center justify-center hover:bg-gray-800 transition">
+                                <svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                                <span class="text-[9px] font-black uppercase">Deposit</span>
+                            </button>
+                            <button onclick="openWithdraw('ETH')" class="py-4 bg-gray-900 rounded-2xl flex flex-col items-center justify-center hover:bg-gray-800 transition">
+                                <svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
+                                <span class="text-[9px] font-black uppercase">Withdraw</span>
+                            </button>
                         </div>
                     </div>
 
-                    <div onclick="openCoinDetails('solana')" class="market-card-alive bg-[#0a0b0d] p-8 rounded-[2.5rem] shadow-2xl min-w-[340px] flex-shrink-0">
-                        <gecko-coin-ticker-widget coin-id="solana" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-ticker-widget>
-                        <div class="grid grid-cols-2 gap-4 mt-8">
-                            <div class="flex flex-col items-center gap-2"><div class="w-12 h-12 bg-black rounded-2xl flex items-center justify-center border border-gray-800"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M7 17L17 7M7 7h10v10"/></svg></div><span class="text-[8px] font-black uppercase text-gray-500">Send</span></div>
-                            <div class="flex flex-col items-center gap-2"><div class="w-12 h-12 bg-black rounded-2xl flex items-center justify-center border border-gray-800"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M12 5v14M19 12l-7 7-7-7"/></svg></div><span class="text-[8px] font-black uppercase text-gray-500">Receive</span></div>
+                    <div class="snap-item w-[85%] md:w-[380px] bg-[#0a0b0d] rounded-[2.5rem] p-8 text-white border border-gray-800 shadow-2xl">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="flex items-center gap-3">
+                                <img src="sol.png" class="coin-icon" alt="SOL">
+                                <div><p class="text-sm font-bold">Solana</p><p class="text-[10px] text-gray-500 font-bold uppercase">SOL/USD</p></div>
+                            </div>
+                            <div class="w-6 h-6 bg-purple-500/20 rounded-full flex items-center justify-center"><div class="w-2 h-2 bg-purple-500 rounded-full"></div></div>
+                        </div>
+                        <div class="mb-8">
+                            <h2 class="text-4xl font-black tracking-tight mb-1">$102.45 <span class="text-sm text-green-400 font-bold ml-2">▲ 5.1%</span></h2>
+                            <div class="space-y-3 mt-6">
+                                <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-[10px] text-gray-500 uppercase font-bold">Market Cap Rank</span><span class="text-[10px] font-black">#5</span></div>
+                                <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-[10px] text-gray-500 uppercase font-bold">24h Volume</span><span class="text-[10px] font-black">$4,201,154k</span></div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button onclick="openDeposit('SOL', '6R9S21wwv8ea3LfqBz9E8MZrfJ4a7JWuX4jQtAPS51CR')" class="py-4 bg-gray-900 rounded-2xl flex flex-col items-center justify-center hover:bg-gray-800 transition">
+                                <svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                                <span class="text-[9px] font-black uppercase">Deposit</span>
+                            </button>
+                            <button onclick="openWithdraw('SOL')" class="py-4 bg-gray-900 rounded-2xl flex flex-col items-center justify-center hover:bg-gray-800 transition">
+                                <svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
+                                <span class="text-[9px] font-black uppercase">Withdraw</span>
+                            </button>
                         </div>
                     </div>
+
+                    <div class="snap-item w-[85%] md:w-[380px] bg-[#0a0b0d] rounded-[2.5rem] p-8 text-white border border-gray-800 shadow-2xl">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="flex items-center gap-3">
+                                <img src="xaut.png" class="coin-icon" alt="XAUT">
+                                <div><p class="text-sm font-bold">Tether Gold</p><p class="text-[10px] text-gray-500 font-bold uppercase">XAUT/USD</p></div>
+                            </div>
+                            <div class="w-6 h-6 bg-yellow-500/20 rounded-full flex items-center justify-center"><div class="w-2 h-2 bg-yellow-500 rounded-full"></div></div>
+                        </div>
+                        <div class="mb-8">
+                            <h2 class="text-4xl font-black tracking-tight mb-1">$2,740.00 <span class="text-sm text-gray-400 font-bold ml-2">▬ 0.0%</span></h2>
+                            <div class="space-y-3 mt-6">
+                                <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-[10px] text-gray-500 uppercase font-bold">Market Cap Rank</span><span class="text-[10px] font-black">#84</span></div>
+                                <div class="flex justify-between border-b border-gray-800 pb-2"><span class="text-[10px] text-gray-500 uppercase font-bold">24h Volume</span><span class="text-[10px] font-black">$12,450k</span></div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button onclick="openDeposit('XAUT', '0xb43FA34C1d534Ae81f714283CfE744AAcdbA6402')" class="py-4 bg-gray-900 rounded-2xl flex flex-col items-center justify-center hover:bg-gray-800 transition">
+                                <svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                                <span class="text-[9px] font-black uppercase">Deposit</span>
+                            </button>
+                            <button onclick="openWithdraw('XAUT')" class="py-4 bg-gray-900 rounded-2xl flex flex-col items-center justify-center hover:bg-gray-800 transition">
+                                <svg class="w-5 h-5 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>
+                                <span class="text-[9px] font-black uppercase">Withdraw</span>
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
+            <h3 class="text-xl font-black uppercase mb-6 tracking-tight">Investment Plans</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-gray-100 flex flex-col justify-between">
-                    <div><p class="text-[10px] font-black text-[#D4AF37] mb-2 uppercase">Tier 1 • Starter Pack</p><h4 class="font-black text-2xl mb-2">50% AFTER 7 DAYS</h4></div>
-                    <button onclick="handleCycle('Starter')" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-[10px] uppercase mt-8">Select Pack</button>
+                <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-gray-100 flex flex-col justify-between hover:border-[#D4AF37] transition-all duration-300">
+                    <div>
+                        <div class="w-10 h-10 bg-yellow-50 rounded-xl flex items-center justify-center mb-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#D4AF37]" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M12 1.586l-4 4v12.828l4-4V1.586zM3.707 3.293A1 1 0 002 4v10a1 1 0 00.293.707l6 6a1 1 0 001.414 0l6-6A1 1 0 0016 14V4a1 1 0 00-.293-.707l-6-6a1 1 0 00-1.414 0l-6 6z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <p class="text-[10px] font-black text-[#D4AF37] mb-2 uppercase tracking-widest">Tier 1 • Starter Pack</p>
+                        <h4 class="font-black text-2xl mb-2 text-black leading-tight">50% AFTER<br>7 DAYS</h4>
+                        <p class="text-gray-400 text-[10px] font-bold uppercase mb-8">Yield Entry Level</p>
+                    </div>
+                    <button onclick="handleCycle('Starter')" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg active:scale-95 transition">Select Pack</button>
                 </div>
-                <div class="bg-[#2b59ff] p-8 rounded-[2.5rem] shadow-2xl border border-blue-400 flex flex-col justify-between relative overflow-hidden text-white">
-                    <div><p class="text-[10px] font-black text-blue-100 mb-2 uppercase">Tier 2 • Growth Plan</p><h4 class="font-black text-2xl mb-2">150% AFTER 16 DAYS</h4></div>
-                    <button onclick="handleCycle('Growth')" class="w-full py-4 bg-white text-[#2b59ff] rounded-2xl font-black text-[10px] uppercase mt-8">Select Cycle</button>
+
+                <div class="bg-[#2b59ff] p-8 rounded-[2.5rem] shadow-2xl border border-blue-400 flex flex-col justify-between relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 p-4">
+                        <span class="bg-white text-[#2b59ff] text-[8px] font-black px-3 py-1 rounded-full uppercase tracking-tighter shadow-lg">Popular</span>
+                    </div>
+                    <div>
+                        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5V10a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 11.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L10 10.586 13.586 7H12z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <p class="text-[10px] font-black text-blue-100 mb-2 uppercase tracking-widest">Tier 2 • Growth Plan</p>
+                        <h4 class="font-black text-2xl mb-2 text-white leading-tight">150% AFTER<br>16 DAYS</h4>
+                        <p class="text-blue-100 text-[10px] font-bold uppercase mb-8">Aggressive Compounding</p>
+                    </div>
+                    <button onclick="handleCycle('Growth')" class="w-full py-4 bg-white text-[#2b59ff] rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl active:scale-95 transition">Select Cycle</button>
                 </div>
-                <div class="bg-[#0a0b0d] p-8 rounded-[2.5rem] shadow-xl border border-gray-800 flex flex-col justify-between text-white">
-                    <div><p class="text-[10px] font-black text-[#D4AF37] mb-2 uppercase">Tier 3 • Whale Pack</p><h4 class="font-black text-2xl mb-2">250% AFTER 30 DAYS</h4></div>
-                    <button onclick="handleCycle('Pro')" class="w-full py-4 bg-[#D4AF37] text-black rounded-2xl font-black text-[10px] uppercase mt-8">Select Cycle</button>
+
+                <div class="bg-[#0a0b0d] p-8 rounded-[2.5rem] shadow-xl border border-gray-800 flex flex-col justify-between hover:border-[#D4AF37] transition-all duration-300">
+                    <div>
+                        <div class="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center mb-6 text-[#D4AF37]">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M11.3 1.047a1 1 0 01.897 0l7 3.5A1 1 0 0120 5.438v8.125a1 1 0 01-.553.894l-7 3.5a1 1 0 01-.894 0l-7-3.5A1 1 0 014 13.563V5.438a1 1 0 01.553-.894l7-3.5zM11 5.465v7.07l6-3V5.465l-6 3z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <p class="text-[10px] font-black text-[#D4AF37] mb-2 uppercase tracking-widest">Tier 3 • Pro Plan</p>
+                        <h4 class="font-black text-2xl mb-2 text-white leading-tight">250% AFTER<br>30 DAYS</h4>
+                        <p class="text-gray-500 text-[10px] font-bold uppercase mb-8">High-Net-Worth Whale</p>
+                    </div>
+                    <button onclick="handleCycle('Pro')" class="w-full py-4 bg-[#D4AF37] text-black rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg active:scale-95 transition">Select Cycle</button>
                 </div>
             </div>
 
             <div class="bg-white stats-card shadow-2xl border border-gray-100 overflow-hidden">
-                <div class="p-8 border-b border-gray-50 bg-gray-50/50"><h3 class="text-xl font-black uppercase">Live Transaction Ledger</h3></div>
-                <div class="overflow-x-auto"><table class="w-full text-left"><tbody id="ledgerBody" class="divide-y divide-gray-50 font-medium text-sm"><tr><td class="px-8 py-6 font-mono text-gray-400 text-[10px]">TXN-BONUS-49201</td><td class="px-8 py-6 font-bold uppercase">Sign-Up Bonus</td><td class="px-8 py-6 text-right font-black text-green-600">+$200.00</td></tr></tbody></table></div>
+                <div class="p-8 border-b border-gray-50 bg-gray-50/50">
+                    <h3 class="text-xl font-black uppercase tracking-tight">Live Transaction Ledger</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <tbody id="ledgerBody" class="divide-y divide-gray-50 font-medium text-sm">
+                            <tr>
+                                <td class="px-8 py-6 font-mono text-gray-400 text-[10px]">TXN-BONUS-49201</td>
+                                <td class="px-8 py-6 font-bold uppercase">Sign-Up Bonus</td>
+                                <td class="px-8 py-6 text-right font-black text-green-600">+$200.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
+
+        <div id="section-settings" class="page-section">
+            <h1 class="text-3xl font-black uppercase mb-10">Security Terminal</h1>
+            <div class="bg-white stats-card p-10 shadow-xl border border-gray-100 max-w-xl">
+                <div class="space-y-6">
+                    <div class="flex justify-between items-center py-4 border-b border-gray-50">
+                        <div><p class="font-bold">2FA Authentication</p><p class="text-xs text-gray-400">Layered Security</p></div>
+                        <div class="w-12 h-6 bg-blue-600 rounded-full p-1"><div class="w-4 h-4 bg-white rounded-full ml-auto"></div></div>
+                    </div>
+                    <div class="flex justify-between items-center py-4 border-b border-gray-50">
+                        <div><p class="font-bold">IP Masking</p><p class="text-xs text-gray-400">Privacy Active</p></div>
+                        <div class="w-12 h-6 bg-gray-200 rounded-full p-1"><div class="w-4 h-4 bg-white rounded-full"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="section-support" class="page-section">
+            <h1 class="text-3xl font-black uppercase mb-10">Priority Support</h1>
+            <div class="bg-[#2b59ff] stats-card p-10 text-white shadow-2xl max-w-xl">
+                <h3 class="text-2xl font-black mb-4">Direct Channel</h3>
+                <p class="mb-8 opacity-80 font-medium">Connect with terminal agents regarding transaction verification or account cycle inquiries.</p>
+                <button class="w-full py-4 bg-white text-[#2b59ff] rounded-2xl font-black uppercase tracking-widest shadow-lg active:scale-95 transition">Launch Support Portal</button>
+            </div>
+        </div>
+
     </main>
 
     <script>
-        // CONFIG & DATA
-        const coinDatabase = {
-            'bitcoin': { name: 'Bitcoin', sym: 'BTC', addr: 'bc1qyc92n060qq57klawgt6k9c2g24uvj5uk9rq9x8', icon: 'https://assets.coingecko.com/coins/images/1/small/bitcoin.png' },
-            'ethereum': { name: 'Ethereum', sym: 'ETH', addr: '0xb43FA34C1d534Ae81f714283CfE744AAcdbA6402', icon: 'https://assets.coingecko.com/coins/images/279/small/ethereum.png' },
-            'solana': { name: 'Solana', sym: 'SOL', addr: '6R9S21wwv8ea3LfqBz9E8MZrfJ4a7JWuX4jQtAPS51CR', icon: 'https://assets.coingecko.com/coins/images/4128/small/solana.png' }
+        // NAVIGATION LOGIC
+        function switchPage(pageId) {
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById('section-' + pageId).classList.add('active');
+            toggleSidebar();
+            window.scrollTo(0, 0);
+        }
+
+        let currentAsset = "";
+        let currentAddr = "";
+
+        window.onload = function() {
+            const user = localStorage.getItem('fatCoinUser') || "User";
+            document.getElementById('userNameDisplay').innerText = user;
+            const parts = user.trim().split(' ');
+            const initials = parts.length > 1 ? (parts[0][0] + parts[parts.length - 1][0]) : parts[0][0];
+            document.getElementById('userInitials').innerText = initials.toUpperCase();
         };
 
-        let activeCoinPrice = 0;
-        let activeCoinSym = "";
-
-        // UI LOGIC
         function toggleSidebar() {
             const sb = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebar-overlay');
-            if(sb.classList.contains('sidebar-open')) {
+            if(!sb) return;
+            const isOpen = sb.classList.contains('sidebar-open');
+            if(isOpen) {
                 sb.classList.replace('sidebar-open', 'sidebar-closed');
                 overlay.style.opacity = "0"; overlay.classList.add('pointer-events-none');
             } else {
@@ -247,82 +402,69 @@
             }
         }
 
-        async function openCoinDetails(coinId) {
-            const coin = coinDatabase[coinId];
-            activeCoinSym = coin.sym;
-            
-            // Show Modal UI
-            document.getElementById('detailName').innerText = coin.name;
-            document.getElementById('detailSymbol').innerText = `${coin.sym}/USD`;
-            document.getElementById('calcSymbol').innerText = coin.sym;
-            document.getElementById('detailIcon').src = coin.icon;
-            
-            // Set Modal Actions
-            document.getElementById('detailSendBtn').onclick = () => openWithdraw(coin.sym);
-            document.getElementById('detailReceiveBtn').onclick = () => openDeposit(coin.sym, coin.addr);
+        function toggleMenu(id) {
+            const menu = document.getElementById(id);
+            const isActive = menu.classList.contains('active');
+            document.querySelectorAll('.action-menu').forEach(m => { m.classList.remove('active'); m.style.display='none'; });
+            if(!isActive) { menu.style.display='flex'; setTimeout(()=>menu.classList.add('active'),10); }
+        }
 
-            // Fetch Live Data
-            try {
-                const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${coinId}&vs_currencies=usd&include_24hr_vol=true&include_market_cap=true`);
-                const data = await res.json();
-                activeCoinPrice = data[coinId].usd;
-                document.getElementById('detailPrice').innerText = `$${activeCoinPrice.toLocaleString()}`;
-                document.getElementById('detailRank').innerText = `#${data[coinId].market_cap_rank || '1'}`;
-                document.getElementById('calcCoinInput').value = "";
-                document.getElementById('calcUsdInput').value = "";
-            } catch(e) { console.log("Price fetch error"); }
-
-            document.getElementById('coinDetailModal').classList.add('active');
+        function openDeposit(asset, addr) {
+            currentAsset = asset; currentAddr = addr;
+            document.getElementById('depAsset').innerText = asset;
+            document.getElementById('modalAddr').innerText = addr;
+            document.getElementById('depositModal').classList.add('active');
             document.getElementById('global-overlay').style.opacity = "1";
             document.getElementById('global-overlay').classList.remove('pointer-events-none');
         }
 
-        function calculateValue(type) {
-            const coinIn = document.getElementById('calcCoinInput');
-            const usdIn = document.getElementById('calcUsdInput');
-            if (type === 'coin') {
-                usdIn.value = (coinIn.value * activeCoinPrice).toFixed(2);
-            } else {
-                coinIn.value = (usdIn.value / activeCoinPrice).toFixed(6);
-            }
-        }
-
-        function openDeposit(asset, addr) {
-            document.getElementById('depAsset').innerText = asset;
-            document.getElementById('modalAddr').innerText = addr;
-            document.getElementById('depositModal').classList.add('active');
+        function completeDeposit() {
+            const amount = document.getElementById('depAmount').value;
+            if(!amount || amount <= 0) { alert("Please input deposit amount."); return; }
+            navigator.clipboard.writeText(currentAddr);
+            addLedgerRow(`Pending Deposit (${currentAsset})`, `+$${amount}`, "text-orange-500");
+            alert("Address Copied! Payment is now Pending.");
+            closeAllModals();
         }
 
         function openWithdraw(asset) {
+            currentAsset = asset;
             document.getElementById('withAsset').innerText = asset;
             document.getElementById('withdrawModal').classList.add('active');
+            document.getElementById('global-overlay').style.opacity = "1";
+            document.getElementById('global-overlay').classList.remove('pointer-events-none');
+        }
+
+        function completeWithdrawal() {
+            const amount = document.getElementById('withAmount').value;
+            const wallet = document.getElementById('withRecipient').value;
+            if(!amount || !wallet) { alert("Please input amount and recipient address."); return; }
+            addLedgerRow(`Pending Withdrawal (${currentAsset})`, `-$${amount}`, "text-red-500");
+            alert("Withdrawal request submitted for approval.");
+            closeAllModals();
+        }
+
+        function handleCycle(plan) {
+            alert(plan + " cycle initiated! Yield will start accumulating once balance is confirmed.");
+        }
+
+        function addLedgerRow(type, amt, color) {
+            const table = document.getElementById('ledgerBody');
+            const row = table.insertRow(0);
+            const id = "TXN-" + Math.floor(Math.random()*90000+10000);
+            row.innerHTML = `<td class="px-8 py-6 font-mono text-gray-400 text-[10px]">${id}</td><td class="px-8 py-6 font-bold uppercase">${type}</td><td class="px-8 py-6 text-right font-black ${color}">${amt}</td>`;
         }
 
         function closeAllModals() {
             document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
             document.getElementById('global-overlay').style.opacity = "0";
             document.getElementById('global-overlay').classList.add('pointer-events-none');
+            document.getElementById('depAmount').value = "";
+            document.getElementById('withAmount').value = "";
+            document.getElementById('withRecipient').value = "";
         }
 
-        function completeDeposit() {
-            alert("Address Copied! Payment Pending.");
-            closeAllModals();
-        }
-
-        function completeWithdrawal() {
-            alert("Withdrawal submitted.");
-            closeAllModals();
-        }
-
-        function switchPage(p) { toggleSidebar(); }
-        function logout() { window.location.reload(); }
-        
-        window.onload = function() {
-            const user = localStorage.getItem('fatCoinUser') || "Investor FT"; 
-            const initials = user.split(' ').map(n => n[0]).join('').toUpperCase();
-            document.getElementById('userInitials').innerText = initials;
-            document.getElementById('userNameDisplay').innerText = initials;
-        };
+        function logout() { if(confirm("Logout?")) { localStorage.clear(); window.location.href='index.html'; } }
     </script>
 </body>
 </html>
