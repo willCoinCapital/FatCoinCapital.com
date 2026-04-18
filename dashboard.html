@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | fatCoinCapital</title>
+    <title>Terminal | fatCoinCapital</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://widgets.coingecko.com/gecko-coin-ticker-widget.js"></script>
@@ -42,32 +42,21 @@
                 <p class="text-[9px] font-black text-blue-600 uppercase mb-1">Company Receiving Address:</p>
                 <p id="modalAddr" class="text-[10px] font-mono break-all text-gray-700 leading-relaxed">---</p>
             </div>
-            <button id="depDoneBtn" onclick="completeDeposit()" class="w-full py-4 bg-[#2b59ff] text-white rounded-2xl font-black uppercase tracking-widest shadow-lg active:scale-95 transition">Copy Address & Done</button>
-        </div>
-    </div>
-
-    <div id="withdrawModal" class="modal">
-        <div class="modal-content">
-            <div class="flex justify-between items-start mb-2">
-                <h2 class="text-2xl font-black uppercase">Withdraw <span id="withAsset" class="text-red-500">---</span></h2>
-                <button onclick="closeAllModals()" class="text-gray-400 hover:text-black transition">✕</button>
-            </div>
-            <p class="text-gray-400 text-[10px] font-bold uppercase mb-6">Internal Fund Transfer</p>
-            <input type="number" id="withAmount" placeholder="Amount ($)" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl mb-3 focus:outline-none focus:border-red-500 font-bold text-lg">
-            <input type="text" id="withRecipient" placeholder="Your Wallet Address" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl mb-6 focus:outline-none focus:border-red-500 text-xs">
-            <button id="withDoneBtn" onclick="completeWithdrawal()" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black uppercase tracking-widest shadow-lg active:scale-95 transition">Submit Request</button>
+            <button onclick="completeDeposit()" class="w-full py-4 bg-[#2b59ff] text-white rounded-2xl font-black uppercase tracking-widest shadow-lg active:scale-95 transition">Copy Address & Done</button>
         </div>
     </div>
 
     <div id="sidebar" class="fixed top-0 right-0 h-full w-72 bg-white shadow-2xl sidebar-closed z-[70] flex flex-col p-8">
         <div class="flex justify-between items-center mb-10">
-            <span class="font-black uppercase tracking-widest text-[10px] text-gray-400">Menu</span>
-            <button onclick="toggleSidebar()">✕</button>
+            <span class="font-black uppercase tracking-widest text-[10px] text-gray-400">Navigation Menu</span>
+            <button onclick="toggleSidebar()" class="text-xl">✕</button>
         </div>
         <nav class="flex flex-col gap-3">
-            <button onclick="switchPage('home')" class="bg-[#2b59ff] text-white p-5 rounded-3xl text-sm font-bold hover:bg-blue-600 transition uppercase text-left">Home</button>
-            <button onclick="switchPage('dashboard')" class="bg-[#2b59ff] text-white p-5 rounded-3xl text-sm font-bold hover:bg-blue-600 transition uppercase text-left">Dashboard</button>
-            <button onclick="logout()" class="text-left text-red-500 font-bold uppercase p-5">Logout</button>
+            <button onclick="switchPage('home')" class="bg-[#2b59ff] text-white p-5 rounded-3xl text-xs font-black hover:bg-blue-600 transition uppercase text-left tracking-widest">Home</button>
+            <button onclick="switchPage('dashboard')" class="bg-gray-100 text-gray-900 p-5 rounded-3xl text-xs font-black hover:bg-gray-200 transition uppercase text-left tracking-widest">Dashboard</button>
+            <button onclick="switchPage('market')" class="bg-gray-100 text-gray-900 p-5 rounded-3xl text-xs font-black hover:bg-gray-200 transition uppercase text-left tracking-widest">Market News</button>
+            <button onclick="switchPage('settings')" class="bg-gray-100 text-gray-900 p-5 rounded-3xl text-xs font-black hover:bg-gray-200 transition uppercase text-left tracking-widest">Security Settings</button>
+            <button onclick="logout()" class="text-left text-red-500 font-black text-xs uppercase p-5 tracking-widest">Logout</button>
         </nav>
     </div>
 
@@ -78,7 +67,7 @@
                 <span class="text-xl font-bold uppercase tracking-tight">fatCoinCapital</span>
             </div>
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-gray-100 rounded-full border-2 border-white flex items-center justify-center font-bold text-blue-600"><span id="userInitials">F</span></div>
+                <div class="w-10 h-10 bg-gray-100 rounded-full border-2 border-white flex items-center justify-center font-bold text-blue-600">F</div>
                 <button onclick="toggleSidebar()" class="w-10 h-10 bg-gray-50 border border-gray-200 rounded-xl flex items-center justify-center">☰</button>
             </div>
         </div>
@@ -88,7 +77,7 @@
         <div id="section-dashboard" class="page-section active">
             
             <div class="bg-[#0a0b0d] stats-card p-8 text-white shadow-2xl mb-8 border border-gray-800">
-                <p class="text-gray-500 font-bold tracking-widest text-[10px] uppercase mb-1">DASHBOARD</p>
+                <p class="text-gray-500 font-bold tracking-widest text-[10px] uppercase mb-1">Terminal Active</p>
                 <h1 class="text-3xl font-black uppercase tracking-tight">WELCOME, INVESTOR <span class="text-[#2b59ff]">F</span></h1>
             </div>
 
@@ -112,26 +101,32 @@
                         <gecko-coin-ticker-widget coin-id="bitcoin" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-ticker-widget>
                         <div class="grid grid-cols-2 gap-3 mt-8">
                             <button onclick="openDeposit('BTC', 'bc1qyc92n060qq57klawgt6k9c2g24uvj5uk9rq9x8')" class="py-4 bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center justify-center hover:bg-green-500/20 transition">
-                                <span class="text-xl mb-1">⬇️</span>
-                                <span class="text-[9px] font-black uppercase text-white tracking-widest">Deposit</span>
+                                <span class="text-xl mb-1">⬇️</span><span class="text-[9px] font-black uppercase text-white tracking-widest">Deposit</span>
                             </button>
                             <button onclick="openWithdraw('BTC')" class="py-4 bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center justify-center hover:bg-red-500/20 transition">
-                                <span class="text-xl mb-1">⬆️</span>
-                                <span class="text-[9px] font-black uppercase text-white tracking-widest">Withdraw</span>
+                                <span class="text-xl mb-1">⬆️</span><span class="text-[9px] font-black uppercase text-white tracking-widest">Withdraw</span>
                             </button>
                         </div>
                     </div>
-
                     <div class="market-terminal bg-[#0a0b0d] p-8 rounded-[2.5rem] border border-gray-800 shadow-2xl">
                         <gecko-coin-ticker-widget coin-id="ethereum" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-ticker-widget>
                         <div class="grid grid-cols-2 gap-3 mt-8">
                             <button onclick="openDeposit('ETH', '0xb43FA34C1d534Ae81f714283CfE744AAcdbA6402')" class="py-4 bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center justify-center hover:bg-green-500/20 transition">
-                                <span class="text-xl mb-1">⬇️</span>
-                                <span class="text-[9px] font-black uppercase text-white tracking-widest">Deposit</span>
+                                <span class="text-xl mb-1">⬇️</span><span class="text-[9px] font-black uppercase text-white tracking-widest">Deposit</span>
                             </button>
                             <button onclick="openWithdraw('ETH')" class="py-4 bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center justify-center hover:bg-red-500/20 transition">
-                                <span class="text-xl mb-1">⬆️</span>
-                                <span class="text-[9px] font-black uppercase text-white tracking-widest">Withdraw</span>
+                                <span class="text-xl mb-1">⬆️</span><span class="text-[9px] font-black uppercase text-white tracking-widest">Withdraw</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="market-terminal bg-[#0a0b0d] p-8 rounded-[2.5rem] border border-gray-800 shadow-2xl">
+                        <gecko-coin-ticker-widget coin-id="solana" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-ticker-widget>
+                        <div class="grid grid-cols-2 gap-3 mt-8">
+                            <button onclick="openDeposit('SOL', 'SOL-WALLET-ADDR')" class="py-4 bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center justify-center hover:bg-green-500/20 transition">
+                                <span class="text-xl mb-1">⬇️</span><span class="text-[9px] font-black uppercase text-white tracking-widest">Deposit</span>
+                            </button>
+                            <button onclick="openWithdraw('SOL')" class="py-4 bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center justify-center hover:bg-red-500/20 transition">
+                                <span class="text-xl mb-1">⬆️</span><span class="text-[9px] font-black uppercase text-white tracking-widest">Withdraw</span>
                             </button>
                         </div>
                     </div>
@@ -146,93 +141,48 @@
                     <table class="w-full text-left border-collapse">
                         <tbody class="divide-y divide-gray-800">
                             <tr class="hover:bg-white/5 transition">
-                                <td class="p-6">
-                                    <div class="flex items-center gap-4">
-                                        <div class="w-10 h-10 bg-[#f7931a]/10 rounded-xl flex items-center justify-center">
-                                            <img src="https://assets.coingecko.com/coins/images/1/small/bitcoin.png" class="w-6 h-6" alt="BTC">
-                                        </div>
-                                        <div>
-                                            <p class="text-[10px] font-black text-gray-500 uppercase">Bitcoin</p>
-                                            <p class="text-white font-bold">BTC</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="p-6">
-                                    <div class="max-w-[180px]">
-                                        <gecko-coin-converter-widget coin-id="bitcoin" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-converter-widget>
-                                    </div>
-                                </td>
+                                <td class="p-6 text-white font-bold"><img src="https://assets.coingecko.com/coins/images/1/small/bitcoin.png" class="w-6 h-6 inline mr-2"> BTC</td>
+                                <td class="p-6"><gecko-coin-converter-widget coin-id="bitcoin" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-converter-widget></td>
                             </tr>
                             <tr class="hover:bg-white/5 transition">
-                                <td class="p-6">
-                                    <div class="flex items-center gap-4">
-                                        <div class="w-10 h-10 bg-[#627eea]/10 rounded-xl flex items-center justify-center">
-                                            <img src="https://assets.coingecko.com/coins/images/279/small/ethereum.png" class="w-6 h-6" alt="ETH">
-                                        </div>
-                                        <div>
-                                            <p class="text-[10px] font-black text-gray-500 uppercase">Ethereum</p>
-                                            <p class="text-white font-bold">ETH</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="p-6">
-                                    <div class="max-w-[180px]">
-                                        <gecko-coin-converter-widget coin-id="ethereum" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-converter-widget>
-                                    </div>
-                                </td>
+                                <td class="p-6 text-white font-bold"><img src="https://assets.coingecko.com/coins/images/279/small/ethereum.png" class="w-6 h-6 inline mr-2"> ETH</td>
+                                <td class="p-6"><gecko-coin-converter-widget coin-id="ethereum" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-converter-widget></td>
                             </tr>
                             <tr class="hover:bg-white/5 transition">
-                                <td class="p-6">
-                                    <div class="flex items-center gap-4">
-                                        <div class="w-10 h-10 bg-[#14f195]/10 rounded-xl flex items-center justify-center">
-                                            <img src="https://assets.coingecko.com/coins/images/4128/small/solana.png" class="w-6 h-6" alt="SOL">
-                                        </div>
-                                        <div>
-                                            <p class="text-[10px] font-black text-gray-500 uppercase">Solana</p>
-                                            <p class="text-white font-bold">SOL</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="p-6">
-                                    <div class="max-w-[180px]">
-                                        <gecko-coin-converter-widget coin-id="solana" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-converter-widget>
-                                    </div>
-                                </td>
+                                <td class="p-6 text-white font-bold"><img src="https://assets.coingecko.com/coins/images/4128/small/solana.png" class="w-6 h-6 inline mr-2"> SOL</td>
+                                <td class="p-6"><gecko-coin-converter-widget coin-id="solana" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-converter-widget></td>
                             </tr>
                             <tr class="hover:bg-white/5 transition">
-                                <td class="p-6">
-                                    <div class="flex items-center gap-4">
-                                        <div class="w-10 h-10 bg-[#f3ba2f]/10 rounded-xl flex items-center justify-center">
-                                            <img src="https://assets.coingecko.com/coins/images/10481/small/tether-gold.png" class="w-6 h-6" alt="XAUT">
-                                        </div>
-                                        <div>
-                                            <p class="text-[10px] font-black text-gray-500 uppercase">Tether Gold</p>
-                                            <p class="text-white font-bold">XAUT</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="p-6">
-                                    <div class="max-w-[180px]">
-                                        <gecko-coin-converter-widget coin-id="tether-gold" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-converter-widget>
-                                    </div>
-                                </td>
+                                <td class="p-6 text-white font-bold"><img src="https://assets.coingecko.com/coins/images/10481/small/tether-gold.png" class="w-6 h-6 inline mr-2"> XAUT</td>
+                                <td class="p-6"><gecko-coin-converter-widget coin-id="tether-gold" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-converter-widget></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <div class="bg-white stats-card p-8 shadow-xl border border-gray-100 mb-8">
-                <h3 class="text-xl font-black uppercase tracking-tight">Investment Plans</h3>
-            </div>
-
+            <div class="mb-6 px-2"><h3 class="text-xs font-black uppercase tracking-[0.2em] text-gray-400">Investment Plans</h3></div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
                 <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-gray-100 flex flex-col justify-between">
                     <div>
-                        <p class="text-[10px] font-black text-[#D4AF37] mb-2 uppercase tracking-widest">Tier 1 • Starter Pack</p>
+                        <p class="text-[10px] font-black text-[#D4AF37] mb-2 uppercase tracking-widest">Tier 1 • Starter</p>
                         <h4 class="font-black text-2xl mb-2 text-black leading-tight">50% AFTER<br>7 DAYS</h4>
                     </div>
-                    <button onclick="handleCycle('Starter')" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest">Select Pack</button>
+                    <button onclick="handleCycle('Starter')" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest mt-6">Select Pack</button>
+                </div>
+                <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-gray-100 flex flex-col justify-between">
+                    <div>
+                        <p class="text-[10px] font-black text-blue-600 mb-2 uppercase tracking-widest">Tier 2 • Pro</p>
+                        <h4 class="font-black text-2xl mb-2 text-black leading-tight">75% AFTER<br>14 DAYS</h4>
+                    </div>
+                    <button onclick="handleCycle('Pro')" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest mt-6">Select Pack</button>
+                </div>
+                <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-gray-100 flex flex-col justify-between">
+                    <div>
+                        <p class="text-[10px] font-black text-green-600 mb-2 uppercase tracking-widest">Tier 3 • Whale</p>
+                        <h4 class="font-black text-2xl mb-2 text-black leading-tight">110% AFTER<br>21 DAYS</h4>
+                    </div>
+                    <button onclick="handleCycle('Whale')" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest mt-6">Select Pack</button>
                 </div>
             </div>
 
@@ -242,7 +192,7 @@
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left">
-                        <tbody id="ledgerBody" class="divide-y divide-gray-50 font-medium text-sm">
+                        <tbody class="divide-y divide-gray-50 font-medium text-sm">
                             <tr>
                                 <td class="px-8 py-6 font-mono text-gray-400 text-[10px]">TXN-BONUS-49201</td>
                                 <td class="px-8 py-6 font-bold uppercase">Sign-Up Bonus</td>
@@ -256,13 +206,6 @@
     </main>
 
     <script>
-        function switchPage(pageId) {
-            document.querySelectorAll('.page-section').forEach(section => section.classList.remove('active'));
-            document.getElementById('section-' + pageId).classList.add('active');
-            toggleSidebar();
-            window.scrollTo(0, 0);
-        }
-
         function toggleSidebar() {
             const sb = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebar-overlay');
@@ -274,7 +217,6 @@
                 overlay.style.opacity = "1"; overlay.classList.remove('pointer-events-none');
             }
         }
-
         function openDeposit(asset, addr) {
             document.getElementById('depAsset').innerText = asset;
             document.getElementById('modalAddr').innerText = addr;
@@ -282,24 +224,15 @@
             document.getElementById('global-overlay').style.opacity = "1";
             document.getElementById('global-overlay').classList.remove('pointer-events-none');
         }
-
-        function openWithdraw(asset) {
-            document.getElementById('withAsset').innerText = asset;
-            document.getElementById('withdrawModal').classList.add('active');
-            document.getElementById('global-overlay').style.opacity = "1";
-            document.getElementById('global-overlay').classList.remove('pointer-events-none');
-        }
-
         function closeAllModals() {
             document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
             document.getElementById('global-overlay').style.opacity = "0";
             document.getElementById('global-overlay').classList.add('pointer-events-none');
         }
-
         function completeDeposit() { alert("Deposit Initiated"); closeAllModals(); }
-        function completeWithdrawal() { alert("Withdrawal Requested"); closeAllModals(); }
-        function handleCycle(plan) { alert(plan + " Activated"); }
+        function handleCycle(plan) { alert(plan + " Pack Activated"); }
         function logout() { window.location.reload(); }
+        function switchPage(p) { alert("Navigating to " + p); toggleSidebar(); }
     </script>
 </body>
 </html>
