@@ -110,7 +110,7 @@
                 <span class="text-xl font-bold uppercase tracking-tight">fatCoinCapital</span>
             </div>
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-gray-100 rounded-full border-2 border-white flex items-center justify-center font-bold text-blue-600"><span id="userInitials">DK</span></div>
+                <div class="w-10 h-10 bg-gray-100 rounded-full border-2 border-white flex items-center justify-center font-bold text-blue-600"><span id="userInitials">FT</span></div>
                 <button onclick="toggleSidebar()" class="w-10 h-10 bg-gray-50 border border-gray-200 rounded-xl flex items-center justify-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
                 </button>
@@ -137,7 +137,11 @@
         </div>
 
         <div id="section-dashboard" class="page-section active">
-            <h1 class="text-3xl font-black uppercase mb-10">Welcome, <span id="userNameDisplay" class="text-[#2b59ff]">User</span></h1>
+            
+            <div class="bg-[#0a0b0d] stats-card p-8 text-white shadow-2xl mb-8 border border-gray-800">
+                <p class="text-gray-500 font-bold tracking-widest text-[10px] uppercase mb-1">Authorization Successful</p>
+                <h1 class="text-3xl font-black uppercase tracking-tight">WELCOME, INVESTOR <span id="userNameDisplay" class="text-[#2b59ff]">FT</span></h1>
+            </div>
 
             <div class="bg-[#0a0b0d] stats-card p-10 text-white shadow-2xl mb-12 border border-gray-800">
                 <p class="text-blue-500 font-bold tracking-widest text-[10px] uppercase mb-4">Total Portfolio Value</p>
@@ -329,12 +333,24 @@
         let currentAsset = "";
         let currentAddr = "";
 
+        // JAVASCRIPT: INITIALS & USERNAME DISPLAY LOGIC
         window.onload = function() {
-            const user = localStorage.getItem('fatCoinUser') || "User";
-            document.getElementById('userNameDisplay').innerText = user;
+            // Placeholder: Use full name from storage, e.g., "Faturoti Toyosi"
+            const user = localStorage.getItem('fatCoinUser') || "Investor FT"; 
+            
+            // Logic to derive initials (FT) from the full name
             const parts = user.trim().split(' ');
-            const initials = parts.length > 1 ? (parts[0][0] + parts[parts.length - 1][0]) : parts[0][0];
-            document.getElementById('userInitials').innerText = initials.toUpperCase();
+            let initials = "FT"; // Default backup
+            if (parts.length > 1) {
+                initials = parts[0][0] + parts[parts.length - 1][0];
+            } else if (parts[0]) {
+                initials = parts[0][0];
+            }
+            
+            // Apply initials to the dynamic displays
+            const finalizedInitials = initials.toUpperCase();
+            document.getElementById('userInitials').innerText = finalizedInitials;
+            document.getElementById('userNameDisplay').innerText = finalizedInitials;
         };
 
         function toggleSidebar() {
@@ -381,39 +397,4 @@
             document.getElementById('withAsset').innerText = asset;
             document.getElementById('withdrawModal').classList.add('active');
             document.getElementById('global-overlay').style.opacity = "1";
-            document.getElementById('global-overlay').classList.remove('pointer-events-none');
-        }
-
-        function completeWithdrawal() {
-            const amount = document.getElementById('withAmount').value;
-            const wallet = document.getElementById('withRecipient').value;
-            if(!amount || !wallet) { alert("Please input amount and recipient address."); return; }
-            addLedgerRow(`Pending Withdrawal (${currentAsset})`, `-$${amount}`, "text-red-500");
-            alert("Withdrawal request submitted for approval.");
-            closeAllModals();
-        }
-
-        function handleCycle(plan) {
-            alert(plan + " cycle initiated! Yield will start accumulating once balance is confirmed.");
-        }
-
-        function addLedgerRow(type, amt, color) {
-            const table = document.getElementById('ledgerBody');
-            const row = table.insertRow(0);
-            const id = "TXN-" + Math.floor(Math.random()*90000+10000);
-            row.innerHTML = `<td class="px-8 py-6 font-mono text-gray-400 text-[10px]">${id}</td><td class="px-8 py-6 font-bold uppercase">${type}</td><td class="px-8 py-6 text-right font-black ${color}">${amt}</td>`;
-        }
-
-        function closeAllModals() {
-            document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
-            document.getElementById('global-overlay').style.opacity = "0";
-            document.getElementById('global-overlay').classList.add('pointer-events-none');
-            document.getElementById('depAmount').value = "";
-            document.getElementById('withAmount').value = "";
-            document.getElementById('withRecipient').value = "";
-        }
-
-        function logout() { if(confirm("Logout?")) { localStorage.clear(); window.location.href='index.html'; } }
-    </script>
-</body>
-</html>
+            document.getElementById('
