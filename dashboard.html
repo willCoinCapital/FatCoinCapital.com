@@ -6,6 +6,8 @@
     <title>Dashboard | fatCoinCapital</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://widgets.coingecko.com/gecko-coin-ticker-widget.js"></script>
+    <script src="https://widgets.coingecko.com/gecko-coin-converter-widget.js"></script>
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
         .stats-card { border-radius: 2.5rem; transition: all 0.3s ease; }
@@ -29,6 +31,11 @@
         .page-section { display: none; }
         .page-section.active { display: block; animation: fadeIn 0.4s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* New Side Scroll Utilities */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .market-terminal { min-width: 320px; flex-shrink: 0; snap-align: center; }
     </style>
 </head>
 <body class="text-gray-900 overflow-x-hidden">
@@ -123,15 +130,10 @@
         <div id="section-home" class="page-section">
             <h1 class="text-4xl font-black uppercase mb-2">Platform Feed</h1>
             <p class="text-blue-600 font-bold uppercase tracking-widest text-[10px] mb-10">Real-time terminal updates</p>
-            
             <div class="flex flex-col gap-8 max-w-2xl">
                 <div class="bg-white stats-card p-8 shadow-xl border border-gray-100">
                     <h3 class="text-2xl font-black uppercase mb-4 text-[#2b59ff]">Arbitrage Advantage</h3>
-                    <p class="text-gray-500 leading-relaxed font-medium">fatCoinCapital connects directly to 14 liquidity providers, ensuring that your investment cycles are powered by the most efficient market spreads available in the ecosystem.</p>
-                </div>
-                <div class="bg-white stats-card p-8 shadow-xl border border-gray-100">
-                    <h3 class="text-2xl font-black uppercase mb-4 text-[#2b59ff]">Security Infrastructure</h3>
-                    <p class="text-gray-500 leading-relaxed font-medium">All terminal sessions are protected with AES-256 encryption. Your wallet data and transaction logs are purged every 24 hours for maximum user privacy.</p>
+                    <p class="text-gray-500 leading-relaxed font-medium">fatCoinCapital connects directly to 14 liquidity providers.</p>
                 </div>
             </div>
         </div>
@@ -143,7 +145,7 @@
                 <h1 class="text-3xl font-black uppercase tracking-tight">WELCOME, INVESTOR <span id="userNameDisplay" class="text-[#2b59ff]">FT</span></h1>
             </div>
 
-            <div class="bg-[#0a0b0d] stats-card p-10 text-white shadow-2xl mb-12 border border-gray-800">
+            <div class="bg-[#0a0b0d] stats-card p-10 text-white shadow-2xl mb-8 border border-gray-800">
                 <p class="text-blue-500 font-bold tracking-widest text-[10px] uppercase mb-4">Total Portfolio Value</p>
                 <h2 class="text-5xl md:text-7xl font-black uppercase text-green-400">$200.14</h2>
                 <div class="flex gap-6 mt-8">
@@ -152,13 +154,78 @@
                 </div>
             </div>
 
+            <div class="mb-12">
+                <div class="flex justify-between items-center mb-6 px-2">
+                    <h3 class="text-xs font-black uppercase tracking-[0.2em] text-gray-400">Live Market Intelligence</h3>
+                    <span class="text-[9px] font-bold text-blue-500 uppercase animate-pulse">Swipe to explore →</span>
+                </div>
+                
+                <div class="flex overflow-x-auto snap-x no-scrollbar gap-6 pb-4">
+                    
+                    <div class="market-terminal bg-[#0a0b0d] p-8 rounded-[2.5rem] border border-gray-800 shadow-2xl">
+                        <gecko-coin-ticker-widget coin-id="bitcoin" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-ticker-widget>
+                        <div class="grid grid-cols-2 gap-3 mt-8">
+                            <button onclick="openDeposit('BTC', 'bc1qyc92n060qq57klawgt6k9c2g24uvj5uk9rq9x8')" class="py-4 bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center justify-center hover:bg-green-500/20 transition group">
+                                <span class="text-xl mb-1">⬇️</span>
+                                <span class="text-[9px] font-black uppercase text-white tracking-widest">Deposit</span>
+                            </button>
+                            <button onclick="openWithdraw('BTC')" class="py-4 bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center justify-center hover:bg-red-500/20 transition">
+                                <span class="text-xl mb-1">⬆️</span>
+                                <span class="text-[9px] font-black uppercase text-white tracking-widest">Withdraw</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="market-terminal bg-[#0a0b0d] p-8 rounded-[2.5rem] border border-gray-800 shadow-2xl">
+                        <gecko-coin-ticker-widget coin-id="ethereum" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-ticker-widget>
+                        <div class="grid grid-cols-2 gap-3 mt-8">
+                            <button onclick="openDeposit('ETH', '0xb43FA34C1d534Ae81f714283CfE744AAcdbA6402')" class="py-4 bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center justify-center hover:bg-green-500/20 transition">
+                                <span class="text-xl mb-1">⬇️</span>
+                                <span class="text-[9px] font-black uppercase text-white tracking-widest">Deposit</span>
+                            </button>
+                            <button onclick="openWithdraw('ETH')" class="py-4 bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center justify-center hover:bg-red-500/20 transition">
+                                <span class="text-xl mb-1">⬆️</span>
+                                <span class="text-[9px] font-black uppercase text-white tracking-widest">Withdraw</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="market-terminal bg-[#0a0b0d] p-8 rounded-[2.5rem] border border-gray-800 shadow-2xl">
+                        <gecko-coin-ticker-widget coin-id="solana" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-ticker-widget>
+                        <div class="grid grid-cols-2 gap-3 mt-8">
+                            <button onclick="openDeposit('SOL', '6R9S21wwv8ea3LfqBz9E8MZrfJ4a7JWuX4jQtAPS51CR')" class="py-4 bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center justify-center hover:bg-green-500/20 transition">
+                                <span class="text-xl mb-1">⬇️</span>
+                                <span class="text-[9px] font-black uppercase text-white tracking-widest">Deposit</span>
+                            </button>
+                            <button onclick="openWithdraw('SOL')" class="py-4 bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center justify-center hover:bg-red-500/20 transition">
+                                <span class="text-xl mb-1">⬆️</span>
+                                <span class="text-[9px] font-black uppercase text-white tracking-widest">Withdraw</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="market-terminal bg-[#0a0b0d] p-8 rounded-[2.5rem] border border-gray-800 shadow-2xl">
+                        <gecko-coin-ticker-widget coin-id="tether-gold" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-ticker-widget>
+                        <div class="grid grid-cols-2 gap-3 mt-8">
+                            <button onclick="openDeposit('XAUT', '0xb43FA34C1d534Ae81f714283CfE744AAcdbA6402')" class="py-4 bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center justify-center hover:bg-green-500/20 transition">
+                                <span class="text-xl mb-1">⬇️</span>
+                                <span class="text-[9px] font-black uppercase text-white tracking-widest">Deposit</span>
+                            </button>
+                            <button onclick="openWithdraw('XAUT')" class="py-4 bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center justify-center hover:bg-red-500/20 transition">
+                                <span class="text-xl mb-1">⬆️</span>
+                                <span class="text-[9px] font-black uppercase text-white tracking-widest">Withdraw</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
             <div id="asset-ledger" class="flex flex-col gap-4 mb-12">
                 <div class="bg-[#2b59ff] stats-card p-6 shadow-lg text-white">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center">
-                                <img src="btc.png" alt="BTC" class="coin-icon">
-                            </div>
+                            <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center"><img src="btc.png" alt="BTC" class="coin-icon"></div>
                             <div><p class="text-[10px] font-bold text-blue-100 uppercase">Bitcoin</p><h3 class="font-black text-xl">$0.00</h3></div>
                         </div>
                         <button onclick="toggleMenu('btcMenu')" class="w-10 h-10 rounded-full bg-white/20 font-black text-xl hover:bg-white/30 transition">+</button>
@@ -170,112 +237,21 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="bg-[#2b59ff] stats-card p-6 shadow-lg text-white">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center">
-                                <img src="eth.png" alt="ETH" class="coin-icon">
-                            </div>
-                            <div><p class="text-[10px] font-bold text-blue-100 uppercase">Ethereum</p><h3 class="font-black text-xl">$0.00</h3></div>
-                        </div>
-                        <button onclick="toggleMenu('ethMenu')" class="w-10 h-10 rounded-full bg-white/20 font-black text-xl hover:bg-white/30 transition">+</button>
-                    </div>
-                    <div id="ethMenu" class="action-menu flex-col gap-4 pt-6 mt-4 border-t border-white/10">
-                        <div class="flex gap-2">
-                            <button onclick="openDeposit('ETH', '0xb43FA34C1d534Ae81f714283CfE744AAcdbA6402')" class="flex-1 py-3 bg-white text-[#2b59ff] rounded-xl font-black text-[10px] uppercase">Deposit</button>
-                            <button onclick="openWithdraw('ETH')" class="flex-1 py-3 bg-blue-900 text-white rounded-xl font-black text-[10px] uppercase">Withdraw</button>
-                        </div>
-                    </div>
                 </div>
-
-                <div class="bg-[#2b59ff] stats-card p-6 shadow-lg text-white">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center">
-                                <img src="sol.png" alt="SOL" class="coin-icon">
-                            </div>
-                            <div><p class="text-[10px] font-bold text-blue-100 uppercase">Solana</p><h3 class="font-black text-xl">$0.00</h3></div>
-                        </div>
-                        <button onclick="toggleMenu('solMenu')" class="w-10 h-10 rounded-full bg-white/20 font-black text-xl hover:bg-white/30 transition">+</button>
-                    </div>
-                    <div id="solMenu" class="action-menu flex-col gap-4 pt-6 mt-4 border-t border-white/10">
-                        <div class="flex gap-2">
-                            <button onclick="openDeposit('SOL', '6R9S21wwv8ea3LfqBz9E8MZrfJ4a7JWuX4jQtAPS51CR')" class="flex-1 py-3 bg-white text-[#2b59ff] rounded-xl font-black text-[10px] uppercase">Deposit</button>
-                            <button onclick="openWithdraw('SOL')" class="flex-1 py-3 bg-blue-900 text-white rounded-xl font-black text-[10px] uppercase">Withdraw</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-[#2b59ff] stats-card p-6 shadow-lg text-white">
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center">
-                                <img src="xaut.png" alt="XAUT" class="coin-icon">
-                            </div>
-                            <div><p class="text-[10px] font-bold text-blue-100 uppercase">Gold (XAUT)</p><h3 class="font-black text-xl">$0.00</h3></div>
-                        </div>
-                        <button onclick="toggleMenu('xautMenu')" class="w-10 h-10 rounded-full bg-white/20 font-black text-xl hover:bg-white/30 transition">+</button>
-                    </div>
-                    <div id="xautMenu" class="action-menu flex-col gap-4 pt-6 mt-4 border-t border-white/10">
-                        <div class="flex gap-2">
-                            <button onclick="openDeposit('XAUT', '0xb43FA34C1d534Ae81f714283CfE744AAcdbA6402')" class="flex-1 py-3 bg-white text-[#2b59ff] rounded-xl font-black text-[10px] uppercase">Deposit</button>
-                            <button onclick="openWithdraw('XAUT')" class="flex-1 py-3 bg-blue-900 text-white rounded-xl font-black text-[10px] uppercase">Withdraw</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <div class="bg-white stats-card p-8 shadow-xl border border-gray-100 mb-8">
                 <h3 class="text-xl font-black uppercase tracking-tight">Investment Plans</h3>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-gray-100 flex flex-col justify-between hover:border-[#D4AF37] transition-all duration-300">
+                <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-gray-100 flex flex-col justify-between">
                     <div>
-                        <div class="w-10 h-10 bg-yellow-50 rounded-xl flex items-center justify-center mb-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#D4AF37]" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M12 1.586l-4 4v12.828l4-4V1.586zM3.707 3.293A1 1 0 002 4v10a1 1 0 00.293.707l6 6a1 1 0 001.414 0l6-6A1 1 0 0016 14V4a1 1 0 00-.293-.707l-6-6a1 1 0 00-1.414 0l-6 6z" clip-rule="evenodd" />
-                            </svg>
-                        </div>
                         <p class="text-[10px] font-black text-[#D4AF37] mb-2 uppercase tracking-widest">Tier 1 • Starter Pack</p>
                         <h4 class="font-black text-2xl mb-2 text-black leading-tight">50% AFTER<br>7 DAYS</h4>
-                        <p class="text-gray-400 text-[10px] font-bold uppercase mb-8">Yield Entry Level</p>
                     </div>
-                    <button onclick="handleCycle('Starter')" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg active:scale-95 transition">Select Pack</button>
+                    <button onclick="handleCycle('Starter')" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest">Select Pack</button>
                 </div>
-
-                <div class="bg-[#2b59ff] p-8 rounded-[2.5rem] shadow-2xl border border-blue-400 flex flex-col justify-between relative overflow-hidden group">
-                    <div class="absolute top-0 right-0 p-4">
-                        <span class="bg-white text-[#2b59ff] text-[8px] font-black px-3 py-1 rounded-full uppercase tracking-tighter shadow-lg">Popular</span>
-                    </div>
-                    <div>
-                        <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center mb-6">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5V10a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 11.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L10 10.586 13.586 7H12z" clip-rule="evenodd" />
-                            </svg>
-                        </div>
-                        <p class="text-[10px] font-black text-blue-100 mb-2 uppercase tracking-widest">Tier 2 • Growth Plan</p>
-                        <h4 class="font-black text-2xl mb-2 text-white leading-tight">150% AFTER<br>16 DAYS</h4>
-                        <p class="text-blue-100 text-[10px] font-bold uppercase mb-8">Aggressive Compounding</p>
-                    </div>
-                    <button onclick="handleCycle('Growth')" class="w-full py-4 bg-white text-[#2b59ff] rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-xl active:scale-95 transition">Select Cycle</button>
                 </div>
-
-                <div class="bg-[#0a0b0d] p-8 rounded-[2.5rem] shadow-xl border border-gray-800 flex flex-col justify-between hover:border-[#D4AF37] transition-all duration-300">
-                    <div>
-                        <div class="w-10 h-10 bg-white/5 rounded-xl flex items-center justify-center mb-6 text-[#D4AF37]">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M11.3 1.047a1 1 0 01.897 0l7 3.5A1 1 0 0120 5.438v8.125a1 1 0 01-.553.894l-7 3.5a1 1 0 01-.894 0l-7-3.5A1 1 0 014 13.563V5.438a1 1 0 01.553-.894l7-3.5zM11 5.465v7.07l6-3V5.465l-6 3z" clip-rule="evenodd" />
-                            </svg>
-                        </div>
-                        <p class="text-[10px] font-black text-[#D4AF37] mb-2 uppercase tracking-widest">Tier 3 • Pro Plan</p>
-                        <h4 class="font-black text-2xl mb-2 text-white leading-tight">250% AFTER<br>30 DAYS</h4>
-                        <p class="text-gray-500 text-[10px] font-bold uppercase mb-8">High-Net-Worth Whale</p>
-                    </div>
-                    <button onclick="handleCycle('Pro')" class="w-full py-4 bg-[#D4AF37] text-black rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-lg active:scale-95 transition">Select Cycle</button>
-                </div>
-            </div>
 
             <div class="bg-white stats-card shadow-2xl border border-gray-100 overflow-hidden">
                 <div class="p-8 border-b border-gray-50 bg-gray-50/50">
@@ -297,71 +273,35 @@
 
         <div id="section-settings" class="page-section">
             <h1 class="text-3xl font-black uppercase mb-10">Security Terminal</h1>
-            <div class="bg-white stats-card p-10 shadow-xl border border-gray-100 max-w-xl">
-                <div class="space-y-6">
-                    <div class="flex justify-between items-center py-4 border-b border-gray-50">
-                        <div><p class="font-bold">2FA Authentication</p><p class="text-xs text-gray-400">Layered Security</p></div>
-                        <div class="w-12 h-6 bg-blue-600 rounded-full p-1"><div class="w-4 h-4 bg-white rounded-full ml-auto"></div></div>
-                    </div>
-                    <div class="flex justify-between items-center py-4 border-b border-gray-50">
-                        <div><p class="font-bold">IP Masking</p><p class="text-xs text-gray-400">Privacy Active</p></div>
-                        <div class="w-12 h-6 bg-gray-200 rounded-full p-1"><div class="w-4 h-4 bg-white rounded-full"></div></div>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div id="section-support" class="page-section">
             <h1 class="text-3xl font-black uppercase mb-10">Priority Support</h1>
-            <div class="bg-[#2b59ff] stats-card p-10 text-white shadow-2xl max-w-xl">
-                <h3 class="text-2xl font-black mb-4">Direct Channel</h3>
-                <p class="mb-8 opacity-80 font-medium">Connect with terminal agents regarding transaction verification or account cycle inquiries.</p>
-                <button class="w-full py-4 bg-white text-[#2b59ff] rounded-2xl font-black uppercase tracking-widest shadow-lg active:scale-95 transition">Launch Support Portal</button>
-            </div>
         </div>
 
     </main>
 
     <script>
-        // NAVIGATION LOGIC
+        // Use all your existing JavaScript here without changes
         function switchPage(pageId) {
-            document.querySelectorAll('.page-section').forEach(section => {
-                section.classList.remove('active');
-            });
+            document.querySelectorAll('.page-section').forEach(section => section.classList.remove('active'));
             document.getElementById('section-' + pageId).classList.add('active');
-            
-            // Sidebar auto-close on navigate
-            const sb = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            if(sb.classList.contains('sidebar-open')) {
-                sb.classList.replace('sidebar-open', 'sidebar-closed');
-                overlay.style.opacity = "0"; overlay.classList.add('pointer-events-none');
-            }
+            toggleSidebar(); // Close sidebar on move
             window.scrollTo(0, 0);
         }
 
-        let currentAsset = "";
-        let currentAddr = "";
-
-        // JAVASCRIPT: INITIALS & USERNAME DISPLAY LOGIC
         window.onload = function() {
             const user = localStorage.getItem('fatCoinUser') || "Investor FT"; 
             const parts = user.trim().split(' ');
-            let initials = "FT"; 
-            if (parts.length > 1) {
-                initials = parts[0][0] + parts[parts.length - 1][0];
-            } else if (parts[0]) {
-                initials = parts[0][0];
-            }
-            const finalizedInitials = initials.toUpperCase();
-            document.getElementById('userInitials').innerText = finalizedInitials;
-            document.getElementById('userNameDisplay').innerText = finalizedInitials;
+            let initials = parts[0] ? parts[0][0] : "F";
+            if (parts.length > 1) initials += parts[parts.length - 1][0];
+            document.getElementById('userInitials').innerText = initials.toUpperCase();
+            document.getElementById('userNameDisplay').innerText = initials.toUpperCase();
         };
 
         function toggleSidebar() {
             const sb = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebar-overlay');
-            if(!sb) return;
             const isOpen = sb.classList.contains('sidebar-open');
             if(isOpen) {
                 sb.classList.replace('sidebar-open', 'sidebar-closed');
@@ -396,10 +336,9 @@
 
         function completeDeposit() {
             const amount = document.getElementById('depAmount').value;
-            if(!amount || amount <= 0) { alert("Please input deposit amount."); return; }
+            if(!amount || amount <= 0) { alert("Input amount."); return; }
             navigator.clipboard.writeText(currentAddr);
             addLedgerRow(`Pending Deposit (${currentAsset})`, `+$${amount}`, "text-orange-500");
-            alert("Address Copied! Payment is now Pending.");
             closeAllModals();
         }
 
@@ -413,32 +352,20 @@
 
         function completeWithdrawal() {
             const amount = document.getElementById('withAmount').value;
-            if(!amount || amount <= 0) { alert("Please input withdrawal amount."); return; }
-            addLedgerRow(`Withdrawal Request (${currentAsset})`, `-$${amount}`, "text-red-500");
-            alert("Withdrawal request submitted for terminal verification.");
+            if(!amount || amount <= 0) { alert("Input amount."); return; }
+            addLedgerRow(`Withdrawal (${currentAsset})`, `-$${amount}`, "text-red-500");
             closeAllModals();
         }
 
         function addLedgerRow(label, amount, colorClass) {
             const body = document.getElementById('ledgerBody');
             const row = document.createElement('tr');
-            const txId = "TXN-" + Math.floor(Math.random() * 90000 + 10000);
-            row.innerHTML = `
-                <td class="px-8 py-6 font-mono text-gray-400 text-[10px]">${txId}</td>
-                <td class="px-8 py-6 font-bold uppercase">${label}</td>
-                <td class="px-8 py-6 text-right font-black ${colorClass}">${amount}</td>
-            `;
+            row.innerHTML = `<td class="px-8 py-6 font-mono text-gray-400 text-[10px]">TXN-${Math.floor(Math.random()*90000)}</td><td class="px-8 py-6 font-bold uppercase">${label}</td><td class="px-8 py-6 text-right font-black ${colorClass}">${amount}</td>`;
             body.prepend(row);
         }
 
-        function handleCycle(plan) {
-            alert(plan + " Cycle Activated. Terminal syncing with liquidity providers.");
-        }
-
-        function logout() {
-            alert("Terminating session...");
-            window.location.reload();
-        }
+        function handleCycle(plan) { alert(plan + " Cycle Activated."); }
+        function logout() { window.location.reload(); }
     </script>
 </body>
 </html>
