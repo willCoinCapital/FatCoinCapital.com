@@ -139,7 +139,7 @@
         <div id="section-dashboard" class="page-section active">
             
             <div class="bg-[#0a0b0d] stats-card p-8 text-white shadow-2xl mb-8 border border-gray-800">
-                <p class="text-gray-500 font-bold tracking-widest text-[10px] uppercase mb-1">Authorization Successful</p>
+                <p class="text-gray-500 font-bold tracking-widest text-[10px] uppercase mb-1">DASHBOARD</p>
                 <h1 class="text-3xl font-black uppercase tracking-tight">WELCOME, INVESTOR <span id="userNameDisplay" class="text-[#2b59ff]">FT</span></h1>
             </div>
 
@@ -226,7 +226,10 @@
                 </div>
             </div>
 
-            <h3 class="text-xl font-black uppercase mb-6 tracking-tight">Investment Plans</h3>
+            <div class="bg-white stats-card p-8 shadow-xl border border-gray-100 mb-8">
+                <h3 class="text-xl font-black uppercase tracking-tight">Investment Plans</h3>
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
                 <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-gray-100 flex flex-col justify-between hover:border-[#D4AF37] transition-all duration-300">
                     <div>
@@ -326,7 +329,14 @@
                 section.classList.remove('active');
             });
             document.getElementById('section-' + pageId).classList.add('active');
-            toggleSidebar();
+            
+            // Sidebar auto-close on navigate
+            const sb = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            if(sb.classList.contains('sidebar-open')) {
+                sb.classList.replace('sidebar-open', 'sidebar-closed');
+                overlay.style.opacity = "0"; overlay.classList.add('pointer-events-none');
+            }
             window.scrollTo(0, 0);
         }
 
@@ -335,19 +345,14 @@
 
         // JAVASCRIPT: INITIALS & USERNAME DISPLAY LOGIC
         window.onload = function() {
-            // Placeholder: Use full name from storage, e.g., "Faturoti Toyosi"
             const user = localStorage.getItem('fatCoinUser') || "Investor FT"; 
-            
-            // Logic to derive initials (FT) from the full name
             const parts = user.trim().split(' ');
-            let initials = "FT"; // Default backup
+            let initials = "FT"; 
             if (parts.length > 1) {
                 initials = parts[0][0] + parts[parts.length - 1][0];
             } else if (parts[0]) {
                 initials = parts[0][0];
             }
-            
-            // Apply initials to the dynamic displays
             const finalizedInitials = initials.toUpperCase();
             document.getElementById('userInitials').innerText = finalizedInitials;
             document.getElementById('userNameDisplay').innerText = finalizedInitials;
@@ -383,6 +388,12 @@
             document.getElementById('global-overlay').classList.remove('pointer-events-none');
         }
 
+        function closeAllModals() {
+            document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
+            document.getElementById('global-overlay').style.opacity = "0";
+            document.getElementById('global-overlay').classList.add('pointer-events-none');
+        }
+
         function completeDeposit() {
             const amount = document.getElementById('depAmount').value;
             if(!amount || amount <= 0) { alert("Please input deposit amount."); return; }
@@ -397,4 +408,37 @@
             document.getElementById('withAsset').innerText = asset;
             document.getElementById('withdrawModal').classList.add('active');
             document.getElementById('global-overlay').style.opacity = "1";
-            document.getElementById('
+            document.getElementById('global-overlay').classList.remove('pointer-events-none');
+        }
+
+        function completeWithdrawal() {
+            const amount = document.getElementById('withAmount').value;
+            if(!amount || amount <= 0) { alert("Please input withdrawal amount."); return; }
+            addLedgerRow(`Withdrawal Request (${currentAsset})`, `-$${amount}`, "text-red-500");
+            alert("Withdrawal request submitted for terminal verification.");
+            closeAllModals();
+        }
+
+        function addLedgerRow(label, amount, colorClass) {
+            const body = document.getElementById('ledgerBody');
+            const row = document.createElement('tr');
+            const txId = "TXN-" + Math.floor(Math.random() * 90000 + 10000);
+            row.innerHTML = `
+                <td class="px-8 py-6 font-mono text-gray-400 text-[10px]">${txId}</td>
+                <td class="px-8 py-6 font-bold uppercase">${label}</td>
+                <td class="px-8 py-6 text-right font-black ${colorClass}">${amount}</td>
+            `;
+            body.prepend(row);
+        }
+
+        function handleCycle(plan) {
+            alert(plan + " Cycle Activated. Terminal syncing with liquidity providers.");
+        }
+
+        function logout() {
+            alert("Terminating session...");
+            window.location.reload();
+        }
+    </script>
+</body>
+</html>
