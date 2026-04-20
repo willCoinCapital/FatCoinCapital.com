@@ -11,7 +11,7 @@
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
         .stats-card { border-radius: 2.5rem; transition: all 0.3s ease; }
-        #sidebar { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); z-index: 200; } /* Increased Z-Index */
+        #sidebar { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); z-index: 200; }
         .sidebar-closed { transform: translateX(100%); }
         .sidebar-open { transform: translateX(0); }
         .modal { display: none; position: fixed; inset: 0; z-index: 300; align-items: center; justify-content: center; padding: 1.5rem; }
@@ -32,6 +32,22 @@
             flex-shrink: 0;
             snap-align: center;
         }
+
+        /* Updated Button Styles to match reference image */
+        .action-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1.5rem;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+        }
+        .action-btn:active { transform: scale(0.95); background: rgba(255, 255, 255, 0.1); }
+        .action-btn svg { width: 28px; height: 28px; stroke: #9ca3af; stroke-width: 1.5; fill: none; }
     </style>
 </head>
 <body class="text-gray-900 overflow-x-hidden">
@@ -42,7 +58,7 @@
     <div id="depositModal" class="modal">
         <div class="modal-content">
             <div class="flex justify-between items-start mb-2">
-                <h2 class="text-2xl font-black uppercase">Deposit <span id="depAsset" class="text-blue-600">---</span></h2>
+                <h2 class="text-2xl font-black uppercase">Receive <span id="depAsset" class="text-blue-600">---</span></h2>
                 <button onclick="closeAllModals()" class="text-gray-400 hover:text-black transition">✕</button>
             </div>
             <p class="text-gray-400 text-[10px] font-bold uppercase mb-6">Enter amount to view wallet address</p>
@@ -83,7 +99,6 @@
     </header>
 
     <main class="max-w-7xl mx-auto px-6 py-10 pb-32">
-        
         <div class="bg-[#0a0b0d] stats-card p-8 text-white shadow-2xl mb-8 border border-gray-800">
             <p class="text-gray-500 font-bold tracking-widest text-[10px] uppercase mb-1">Terminal Active</p>
             <h1 class="text-3xl font-black uppercase tracking-tight">WELCOME, INVESTOR <span class="text-[#2b59ff]">F</span></h1>
@@ -104,50 +119,63 @@
                 <span class="text-[9px] font-bold text-blue-500 uppercase animate-pulse">Swipe to explore →</span>
             </div>
             <div class="flex overflow-x-auto snap-x no-scrollbar gap-6 pb-4">
+                
                 <div class="market-terminal bg-[#0a0b0d] p-8 rounded-[2.5rem] border border-gray-800 shadow-2xl">
                     <gecko-coin-ticker-widget coin-id="bitcoin" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-ticker-widget>
                     <div class="grid grid-cols-2 gap-3 mt-8">
-                        <button onclick="openDeposit('BTC', 'bc1qyc...rq9x8')" class="py-4 bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center justify-center hover:bg-green-500/20 transition">
-                            <span class="text-xl mb-1">⬇️</span><span class="text-[9px] font-black uppercase text-white tracking-widest">Deposit</span>
+                        <button onclick="openDeposit('BTC', 'bc1qyc...rq9x8')" class="action-btn">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v8m-4-4l4 4 4-4"/></svg>
+                            <span class="text-[9px] font-black uppercase text-white tracking-widest">Receive</span>
                         </button>
-                        <button onclick="alert('Withdrawal Locked')" class="py-4 bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center justify-center hover:bg-red-500/20 transition">
-                            <span class="text-xl mb-1">⬆️</span><span class="text-[9px] font-black uppercase text-white tracking-widest">Withdraw</span>
+                        <button onclick="alert('Withdrawal Locked')" class="action-btn">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8m-4-4l4 4-4 4"/></svg>
+                            <span class="text-[9px] font-black uppercase text-white tracking-widest">Send</span>
                         </button>
                     </div>
                 </div>
+
                 <div class="market-terminal bg-[#0a0b0d] p-8 rounded-[2.5rem] border border-gray-800 shadow-2xl">
                     <gecko-coin-ticker-widget coin-id="ethereum" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-ticker-widget>
                     <div class="grid grid-cols-2 gap-3 mt-8">
-                        <button onclick="openDeposit('ETH', '0xb43F...6402')" class="py-4 bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center justify-center hover:bg-green-500/20 transition">
-                            <span class="text-xl mb-1">⬇️</span><span class="text-[9px] font-black uppercase text-white tracking-widest">Deposit</span>
+                        <button onclick="openDeposit('ETH', '0xb43F...6402')" class="action-btn">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v8m-4-4l4 4 4-4"/></svg>
+                            <span class="text-[9px] font-black uppercase text-white tracking-widest">Receive</span>
                         </button>
-                        <button onclick="alert('Withdrawal Locked')" class="py-4 bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center justify-center hover:bg-red-500/20 transition">
-                            <span class="text-xl mb-1">⬆️</span><span class="text-[9px] font-black uppercase text-white tracking-widest">Withdraw</span>
+                        <button onclick="alert('Withdrawal Locked')" class="action-btn">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8m-4-4l4 4-4 4"/></svg>
+                            <span class="text-[9px] font-black uppercase text-white tracking-widest">Send</span>
                         </button>
                     </div>
                 </div>
+
                 <div class="market-terminal bg-[#0a0b0d] p-8 rounded-[2.5rem] border border-gray-800 shadow-2xl">
                     <gecko-coin-ticker-widget coin-id="solana" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-ticker-widget>
                     <div class="grid grid-cols-2 gap-3 mt-8">
-                        <button onclick="openDeposit('SOL', 'SOL-WALLET-ADDR')" class="py-4 bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center justify-center hover:bg-green-500/20 transition">
-                            <span class="text-xl mb-1">⬇️</span><span class="text-[9px] font-black uppercase text-white tracking-widest">Deposit</span>
+                        <button onclick="openDeposit('SOL', 'SOL-WALLET-ADDR')" class="action-btn">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v8m-4-4l4 4 4-4"/></svg>
+                            <span class="text-[9px] font-black uppercase text-white tracking-widest">Receive</span>
                         </button>
-                        <button onclick="alert('Withdrawal Locked')" class="py-4 bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center justify-center hover:bg-red-500/20 transition">
-                            <span class="text-xl mb-1">⬆️</span><span class="text-[9px] font-black uppercase text-white tracking-widest">Withdraw</span>
+                        <button onclick="alert('Withdrawal Locked')" class="action-btn">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8m-4-4l4 4-4 4"/></svg>
+                            <span class="text-[9px] font-black uppercase text-white tracking-widest">Send</span>
                         </button>
                     </div>
                 </div>
+
                 <div class="market-terminal bg-[#0a0b0d] p-8 rounded-[2.5rem] border border-gray-800 shadow-2xl">
                     <gecko-coin-ticker-widget coin-id="tether-gold" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-ticker-widget>
                     <div class="grid grid-cols-2 gap-3 mt-8">
-                        <button onclick="openDeposit('XAUT', 'XAUT-WALLET-ADDR')" class="py-4 bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center justify-center hover:bg-green-500/20 transition">
-                            <span class="text-xl mb-1">⬇️</span><span class="text-[9px] font-black uppercase text-white tracking-widest">Deposit</span>
+                        <button onclick="openDeposit('XAUT', 'XAUT-WALLET-ADDR')" class="action-btn">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v8m-4-4l4 4 4-4"/></svg>
+                            <span class="text-[9px] font-black uppercase text-white tracking-widest">Receive</span>
                         </button>
-                        <button onclick="alert('Withdrawal Locked')" class="py-4 bg-white/5 border border-white/10 rounded-2xl flex flex-col items-center justify-center hover:bg-red-500/20 transition">
-                            <span class="text-xl mb-1">⬆️</span><span class="text-[9px] font-black uppercase text-white tracking-widest">Withdraw</span>
+                        <button onclick="alert('Withdrawal Locked')" class="action-btn">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8m-4-4l4 4-4 4"/></svg>
+                            <span class="text-[9px] font-black uppercase text-white tracking-widest">Send</span>
                         </button>
                     </div>
                 </div>
+
             </div>
         </div>
 
@@ -162,7 +190,7 @@
                             <img src="https://assets.coingecko.com/coins/images/1/small/bitcoin.png" class="w-8 h-8" alt="BTC">
                             <div><p class="text-white font-black text-xl leading-none">BTC</p><p class="text-[9px] text-gray-500 uppercase font-bold tracking-widest">Bitcoin</p></div>
                         </div>
-                        <span class="text-[10px] font-black text-green-400 uppercase tracking-tighter shadow-sm">Live →</span>
+                        <span class="text-[10px] font-black text-green-400 uppercase tracking-tighter">Live →</span>
                     </div>
                     <div class="bg-black/40 rounded-xl p-3 border border-white/5">
                         <gecko-coin-converter-widget coin-id="bitcoin" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-converter-widget>
@@ -277,7 +305,7 @@
             document.getElementById('global-overlay').style.opacity = "0";
             document.getElementById('global-overlay').classList.add('pointer-events-none');
         }
-        function completeDeposit() { alert("Deposit Initiated"); closeAllModals(); }
+        function completeDeposit() { alert("Receive Request Initiated"); closeAllModals(); }
         
         function logout() { 
             if(confirm("Are you sure you want to logout?")) {
