@@ -40,7 +40,6 @@
         .action-btn:active { transform: scale(0.95); background: rgba(255, 255, 255, 0.1); }
         .action-btn svg { width: 30px; height: 30px; stroke: #9ca3af; stroke-width: 1.5; fill: none; }
 
-        /* Investment Environment Overlay */
         .invest-overlay { position: fixed; inset: 0; background: white; z-index: 3000; overflow-y: auto; display: none; }
         .invest-overlay.active { display: block; }
     </style>
@@ -159,11 +158,6 @@
     </header>
 
     <main class="max-w-7xl mx-auto px-6 py-10 pb-32">
-        <div class="bg-[#0a0b0d] stats-card p-8 text-white shadow-2xl mb-8 border border-gray-800">
-            <p class="text-gray-500 font-bold tracking-widest text-[10px] uppercase mb-1">Terminal Active</p>
-            <h1 class="text-3xl font-black uppercase">WELCOME, INVESTOR <span class="text-[#2b59ff]">F</span></h1>
-        </div>
-
         <div class="bg-[#0a0b0d] stats-card p-10 text-white shadow-2xl mb-8 border border-gray-800">
             <p class="text-blue-500 font-bold tracking-widest text-[10px] uppercase mb-4">Total Portfolio Value</p>
             <h2 class="text-6xl font-black uppercase text-green-400">$200.14</h2>
@@ -179,27 +173,71 @@
                 <div class="market-terminal bg-[#0a0b0d] p-10 rounded-[2.8rem] border border-gray-800 shadow-2xl">
                     <gecko-coin-ticker-widget coin-id="bitcoin" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-ticker-widget>
                     <div class="grid grid-cols-2 gap-4 mt-10">
-                        <button onclick="openDeposit('BTC', 'bc1qyc...rq9x8')" class="action-btn">
-                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v8m-4-4l4 4 4-4"/></svg>
-                            <span class="text-[10px] font-black uppercase text-white tracking-widest">Receive</span>
-                        </button>
-                        <button onclick="openWithdraw('BTC')" class="action-btn">
-                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8m-4-4l4 4-4 4"/></svg>
-                            <span class="text-[10px] font-black uppercase text-white tracking-widest">Send</span>
-                        </button>
+                        <button onclick="openDeposit('BTC', 'bc1qyc...rq9x8')" class="action-btn"><span class="text-[10px] font-black uppercase text-white">Receive</span></button>
+                        <button onclick="openWithdraw('BTC')" class="action-btn"><span class="text-[10px] font-black uppercase text-white">Send</span></button>
                     </div>
                 </div>
                 <div class="market-terminal bg-[#0a0b0d] p-10 rounded-[2.8rem] border border-gray-800 shadow-2xl">
                     <gecko-coin-ticker-widget coin-id="ethereum" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-ticker-widget>
                     <div class="grid grid-cols-2 gap-4 mt-10">
-                        <button onclick="openDeposit('ETH', '0xb43F...6402')" class="action-btn">
-                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v8m-4-4l4 4 4-4"/></svg>
-                            <span class="text-[10px] font-black uppercase text-white tracking-widest">Receive</span>
-                        </button>
-                        <button onclick="openWithdraw('ETH')" class="action-btn">
-                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8m-4-4l4 4-4 4"/></svg>
-                            <span class="text-[10px] font-black uppercase text-white tracking-widest">Send</span>
-                        </button>
+                        <button onclick="openDeposit('ETH', '0xb43F...6402')" class="action-btn"><span class="text-[10px] font-black uppercase text-white">Receive</span></button>
+                        <button onclick="openWithdraw('ETH')" class="action-btn"><span class="text-[10px] font-black uppercase text-white">Send</span></button>
+                    </div>
+                </div>
+                <div class="market-terminal bg-[#0a0b0d] p-10 rounded-[2.8rem] border border-gray-800 shadow-2xl">
+                    <gecko-coin-ticker-widget coin-id="solana" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-ticker-widget>
+                    <div class="grid grid-cols-2 gap-4 mt-10">
+                        <button onclick="openDeposit('SOL', 'SOL-ADDR-99')" class="action-btn"><span class="text-[10px] font-black uppercase text-white">Receive</span></button>
+                        <button onclick="openWithdraw('SOL')" class="action-btn"><span class="text-[10px] font-black uppercase text-white">Send</span></button>
+                    </div>
+                </div>
+                <div class="market-terminal bg-[#0a0b0d] p-10 rounded-[2.8rem] border border-gray-800 shadow-2xl">
+                    <gecko-coin-ticker-widget coin-id="tether-gold" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-ticker-widget>
+                    <div class="grid grid-cols-2 gap-4 mt-10">
+                        <button onclick="openDeposit('XAUT', 'XAUT-ADDR-00')" class="action-btn"><span class="text-[10px] font-black uppercase text-white">Receive</span></button>
+                        <button onclick="openWithdraw('XAUT')" class="action-btn"><span class="text-[10px] font-black uppercase text-white">Send</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-12">
+            <h3 class="text-xs font-black uppercase tracking-[0.2em] text-gray-400 mb-6 px-2">Portfolio Conversions</h3>
+            <div class="flex overflow-x-auto snap-x no-scrollbar gap-6 pb-4 px-2">
+                <div class="asset-card-compact flex flex-col justify-between">
+                    <div class="flex justify-between items-center mb-6">
+                        <div class="flex items-center gap-3"><img src="https://assets.coingecko.com/coins/images/1/small/bitcoin.png" class="w-10 h-10"><p class="text-white font-black text-2xl">BTC</p></div>
+                        <span class="text-[10px] font-black text-green-400">LIVE</span>
+                    </div>
+                    <div class="bg-black/30 rounded-2xl p-4 border border-white/5">
+                        <gecko-coin-converter-widget coin-id="bitcoin" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-converter-widget>
+                    </div>
+                </div>
+                <div class="asset-card-compact flex flex-col justify-between">
+                    <div class="flex justify-between items-center mb-6">
+                        <div class="flex items-center gap-3"><img src="https://assets.coingecko.com/coins/images/279/small/ethereum.png" class="w-10 h-10"><p class="text-white font-black text-2xl">ETH</p></div>
+                        <span class="text-[10px] font-black text-green-400">LIVE</span>
+                    </div>
+                    <div class="bg-black/30 rounded-2xl p-4 border border-white/5">
+                        <gecko-coin-converter-widget coin-id="ethereum" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-converter-widget>
+                    </div>
+                </div>
+                <div class="asset-card-compact flex flex-col justify-between">
+                    <div class="flex justify-between items-center mb-6">
+                        <div class="flex items-center gap-3"><img src="https://assets.coingecko.com/coins/images/4128/small/solana.png" class="w-10 h-10"><p class="text-white font-black text-2xl">SOL</p></div>
+                        <span class="text-[10px] font-black text-green-400">LIVE</span>
+                    </div>
+                    <div class="bg-black/30 rounded-2xl p-4 border border-white/5">
+                        <gecko-coin-converter-widget coin-id="solana" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-converter-widget>
+                    </div>
+                </div>
+                <div class="asset-card-compact flex flex-col justify-between">
+                    <div class="flex justify-between items-center mb-6">
+                        <div class="flex items-center gap-3"><img src="https://assets.coingecko.com/coins/images/10481/small/tether-gold.png" class="w-10 h-10"><p class="text-white font-black text-2xl">XAUT</p></div>
+                        <span class="text-[10px] font-black text-green-400">LIVE</span>
+                    </div>
+                    <div class="bg-black/30 rounded-2xl p-4 border border-white/5">
+                        <gecko-coin-converter-widget coin-id="tether-gold" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-converter-widget>
                     </div>
                 </div>
             </div>
@@ -208,42 +246,24 @@
         <h3 class="text-xs font-black uppercase tracking-[0.2em] text-gray-400 mb-6 px-2">Growth Strategies</h3>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
             <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-gray-100 flex flex-col justify-between">
-                <div>
-                    <p class="text-[10px] font-black text-blue-500 mb-2 uppercase tracking-widest">Tier 1</p>
-                    <h4 class="font-black text-2xl mb-1 text-black uppercase">Starter Plan</h4>
-                    <p class="text-green-600 font-bold text-sm">50% YIELD IN 7 DAYS</p>
-                </div>
-                <button onclick="openInvestmentPage(1)" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest mt-6">Select Plan</button>
+                <div><p class="text-[10px] font-black text-blue-500 mb-2 uppercase">Tier 1</p><h4 class="font-black text-2xl mb-1 uppercase">Starter Plan</h4><p class="text-green-600 font-bold text-sm">50% YIELD IN 7 DAYS</p></div>
+                <button onclick="openInvestmentPage(1)" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-[10px] uppercase mt-6">Select Plan</button>
             </div>
             <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-gray-100 flex flex-col justify-between">
-                <div>
-                    <p class="text-[10px] font-black text-blue-600 mb-2 uppercase tracking-widest">Tier 2</p>
-                    <h4 class="font-black text-2xl mb-1 text-black uppercase">Pro Investor</h4>
-                    <p class="text-green-600 font-bold text-sm">150% YIELD IN 16 DAYS</p>
-                </div>
-                <button onclick="openInvestmentPage(2)" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest mt-6">Select Plan</button>
+                <div><p class="text-[10px] font-black text-blue-600 mb-2 uppercase">Tier 2</p><h4 class="font-black text-2xl mb-1 uppercase">Pro Investor</h4><p class="text-green-600 font-bold text-sm">150% YIELD IN 16 DAYS</p></div>
+                <button onclick="openInvestmentPage(2)" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-[10px] uppercase mt-6">Select Plan</button>
             </div>
             <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-gray-100 flex flex-col justify-between">
-                <div>
-                    <p class="text-[10px] font-black text-blue-600 mb-2 uppercase tracking-widest">Tier 3</p>
-                    <h4 class="font-black text-2xl mb-1 text-black uppercase">Top Investor</h4>
-                    <p class="text-green-600 font-bold text-sm">250% YIELD IN 30 DAYS</p>
-                </div>
-                <button onclick="openInvestmentPage(3)" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest mt-6">Select Plan</button>
+                <div><p class="text-[10px] font-black text-blue-600 mb-2 uppercase">Tier 3</p><h4 class="font-black text-2xl mb-1 uppercase">Top Investor</h4><p class="text-green-600 font-bold text-sm">250% YIELD IN 30 DAYS</p></div>
+                <button onclick="openInvestmentPage(3)" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-[10px] uppercase mt-6">Select Plan</button>
             </div>
         </div>
 
         <div class="bg-white stats-card shadow-2xl border border-gray-100 overflow-hidden">
-            <div class="p-8 border-b border-gray-50 bg-gray-50/50">
-                <h3 class="text-xl font-black uppercase tracking-tight">System Ledger</h3>
-            </div>
+            <div class="p-8 border-b border-gray-50 bg-gray-50/50"><h3 class="text-xl font-black uppercase tracking-tight">System Ledger</h3></div>
             <table class="w-full text-left">
                 <tbody class="divide-y divide-gray-50 font-medium text-sm">
-                    <tr>
-                        <td class="px-8 py-6 font-mono text-gray-400 text-[10px]">TXN-BONUS-49201</td>
-                        <td class="px-8 py-6 font-bold uppercase">Registration Bonus</td>
-                        <td class="px-8 py-6 text-right font-black text-green-600">+$200.00</td>
-                    </tr>
+                    <tr><td class="px-8 py-6 font-mono text-gray-400 text-[10px]">TXN-BONUS-49201</td><td class="px-8 py-6 font-bold uppercase">Registration Bonus</td><td class="px-8 py-6 text-right font-black text-green-600">+$200.00</td></tr>
                 </tbody>
             </table>
         </div>
@@ -252,7 +272,6 @@
     <script>
         const userPortfolioBalance = 200.14; 
         let activePlanTier = null;
-
         const plans = {
             1: { name: "Starter Plan", yield: "50% Yield", cycle: "7 Days", min: 500 },
             2: { name: "Pro Investor", yield: "150% Yield", cycle: "16 Days", min: 1000 },
@@ -262,36 +281,24 @@
         function openInvestmentPage(tier) {
             activePlanTier = tier;
             const plan = plans[tier];
-            
             document.getElementById('displayPlanName').innerText = plan.name;
             document.getElementById('displayPlanYield').innerText = plan.yield;
             document.getElementById('displayPlanCycle').innerText = plan.cycle;
             document.getElementById('minReqLabel').innerText = `Verification Requirement: $${plan.min}.00 USD Balance`;
-            document.getElementById('investInput').value = "";
-            
             document.getElementById('investPage').classList.add('active');
             window.scrollTo(0,0);
         }
 
-        function closeInvestmentPage() {
-            document.getElementById('investPage').classList.remove('active');
-            activePlanTier = null;
-        }
+        function closeInvestmentPage() { document.getElementById('investPage').classList.remove('active'); activePlanTier = null; }
 
         function processActivation() {
             const plan = plans[activePlanTier];
             const amount = parseFloat(document.getElementById('investInput').value);
-
-            if (!amount || amount <= 0) {
-                handleProfessionalAction("Please enter a valid investment amount.");
-                return;
-            }
-
-            // Logic Gate
+            if (!amount || amount <= 0) { handleProfessionalAction("Enter a valid amount."); return; }
             if (userPortfolioBalance < plan.min) {
-                handleProfessionalAction(`Insufficient Terminal Funds. Your current balance ($${userPortfolioBalance}) does not meet the $${plan.min} requirement for this strategy.`);
+                handleProfessionalAction(`Insufficient Terminal Funds. Strategy requires $${plan.min} min balance.`);
             } else {
-                handleProfessionalAction(`${plan.name} Strategy Initiated. Deployment in progress.`);
+                handleProfessionalAction(`${plan.name} Strategy Initiated.`);
                 closeInvestmentPage();
             }
         }
@@ -336,9 +343,9 @@
             document.getElementById('global-overlay').classList.remove('pointer-events-none');
         }
 
-        function logout() { 
-            if(confirm("Terminate session?")) window.location.href = "index.html"; 
-        }
+        function logout() { if(confirm("Terminate session?")) window.location.href = "index.html"; }
     </script>
 </body>
 </html>
+
+
