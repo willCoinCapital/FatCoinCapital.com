@@ -163,6 +163,34 @@
                         </button>
                     </div>
                 </div>
+
+                <div class="market-terminal bg-[#0a0b0d] p-8 rounded-[2.5rem] border border-gray-800 shadow-2xl">
+                    <gecko-coin-ticker-widget coin-id="solana" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-ticker-widget>
+                    <div class="grid grid-cols-2 gap-3 mt-8">
+                        <button onclick="openDeposit('SOL', 'SOL-WALLET-ADDR')" class="action-btn">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v8m-4-4l4 4 4-4"/></svg>
+                            <span class="text-[9px] font-black uppercase text-white tracking-widest">Receive</span>
+                        </button>
+                        <button onclick="openWithdraw('SOL')" class="action-btn">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8m-4-4l4 4-4 4"/></svg>
+                            <span class="text-[9px] font-black uppercase text-white tracking-widest">Send</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="market-terminal bg-[#0a0b0d] p-8 rounded-[2.5rem] border border-gray-800 shadow-2xl">
+                    <gecko-coin-ticker-widget coin-id="tether-gold" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-ticker-widget>
+                    <div class="grid grid-cols-2 gap-3 mt-8">
+                        <button onclick="openDeposit('XAUT', 'XAUT-WALLET-ADDR')" class="action-btn">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v8m-4-4l4 4 4-4"/></svg>
+                            <span class="text-[9px] font-black uppercase text-white tracking-widest">Receive</span>
+                        </button>
+                        <button onclick="openWithdraw('XAUT')" class="action-btn">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8m-4-4l4 4-4 4"/></svg>
+                            <span class="text-[9px] font-black uppercase text-white tracking-widest">Send</span>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -193,6 +221,30 @@
                     </div>
                     <div class="bg-black/40 rounded-xl p-3 border border-white/5">
                         <gecko-coin-converter-widget coin-id="ethereum" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-converter-widget>
+                    </div>
+                </div>
+                <div class="asset-card-compact flex flex-col justify-between">
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="flex items-center gap-3">
+                            <img src="https://assets.coingecko.com/coins/images/4128/small/solana.png" class="w-8 h-8" alt="SOL">
+                            <div><p class="text-white font-black text-xl leading-none">SOL</p><p class="text-[9px] text-gray-500 uppercase font-bold tracking-widest">Solana</p></div>
+                        </div>
+                        <span class="text-[10px] font-black text-green-400 uppercase tracking-tighter">Live →</span>
+                    </div>
+                    <div class="bg-black/40 rounded-xl p-3 border border-white/5">
+                        <gecko-coin-converter-widget coin-id="solana" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-converter-widget>
+                    </div>
+                </div>
+                <div class="asset-card-compact flex flex-col justify-between">
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="flex items-center gap-3">
+                            <img src="https://assets.coingecko.com/coins/images/10481/small/tether-gold.png" class="w-8 h-8" alt="XAUT">
+                            <div><p class="text-white font-black text-xl leading-none">XAUT</p><p class="text-[9px] text-gray-500 uppercase font-bold tracking-widest">Tether Gold</p></div>
+                        </div>
+                        <span class="text-[10px] font-black text-green-400 uppercase tracking-tighter">Live →</span>
+                    </div>
+                    <div class="bg-black/40 rounded-xl p-3 border border-white/5">
+                        <gecko-coin-converter-widget coin-id="tether-gold" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-converter-widget>
                     </div>
                 </div>
             </div>
