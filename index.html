@@ -17,11 +17,9 @@
         @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
         .ticker-content { display: inline-block; white-space: nowrap; animation: ticker 35s linear infinite; }
         
-        /* Style for new feed cards */
-        .feed-card { transition: transform 0.3s ease; border-radius: 2.5rem; overflow: hidden; background: white; border: 1px solid #f3f4f6; shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); }
+        .feed-card { transition: transform 0.3s ease; border-radius: 2.5rem; overflow: hidden; background: white; border: 1px solid #f3f4f6; box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); }
         .feed-card:hover { transform: translateY(-5px); }
 
-        /* Terminal Card Styling */
         .market-terminal { border-radius: 2.5rem; background: #0a0b0d; border: 1px solid #1f2937; overflow: hidden; margin-bottom: 2.5rem; }
     </style>
 </head>
@@ -115,8 +113,7 @@
         </nav>
     </header>
 
-    <main class="max-w-6xl mx-auto px-4 pb-24">
-        
+    <main id="mainContent" class="max-w-6xl mx-auto px-4 pb-24">
         <div class="pt-8">
             <div class="market-terminal p-6 md:p-10 shadow-2xl">
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
@@ -196,7 +193,6 @@
         <div class="mb-20">
             <h3 class="text-3xl font-black uppercase mb-10 text-center tracking-tighter">Terminal Intelligence Feed</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                
                 <div class="feed-card shadow-lg">
                     <img src="asset-growth.png" alt="Asset Growth" class="w-full aspect-video object-cover">
                     <div class="p-8">
@@ -209,7 +205,6 @@
                         <button onclick="openModal('signup')" class="text-blue-600 font-black uppercase text-xs tracking-widest underline">Learn More</button>
                     </div>
                 </div>
-
                 <div class="feed-card shadow-lg">
                     <img src="arbitrage-logic.png" alt="Arbitrage Logic" class="w-full aspect-video object-cover">
                     <div class="p-8">
@@ -222,29 +217,14 @@
                         <button onclick="openModal('signup')" class="text-blue-600 font-black uppercase text-xs tracking-widest underline">View Strategy</button>
                     </div>
                 </div>
-
-                <div class="feed-card shadow-lg">
-                    <img src="peak-velocity.png" alt="Peak Velocity" class="w-full aspect-video object-cover">
-                    <div class="p-8">
-                        <h4 class="text-2xl font-black uppercase mb-3 text-blue-600">Institutional Scale</h4>
-                        <p class="text-gray-500 text-sm leading-relaxed font-medium">Design infrastructure optimized for high-net-worth performance.</p>
-                    </div>
-                </div>
-
-                <div class="feed-card shadow-lg">
-                    <img src="trust-partnership.png" alt="Trust Partnership" class="w-full aspect-video object-cover">
-                    <div class="p-8">
-                        <h4 class="text-2xl font-black uppercase mb-3">Global Community</h4>
-                        <p class="text-gray-500 text-sm leading-relaxed font-medium">Secured terminal infrastructure for 10,000+ elite investors.</p>
-                    </div>
-                </div>
             </div>
         </div>
+
         <div class="bg-black text-white py-4 rounded-2xl mb-16 overflow-hidden border-y border-blue-500/20">
-            <div class="ticker-content font-bold text-xs tracking-widest uppercase">
+            <div id="scrollingTicker" class="ticker-content font-bold text-xs tracking-widest uppercase">
                 <span class="mx-10 text-blue-500">LIVE FEED:</span>
                 <span>BTC TRADING AT $66,804.14</span>
-                <span class="mx-10 text-green-400">CLAIM $200 BONUS ON SIGN-UP</span>
+                <span class="mx-10 text-green-400">CLAIM <span class="liveBonusText">$200</span> BONUS ON SIGN-UP</span>
             </div>
         </div>
 
@@ -273,7 +253,7 @@
                 </div>
                 <div class="p-8 rounded-[2.5rem] border-4 border-[#2b59ff] bg-white text-blue-900 shadow-2xl">
                     <div class="w-10 h-10 bg-[#2b59ff] text-white rounded-xl flex items-center justify-center mb-6">🎁</div>
-                    <h3 class="font-bold mb-2 uppercase text-sm">5. Instant $200 Bonus</h3>
+                    <h3 class="font-bold mb-2 uppercase text-sm">5. Instant <span class="liveBonusText">$200</span> Bonus</h3>
                     <p class="text-gray-600 text-[10px] font-medium">Starting balance immediately upon registration.</p>
                 </div>
                 <div class="p-8 rounded-[2.5rem] bg-[#2b59ff] text-white shadow-xl">
@@ -286,6 +266,38 @@
     </main>
 
     <script>
+        // --- SIXTEE COMMAND SYNC ---
+        window.onload = function() {
+            // 1. Check Maintenance Mode
+            if (localStorage.getItem('fcc_maint_mode') === 'ON') {
+                document.getElementById('mainContent').innerHTML = `
+                    <div style="height:70vh; display:flex; align-items:center; justify-content:center; text-align:center; padding:20px;">
+                        <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:50px; border-radius:3rem; max-width:500px;">
+                            <h1 style="font-size:28px; font-weight:900; color:#1e293b; margin-bottom:15px;">SYSTEM UPGRADE</h1>
+                            <p style="color:#64748b; font-size:14px; font-weight:500;">Terminal access is temporarily suspended for institutional maintenance. Please check back shortly.</p>
+                            <div style="margin-top:25px; height:4px; width:50px; background:#2b59ff; margin:25px auto; border-radius:10px;"></div>
+                        </div>
+                    </div>
+                `;
+                return; 
+            }
+
+            // 2. Sync Global Ticker Message
+            const tickerMsg = localStorage.getItem('fcc_ticker_msg');
+            if(tickerMsg) {
+                document.getElementById('scrollingTicker').innerHTML = `
+                    <span class="mx-10 text-blue-500">LIVE FEED:</span>
+                    <span>${tickerMsg}</span>
+                `;
+            }
+
+            // 3. Sync Bonus Amounts
+            const bonusAmt = localStorage.getItem('fcc_bonus_amt') || "200";
+            document.querySelectorAll('.liveBonusText').forEach(el => {
+                el.innerText = "$" + bonusAmt;
+            });
+        };
+
         function toggleMenu() {
             document.getElementById('sidebar').classList.toggle('open');
             document.getElementById('overlay').classList.toggle('open');
