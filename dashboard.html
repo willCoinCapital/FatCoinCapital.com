@@ -27,7 +27,7 @@
         .market-terminal { min-width: 320px; flex-shrink: 0; snap-align: center; background: white; border-radius: 2.5rem; border: 1px solid #e2e8f0; padding: 2rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05); }
         
         .asset-card-compact {
-            min-width: 310px; min-height: 240px;
+            min-width: 310px; min-height: 280px;
             background: #ffffff; border: 1px solid #e2e8f0; border-radius: 2.2rem;
             padding: 1.75rem; flex-shrink: 0; snap-align: center;
         }
@@ -100,13 +100,6 @@
                 <button class="w-full flex justify-between items-center p-6 bg-white rounded-2xl border border-gray-100 font-black uppercase text-xs">Update withdrawal PIN <span class="text-blue-600">→</span></button>
                 <button class="w-full flex justify-between items-center p-6 bg-white rounded-2xl border border-gray-100 font-black uppercase text-xs">2FA Status <span class="text-green-500">Enabled</span></button>
                 <button class="w-full flex justify-between items-center p-6 bg-white rounded-2xl border border-gray-100 font-black uppercase text-xs">Authorized IP <span class="text-slate-400">VPN MASKED</span></button>
-            </div>
-            <div class="mt-10 p-6 border-2 border-dashed border-blue-100 rounded-[2rem] text-center">
-                <p class="text-[10px] font-black text-slate-400 uppercase mb-4 tracking-widest">Active Security Node</p>
-                <div class="flex items-center justify-center gap-3">
-                    <div class="w-2 h-2 bg-blue-600 rounded-full animate-pulse"></div>
-                    <span class="font-mono text-xs font-bold text-slate-500">SECURE_VAULT_NODE_24</span>
-                </div>
             </div>
         </main>
     </div>
@@ -241,6 +234,13 @@
                         <button onclick="openWithdraw('SOL')" class="action-btn text-[10px] font-black uppercase text-slate-400">Send</button>
                     </div>
                 </div>
+                <div class="market-terminal snap-center">
+                    <gecko-coin-ticker-widget coin-id="tether-gold" initial-currency="usd" locale="en" dark-mode="false" transparent-background="true"></gecko-coin-ticker-widget>
+                    <div class="grid grid-cols-2 gap-4 mt-10">
+                        <button onclick="openDeposit('XAUT', 'XAUT-VAULT-77')" class="action-btn text-[10px] font-black uppercase text-blue-600">Receive</button>
+                        <button onclick="openWithdraw('XAUT')" class="action-btn text-[10px] font-black uppercase text-slate-400">Send</button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -253,7 +253,7 @@
                         <span class="text-[10px] font-black text-green-500">LIVE</span>
                     </div>
                     <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100">
-                        <gecko-coin-converter-widget coin-id="bitcoin" initial-currency="usd" locale="en" dark-mode="false" transparent-background="true"></gecko-coin-converter-widget>
+                        <gecko-coin-converter-widget coin-id="bitcoin" locale="en" dark-mode="false" transparent-background="true"></gecko-coin-converter-widget>
                     </div>
                 </div>
                 <div class="asset-card-compact flex flex-col justify-between">
@@ -262,7 +262,25 @@
                         <span class="text-[10px] font-black text-green-500">LIVE</span>
                     </div>
                     <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100">
-                        <gecko-coin-converter-widget coin-id="ethereum" initial-currency="usd" locale="en" dark-mode="false" transparent-background="true"></gecko-coin-converter-widget>
+                        <gecko-coin-converter-widget coin-id="ethereum" locale="en" dark-mode="false" transparent-background="true"></gecko-coin-converter-widget>
+                    </div>
+                </div>
+                <div class="asset-card-compact flex flex-col justify-between">
+                    <div class="flex justify-between items-center mb-6">
+                        <div class="flex items-center gap-3"><img src="https://assets.coingecko.com/coins/images/4128/small/solana.png" class="w-10 h-10"><p class="text-slate-900 font-black text-2xl">SOL</p></div>
+                        <span class="text-[10px] font-black text-green-500">LIVE</span>
+                    </div>
+                    <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100">
+                        <gecko-coin-converter-widget coin-id="solana" locale="en" dark-mode="false" transparent-background="true"></gecko-coin-converter-widget>
+                    </div>
+                </div>
+                <div class="asset-card-compact flex flex-col justify-between">
+                    <div class="flex justify-between items-center mb-6">
+                        <div class="flex items-center gap-3"><img src="https://assets.coingecko.com/coins/images/10481/small/tether-gold.png" class="w-10 h-10"><p class="text-slate-900 font-black text-2xl">XAUT</p></div>
+                        <span class="text-[10px] font-black text-green-500">LIVE</span>
+                    </div>
+                    <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100">
+                        <gecko-coin-converter-widget coin-id="tether-gold" locale="en" dark-mode="false" transparent-background="true"></gecko-coin-converter-widget>
                     </div>
                 </div>
             </div>
@@ -305,8 +323,6 @@
             3: { name: "Top Investor", yield: "250% Yield", cycle: "30 Days", min: 1000 }
         };
 
-        // --- CORE NAVIGATION ---
-
         function toggleSidebar() {
             const sb = document.getElementById('sidebar');
             const overlay = document.getElementById('global-overlay');
@@ -331,8 +347,6 @@
             }
         }
 
-        // --- UI & MODAL LOGIC ---
-
         function handleProfessionalAction(msg) {
             document.getElementById('systemMsg').innerText = msg;
             document.getElementById('systemModal').classList.add('active');
@@ -347,8 +361,6 @@
             document.getElementById('global-overlay').style.opacity = "0";
             document.getElementById('global-overlay').classList.add('pointer-events-none');
         }
-
-        // --- TRANSACTION LOGIC ---
 
         function openDeposit(asset, addr) {
             currentDepositAddress = addr;
