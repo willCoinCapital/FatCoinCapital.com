@@ -14,7 +14,6 @@
         #sidebar { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); z-index: 200; }
         .sidebar-closed { transform: translateX(100%); }
         .sidebar-open { transform: translateX(0); }
-        
         .modal { display: none; position: fixed; inset: 0; z-index: 300; align-items: center; justify-content: center; padding: 1.5rem; }
         .modal.active { display: flex; }
         .modal-content { background: white; width: 100%; max-width: 400px; border-radius: 2.5rem; padding: 2.5rem; position: relative; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
@@ -22,11 +21,6 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .market-terminal { min-width: 320px; flex-shrink: 0; snap-align: center; }
-
-        .view-section { display: none; animation: fadeIn 0.4s ease-out; }
-        .view-section.active { display: block; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .asset-card-compact {
             min-width: 260px;
@@ -67,25 +61,31 @@
                 <button onclick="closeAllModals()" class="text-gray-400 hover:text-black transition">✕</button>
             </div>
             <p class="text-gray-400 text-[10px] font-bold uppercase mb-6">Enter amount to view wallet address</p>
-            <input type="number" placeholder="Amount ($)" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl mb-4 focus:outline-none focus:border-blue-500 font-bold text-lg">
+            <input type="number" id="depAmount" placeholder="Amount ($)" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl mb-4 focus:outline-none focus:border-blue-500 font-bold text-lg">
             <div class="bg-blue-50 p-4 rounded-2xl mb-6 border border-blue-100">
                 <p class="text-[9px] font-black text-blue-600 uppercase mb-1">Company Receiving Address:</p>
                 <p id="modalAddr" class="text-[10px] font-mono break-all text-gray-700 leading-relaxed">---</p>
             </div>
-            <button onclick="completeAction('Receive Request Initiated')" class="w-full py-4 bg-[#2b59ff] text-white rounded-2xl font-black uppercase tracking-widest shadow-lg active:scale-95 transition">Copy Address & Done</button>
+            <button onclick="completeDeposit()" class="w-full py-4 bg-[#2b59ff] text-white rounded-2xl font-black uppercase tracking-widest shadow-lg active:scale-95 transition">Copy Address & Done</button>
         </div>
     </div>
 
     <div id="withdrawModal" class="modal">
         <div class="modal-content">
             <div class="flex justify-between items-start mb-2">
-                <h2 class="text-2xl font-black uppercase text-red-600">Send Assets</h2>
+                <h2 class="text-2xl font-black uppercase">Withdraw <span id="withAsset" class="text-red-500">---</span></h2>
                 <button onclick="closeAllModals()" class="text-gray-400 hover:text-black transition">✕</button>
             </div>
-            <p class="text-gray-400 text-[10px] font-bold uppercase mb-6">Withdraw to external wallet</p>
-            <input type="text" placeholder="Recipient Wallet Address" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl mb-4 focus:outline-none focus:border-red-500 font-bold text-sm">
-            <input type="number" placeholder="Amount ($)" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl mb-6 focus:outline-none focus:border-red-500 font-bold text-lg">
-            <button onclick="completeAction('Withdrawal Processing... Check your email.')" class="w-full py-4 bg-red-600 text-white rounded-2xl font-black uppercase tracking-widest shadow-lg active:scale-95 transition">Confirm Transfer</button>
+            <p class="text-gray-400 text-[10px] font-bold uppercase mb-6">Terminal Security: Withdrawal Request</p>
+            <div class="space-y-4">
+                <input type="number" placeholder="Withdrawal Amount ($)" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:border-red-500 font-bold">
+                <input type="text" placeholder="Destination Wallet Address" class="w-full bg-gray-50 border border-gray-100 p-4 rounded-2xl focus:outline-none focus:border-red-500 font-bold">
+            </div>
+            <div class="mt-6 p-4 bg-red-50 rounded-2xl border border-red-100">
+                <p class="text-[9px] font-black text-red-600 uppercase">System Status:</p>
+                <p class="text-[10px] font-bold text-gray-700">Withdrawal Locked. Please contact your account manager to verify your security clearance.</p>
+            </div>
+            <button onclick="closeAllModals()" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black uppercase tracking-widest mt-6 shadow-lg active:scale-95 transition">Close Terminal</button>
         </div>
     </div>
 
@@ -95,16 +95,16 @@
             <button onclick="toggleSidebar()" class="text-xl">✕</button>
         </div>
         <nav class="flex flex-col gap-3">
-            <button onclick="switchView('main-view')" class="nav-btn bg-[#2b59ff] text-white p-5 rounded-3xl text-xs font-black uppercase text-left tracking-widest">Home</button>
-            <button onclick="switchView('profile-view')" class="nav-btn bg-gray-100 text-gray-900 p-5 rounded-3xl text-xs font-black uppercase text-left tracking-widest">Profile Settings</button>
-            <button onclick="switchView('security-view')" class="nav-btn bg-gray-100 text-gray-900 p-5 rounded-3xl text-xs font-black uppercase text-left tracking-widest">Security Settings</button>
+            <button onclick="window.location.href='index.html'" class="bg-[#2b59ff] text-white p-5 rounded-3xl text-xs font-black uppercase text-left tracking-widest">Home</button>
+            <button onclick="toggleSidebar()" class="bg-gray-100 text-gray-900 p-5 rounded-3xl text-xs font-black uppercase text-left tracking-widest">Profile Settings</button>
+            <button class="bg-gray-100 text-gray-900 p-5 rounded-3xl text-xs font-black uppercase text-left tracking-widest">Security Settings</button>
             <button onclick="logout()" class="text-left text-red-500 font-black text-xs uppercase p-5 tracking-widest mt-4">Logout</button>
         </nav>
     </div>
 
     <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 px-6 py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-2 cursor-pointer" onclick="switchView('main-view')">
+            <div class="flex items-center gap-2">
                 <div class="w-8 h-8 bg-[#2b59ff] rounded-full flex items-center justify-center text-white font-bold">f</div>
                 <span class="text-xl font-bold uppercase tracking-tight">fatCoinCapital</span>
             </div>
@@ -115,140 +115,133 @@
         </div>
     </header>
 
-    <main id="content-area" class="max-w-7xl mx-auto px-6 py-10 pb-32">
-        
-        <section id="main-view" class="view-section active">
-            <div class="bg-[#0a0b0d] stats-card p-8 text-white shadow-2xl mb-8 border border-gray-800">
-                <p class="text-gray-500 font-bold tracking-widest text-[10px] uppercase mb-1">Terminal Active</p>
-                <h1 class="text-3xl font-black uppercase tracking-tight">WELCOME, INVESTOR <span class="text-[#2b59ff]">F</span></h1>
-            </div>
+    <main class="max-w-7xl mx-auto px-6 py-10 pb-32">
+        <div class="bg-[#0a0b0d] stats-card p-8 text-white shadow-2xl mb-8 border border-gray-800">
+            <p class="text-gray-500 font-bold tracking-widest text-[10px] uppercase mb-1">Terminal Active</p>
+            <h1 class="text-3xl font-black uppercase tracking-tight">WELCOME, INVESTOR <span class="text-[#2b59ff]">F</span></h1>
+        </div>
 
-            <div class="bg-[#0a0b0d] stats-card p-10 text-white shadow-2xl mb-8 border border-gray-800">
-                <p class="text-blue-500 font-bold tracking-widest text-[10px] uppercase mb-4">Total Portfolio Value</p>
-                <h2 class="text-5xl md:text-7xl font-black uppercase text-green-400">$200.14</h2>
-                <div class="flex gap-6 mt-8">
-                    <div><p class="text-[10px] text-gray-500 uppercase font-bold">Active Bonus</p><p class="text-xl font-bold">$200.00</p></div>
-                    <div class="border-l border-gray-800 pl-6"><p class="text-[10px] text-gray-500 uppercase font-bold">Yield Rate</p><p class="text-xl font-bold text-blue-400">0.07%</p></div>
-                </div>
+        <div class="bg-[#0a0b0d] stats-card p-10 text-white shadow-2xl mb-8 border border-gray-800">
+            <p class="text-blue-500 font-bold tracking-widest text-[10px] uppercase mb-4">Total Portfolio Value</p>
+            <h2 class="text-5xl md:text-7xl font-black uppercase text-green-400">$200.14</h2>
+            <div class="flex gap-6 mt-8">
+                <div><p class="text-[10px] text-gray-500 uppercase font-bold">Active Bonus</p><p class="text-xl font-bold">$200.00</p></div>
+                <div class="border-l border-gray-800 pl-6"><p class="text-[10px] text-gray-500 uppercase font-bold">Yield Rate</p><p class="text-xl font-bold text-blue-400">0.07%</p></div>
             </div>
+        </div>
 
-            <div class="mb-12">
-                <div class="flex justify-between items-center mb-6 px-2">
-                    <h3 class="text-xs font-black uppercase tracking-[0.2em] text-gray-400">Live Market Intelligence</h3>
-                    <span class="text-[9px] font-bold text-blue-500 uppercase animate-pulse">Swipe to explore →</span>
+        <div class="mb-12">
+            <div class="flex justify-between items-center mb-6 px-2">
+                <h3 class="text-xs font-black uppercase tracking-[0.2em] text-gray-400">Live Market Intelligence</h3>
+                <span class="text-[9px] font-bold text-blue-500 uppercase animate-pulse">Swipe to explore →</span>
+            </div>
+            <div class="flex overflow-x-auto snap-x no-scrollbar gap-6 pb-4">
+                <div class="market-terminal bg-[#0a0b0d] p-8 rounded-[2.5rem] border border-gray-800 shadow-2xl">
+                    <gecko-coin-ticker-widget coin-id="bitcoin" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-ticker-widget>
+                    <div class="grid grid-cols-2 gap-3 mt-8">
+                        <button onclick="openDeposit('BTC', 'bc1qyc...rq9x8')" class="action-btn">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v8m-4-4l4 4 4-4"/></svg>
+                            <span class="text-[9px] font-black uppercase text-white tracking-widest">Receive</span>
+                        </button>
+                        <button onclick="openWithdraw('BTC')" class="action-btn">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8m-4-4l4 4-4 4"/></svg>
+                            <span class="text-[9px] font-black uppercase text-white tracking-widest">Send</span>
+                        </button>
+                    </div>
                 </div>
-                <div class="flex overflow-x-auto snap-x no-scrollbar gap-6 pb-4">
-                    <div class="market-terminal bg-[#0a0b0d] p-8 rounded-[2.5rem] border border-gray-800 shadow-2xl">
-                        <gecko-coin-ticker-widget coin-id="bitcoin" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-ticker-widget>
-                        <div class="grid grid-cols-2 gap-3 mt-8">
-                            <button onclick="openDeposit('BTC', 'bc1qyc...rq9x8')" class="action-btn">
-                                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v8m-4-4l4 4 4-4"/></svg>
-                                <span class="text-[9px] font-black uppercase text-white tracking-widest">Receive</span>
-                            </button>
-                            <button onclick="openWithdraw()" class="action-btn">
-                                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8m-4-4l4 4-4 4"/></svg>
-                                <span class="text-[9px] font-black uppercase text-white tracking-widest">Send</span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="market-terminal bg-[#0a0b0d] p-8 rounded-[2.5rem] border border-gray-800 shadow-2xl">
-                        <gecko-coin-ticker-widget coin-id="ethereum" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-ticker-widget>
-                        <div class="grid grid-cols-2 gap-3 mt-8">
-                            <button onclick="openDeposit('ETH', '0xb43F...6402')" class="action-btn">
-                                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v8m-4-4l4 4 4-4"/></svg>
-                                <span class="text-[9px] font-black uppercase text-white tracking-widest">Receive</span>
-                            </button>
-                            <button onclick="openWithdraw()" class="action-btn">
-                                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8m-4-4l4 4-4 4"/></svg>
-                                <span class="text-[9px] font-black uppercase text-white tracking-widest">Send</span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="market-terminal bg-[#0a0b0d] p-8 rounded-[2.5rem] border border-gray-800 shadow-2xl">
-                        <gecko-coin-ticker-widget coin-id="solana" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-ticker-widget>
-                        <div class="grid grid-cols-2 gap-3 mt-8">
-                            <button onclick="openDeposit('SOL', 'SOL-WALLET-ADDR')" class="action-btn">
-                                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v8m-4-4l4 4 4-4"/></svg>
-                                <span class="text-[9px] font-black uppercase text-white tracking-widest">Receive</span>
-                            </button>
-                            <button onclick="openWithdraw()" class="action-btn">
-                                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8m-4-4l4 4-4 4"/></svg>
-                                <span class="text-[9px] font-black uppercase text-white tracking-widest">Send</span>
-                            </button>
-                        </div>
+
+                <div class="market-terminal bg-[#0a0b0d] p-8 rounded-[2.5rem] border border-gray-800 shadow-2xl">
+                    <gecko-coin-ticker-widget coin-id="ethereum" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-ticker-widget>
+                    <div class="grid grid-cols-2 gap-3 mt-8">
+                        <button onclick="openDeposit('ETH', '0xb43F...6402')" class="action-btn">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v8m-4-4l4 4 4-4"/></svg>
+                            <span class="text-[9px] font-black uppercase text-white tracking-widest">Receive</span>
+                        </button>
+                        <button onclick="openWithdraw('ETH')" class="action-btn">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12h8m-4-4l4 4-4 4"/></svg>
+                            <span class="text-[9px] font-black uppercase text-white tracking-widest">Send</span>
+                        </button>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="mb-6 px-2"><h3 class="text-xs font-black uppercase tracking-[0.2em] text-gray-400">Investment Plans</h3></div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-gray-100">
+        <div class="mb-12">
+            <div class="p-2 mb-4">
+                <h3 class="text-xs font-black uppercase tracking-[0.2em] text-gray-400">Portfolio Assets & Converters</h3>
+            </div>
+            <div class="flex overflow-x-auto snap-x no-scrollbar gap-4 pb-4 px-2">
+                <div class="asset-card-compact flex flex-col justify-between">
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="flex items-center gap-3">
+                            <img src="https://assets.coingecko.com/coins/images/1/small/bitcoin.png" class="w-8 h-8" alt="BTC">
+                            <div><p class="text-white font-black text-xl leading-none">BTC</p><p class="text-[9px] text-gray-500 uppercase font-bold tracking-widest">Bitcoin</p></div>
+                        </div>
+                        <span class="text-[10px] font-black text-green-400 uppercase tracking-tighter">Live →</span>
+                    </div>
+                    <div class="bg-black/40 rounded-xl p-3 border border-white/5">
+                        <gecko-coin-converter-widget coin-id="bitcoin" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-converter-widget>
+                    </div>
+                </div>
+                <div class="asset-card-compact flex flex-col justify-between">
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="flex items-center gap-3">
+                            <img src="https://assets.coingecko.com/coins/images/279/small/ethereum.png" class="w-8 h-8" alt="ETH">
+                            <div><p class="text-white font-black text-xl leading-none">ETH</p><p class="text-[9px] text-gray-500 uppercase font-bold tracking-widest">Ethereum</p></div>
+                        </div>
+                        <span class="text-[10px] font-black text-green-400 uppercase tracking-tighter">Live →</span>
+                    </div>
+                    <div class="bg-black/40 rounded-xl p-3 border border-white/5">
+                        <gecko-coin-converter-widget coin-id="ethereum" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-converter-widget>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-6 px-2"><h3 class="text-xs font-black uppercase tracking-[0.2em] text-gray-400">Investment Plans</h3></div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-gray-100 flex flex-col justify-between">
+                <div>
                     <p class="text-[10px] font-black text-blue-500 mb-2 uppercase tracking-widest">Plan Tier 1</p>
-                    <h4 class="font-black text-2xl mb-1 text-black uppercase leading-tight">Starter Plan</h4>
+                    <h4 class="font-black text-2xl mb-1 text-black uppercase">Starter Plan</h4>
                     <p class="text-green-600 font-bold text-sm">50% YIELD IN 7 DAYS</p>
-                    <button onclick="completeAction('Investment Plan Tier 1 Selected')" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest mt-6">Select Plan</button>
                 </div>
-                <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-gray-100">
+                <button onclick="activatePlan('Starter Plan')" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest mt-6">Select Plan</button>
+            </div>
+            <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-gray-100 flex flex-col justify-between">
+                <div>
                     <p class="text-[10px] font-black text-blue-600 mb-2 uppercase tracking-widest">Plan Tier 2</p>
-                    <h4 class="font-black text-2xl mb-1 text-black uppercase leading-tight">Pro Investor</h4>
+                    <h4 class="font-black text-2xl mb-1 text-black uppercase">Pro Investor Plan</h4>
                     <p class="text-green-600 font-bold text-sm">150% YIELD IN 16 DAYS</p>
-                    <button onclick="completeAction('Investment Plan Tier 2 Selected')" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest mt-6">Select Plan</button>
                 </div>
+                <button onclick="activatePlan('Pro Investor Plan')" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest mt-6">Select Plan</button>
             </div>
-
-            <div class="bg-white stats-card shadow-2xl border border-gray-100 overflow-hidden">
-                <div class="p-8 border-b border-gray-50 bg-gray-50/50">
-                    <h3 class="text-xl font-black uppercase tracking-tight">Live Transaction Ledger</h3>
+            <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-gray-100 flex flex-col justify-between">
+                <div>
+                    <p class="text-[10px] font-black text-blue-600 mb-2 uppercase tracking-widest">Plan Tier 3</p>
+                    <h4 class="font-black text-2xl mb-1 text-black uppercase">Top Investor Plan</h4>
+                    <p class="text-green-600 font-bold text-sm">250% YIELD IN 30 DAYS</p>
                 </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left">
-                        <tbody class="divide-y divide-gray-50 font-medium text-sm">
-                            <tr>
-                                <td class="px-8 py-6 font-mono text-gray-400 text-[10px]">TXN-BONUS-49201</td>
-                                <td class="px-8 py-6 font-bold uppercase">Sign-Up Bonus</td>
-                                <td class="px-8 py-6 text-right font-black text-green-600">+$200.00</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <button onclick="activatePlan('Top Investor Plan')" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest mt-6">Select Plan</button>
             </div>
-        </section>
+        </div>
 
-        <section id="profile-view" class="view-section">
-            <div class="bg-white stats-card p-10 shadow-2xl border border-gray-100">
-                <h2 class="text-3xl font-black uppercase mb-8">Profile Settings</h2>
-                <div class="space-y-6">
-                    <div>
-                        <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Full Name</label>
-                        <input type="text" value="Investor F" class="w-full p-4 bg-gray-50 rounded-2xl border border-gray-100 font-bold">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Email Address</label>
-                        <input type="email" value="investor_f@example.com" class="w-full p-4 bg-gray-50 rounded-2xl border border-gray-100 font-bold">
-                    </div>
-                    <button onclick="completeAction('Profile Updated Successfully')" class="py-4 px-10 bg-[#2b59ff] text-white rounded-2xl font-black uppercase text-xs tracking-widest">Save Changes</button>
-                </div>
+        <div class="bg-white stats-card shadow-2xl border border-gray-100 overflow-hidden">
+            <div class="p-8 border-b border-gray-50 bg-gray-50/50">
+                <h3 class="text-xl font-black uppercase tracking-tight">Live Transaction Ledger</h3>
             </div>
-        </section>
-
-        <section id="security-view" class="view-section">
-            <div class="bg-white stats-card p-10 shadow-2xl border border-gray-100">
-                <h2 class="text-3xl font-black uppercase mb-8">Security Terminal</h2>
-                <div class="grid grid-cols-1 gap-8">
-                    <div class="p-6 bg-blue-50 rounded-3xl border border-blue-100">
-                        <p class="font-black text-blue-600 uppercase text-xs mb-2">Two-Factor Authentication</p>
-                        <p class="text-sm text-gray-600 mb-4">Secure your account using mobile verification.</p>
-                        <button class="bg-blue-600 text-white px-6 py-2 rounded-xl font-bold text-xs">ENABLE 2FA</button>
-                    </div>
-                    <div class="space-y-4">
-                        <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Update Password</label>
-                        <input type="password" placeholder="New Password" class="w-full p-4 bg-gray-50 rounded-2xl border border-gray-100 font-bold">
-                        <button onclick="completeAction('Security Protocol Updated')" class="py-4 px-10 bg-gray-900 text-white rounded-2xl font-black uppercase text-xs tracking-widest">Update Security</button>
-                    </div>
-                </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <tbody id="ledgerBody" class="divide-y divide-gray-50 font-medium text-sm">
+                        <tr>
+                            <td class="px-8 py-6 font-mono text-gray-400 text-[10px]">TXN-BONUS-49201</td>
+                            <td class="px-8 py-6 font-bold uppercase">Sign-Up Bonus</td>
+                            <td class="px-8 py-6 text-right font-black text-green-600">+$200.00</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-        </section>
-
+        </div>
     </main>
 
     <script>
@@ -264,23 +257,6 @@
             }
         }
 
-        function switchView(viewId) {
-            // Hide all views
-            document.querySelectorAll('.view-section').forEach(view => view.classList.remove('active'));
-            // Show target view
-            document.getElementById(viewId).classList.add('active');
-            
-            // Update sidebar UI
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('bg-[#2b59ff]', 'text-white');
-                btn.classList.add('bg-gray-100', 'text-gray-900');
-            });
-            
-            // Event target highlight logic (simplified for SPA feel)
-            toggleSidebar();
-            window.scrollTo(0,0);
-        }
-
         function openDeposit(asset, addr) {
             document.getElementById('depAsset').innerText = asset;
             document.getElementById('modalAddr').innerText = addr;
@@ -289,7 +265,8 @@
             document.getElementById('global-overlay').classList.remove('pointer-events-none');
         }
 
-        function openWithdraw() {
+        function openWithdraw(asset) {
+            document.getElementById('withAsset').innerText = asset;
             document.getElementById('withdrawModal').classList.add('active');
             document.getElementById('global-overlay').style.opacity = "1";
             document.getElementById('global-overlay').classList.remove('pointer-events-none');
@@ -301,11 +278,12 @@
             document.getElementById('global-overlay').classList.add('pointer-events-none');
         }
 
-        function completeAction(msg) {
-            alert(msg);
-            closeAllModals();
-        }
+        function completeDeposit() { alert("Receive Request Initiated"); closeAllModals(); }
         
+        function activatePlan(planName) {
+            alert(planName + " has been activated successfully!");
+        }
+
         function logout() { 
             if(confirm("Are you sure you want to logout?")) {
                 localStorage.clear();
