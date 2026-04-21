@@ -75,14 +75,14 @@
             <div class="space-y-5">
                 <div>
                     <label class="text-[10px] font-black uppercase text-slate-400 ml-4 mb-2 block">Resident City / State</label>
-                    <input type="text" placeholder="Miami, Florida" class="w-full bg-white border-2 border-gray-100 p-5 rounded-2xl font-black text-slate-900 focus:border-blue-600 outline-none transition">
+                    <input type="text" id="profileCity" placeholder="Miami, Florida" class="w-full bg-white border-2 border-gray-100 p-5 rounded-2xl font-black text-slate-900 focus:border-blue-600 outline-none transition">
                 </div>
                 <div>
                     <label class="text-[10px] font-black uppercase text-slate-400 ml-4 mb-2 block">Country / Nationality</label>
                     <input type="text" value="United States" readonly class="w-full bg-slate-50 border-2 border-gray-100 p-5 rounded-2xl font-black text-slate-400 outline-none">
                 </div>
             </div>
-            <button onclick="handleProfessionalAction('Profile Data Updated & Synced.')" class="w-full py-6 bg-slate-900 text-white rounded-[2rem] font-black uppercase tracking-widest text-[10px] mt-10">Save Terminal Changes</button>
+            <button onclick="saveProfile()" class="w-full py-6 bg-slate-900 text-white rounded-[2rem] font-black uppercase tracking-widest text-[10px] mt-10">Save Terminal Changes</button>
         </main>
     </div>
 
@@ -303,11 +303,13 @@
         </div>
 
         <div class="bg-white stats-card shadow-2xl border border-gray-100 overflow-hidden">
-            <div class="p-8 border-b border-gray-50 bg-gray-50/50"><h3 class="text-xl font-black uppercase tracking-tight">System Ledger</h3></div>
+            <div class="p-8 border-b border-gray-50 bg-gray-50/50 flex justify-between items-center">
+                <h3 class="text-xl font-black uppercase tracking-tight">System Ledger</h3>
+                <button onclick="clearLedger()" class="text-[8px] font-black uppercase text-red-400 tracking-widest">Clear History</button>
+            </div>
             <table class="w-full text-left">
                 <tbody id="ledgerBody" class="divide-y divide-gray-50 font-medium text-sm">
-                    <tr><td class="px-8 py-6 font-mono text-gray-400 text-[10px]">TXN-BONUS-49201</td><td class="px-8 py-6 font-bold uppercase">Registration Bonus</td><td class="px-8 py-6 text-right font-black text-green-600">+$200.00</td></tr>
-                </tbody>
+                    </tbody>
             </table>
         </div>
     </main>
@@ -322,6 +324,57 @@
             2: { name: "Pro Investor", yield: "150% Yield", cycle: "16 Days", min: 1000 },
             3: { name: "Top Investor", yield: "250% Yield", cycle: "30 Days", min: 1000 }
         };
+
+        // --- NEW PERSISTENCE LOGIC START ---
+        
+        window.onload = function() {
+            loadLedger();
+            loadProfile();
+        };
+
+        function saveLedger(txId, asset, amount) {
+            let history = JSON.parse(localStorage.getItem('fcc_ledger')) || [];
+            history.unshift({ txId, asset, amount, status: 'Pending Approval' });
+            localStorage.setItem('fcc_ledger', JSON.stringify(history));
+            loadLedger();
+        }
+
+        function loadLedger() {
+            const history = JSON.parse(localStorage.getItem('fcc_ledger')) || [];
+            const body = document.getElementById('ledgerBody');
+            
+            let html = `<tr><td class="px-8 py-6 font-mono text-gray-400 text-[10px]">TXN-BONUS-49201</td><td class="px-8 py-6 font-bold uppercase">Registration Bonus</td><td class="px-8 py-6 text-right font-black text-green-600">+$200.00</td></tr>`;
+            
+            history.forEach(tx => {
+                html += `
+                    <tr class="bg-blue-50/50 border-l-4 border-blue-600">
+                        <td class="px-8 py-6 font-mono text-slate-400 text-[10px]">${tx.txId}</td>
+                        <td class="px-8 py-6 font-black uppercase text-slate-900">${tx.asset} Inbound</td>
+                        <td class="px-8 py-6 text-right font-black text-blue-600">+$${parseFloat(tx.amount).toLocaleString()} <span class="block text-[8px] text-slate-400 uppercase">${tx.status}</span></td>
+                    </tr>`;
+            });
+            body.innerHTML = html;
+        }
+
+        function saveProfile() {
+            const city = document.getElementById('profileCity').value;
+            localStorage.setItem('fcc_profile_city', city);
+            handleProfessionalAction('Profile Data Updated & Locally Synced.');
+        }
+
+        function loadProfile() {
+            const city = localStorage.getItem('fcc_profile_city');
+            if(city) document.getElementById('profileCity').value = city;
+        }
+
+        function clearLedger() {
+            if(confirm("Wipe transaction history?")) {
+                localStorage.removeItem('fcc_ledger');
+                loadLedger();
+            }
+        }
+        
+        // --- NEW PERSISTENCE LOGIC END ---
 
         function toggleSidebar() {
             const sb = document.getElementById('sidebar');
@@ -379,13 +432,10 @@
             try {
                 await navigator.clipboard.writeText(currentDepositAddress);
                 const txId = "TXN-INBOUND-" + Math.random().toString(36).substr(2, 5).toUpperCase();
-                const newRow = `
-                    <tr class="bg-blue-50/50 border-l-4 border-blue-600">
-                        <td class="px-8 py-6 font-mono text-slate-400 text-[10px]">${txId}</td>
-                        <td class="px-8 py-6 font-black uppercase text-slate-900">${asset} Inbound</td>
-                        <td class="px-8 py-6 text-right font-black text-blue-600">+$${parseFloat(amount).toLocaleString()} <span class="block text-[8px] text-slate-400 uppercase">Pending Approval</span></td>
-                    </tr>`;
-                document.getElementById('ledgerBody').insertAdjacentHTML('afterbegin', newRow);
+                
+                // Integrated persistent save here
+                saveLedger(txId, asset, amount);
+                
                 handleProfessionalAction('Address Copied & Entry Logged.');
                 setTimeout(closeAll, 1200);
             } catch (err) { handleProfessionalAction('Copy Error.'); }
