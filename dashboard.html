@@ -112,7 +112,7 @@
                 <p class="text-[9px] font-black text-blue-600 uppercase mb-1">Receiving Address:</p>
                 <p id="modalAddr" class="text-[10px] font-mono break-all text-gray-700">---</p>
             </div>
-            <button onclick="handleProfessionalAction('Address Encrypted & Copied.')" class="w-full py-4 bg-[#2b59ff] text-white rounded-2xl font-black uppercase tracking-widest active:scale-95 transition">Copy Address</button>
+            <button onclick="copyToClipboard()" class="w-full py-4 bg-[#2b59ff] text-white rounded-2xl font-black uppercase tracking-widest active:scale-95 transition">Copy Address</button>
         </div>
     </div>
 
@@ -272,6 +272,8 @@
     <script>
         const userPortfolioBalance = 200.14; 
         let activePlanTier = null;
+        let currentDepositAddress = ""; // Logic gate for clipboard
+
         const plans = {
             1: { name: "Starter Plan", yield: "50% Yield", cycle: "7 Days", min: 500 },
             2: { name: "Pro Investor", yield: "150% Yield", cycle: "16 Days", min: 1000 },
@@ -316,11 +318,29 @@
         }
 
         function openDeposit(asset, addr) {
+            currentDepositAddress = addr; // Store for copy function
             document.getElementById('depAsset').innerText = asset;
             document.getElementById('modalAddr').innerText = addr;
             document.getElementById('depositModal').classList.add('active');
             document.getElementById('global-overlay').style.opacity = "1";
             document.getElementById('global-overlay').classList.remove('pointer-events-none');
+        }
+
+        async function copyToClipboard() {
+            if (!currentDepositAddress) return;
+            try {
+                await navigator.clipboard.writeText(currentDepositAddress);
+                handleProfessionalAction('Address Encrypted & Copied.');
+            } catch (err) {
+                // Fallback for non-https or older devices
+                const textArea = document.createElement("textarea");
+                textArea.value = currentDepositAddress;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                handleProfessionalAction('Address Copied.');
+            }
         }
 
         function openWithdraw(asset) {
@@ -347,5 +367,3 @@
     </script>
 </body>
 </html>
-
-
