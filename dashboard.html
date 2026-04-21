@@ -9,17 +9,17 @@
     <script src="https://widgets.coingecko.com/gecko-coin-ticker-widget.js"></script>
     <script src="https://widgets.coingecko.com/gecko-coin-converter-widget.js"></script>
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8f9fa; color: #1a1a1a; overflow-x: hidden; }
         .stats-card { border-radius: 2.5rem; transition: all 0.3s ease; }
-        #sidebar { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); z-index: 200; }
+        #sidebar { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); z-index: 5000; }
         .sidebar-closed { transform: translateX(100%); }
         .sidebar-open { transform: translateX(0); }
         
+        /* Modals & Deposits */
         .modal { display: none; position: fixed; inset: 0; z-index: 300; align-items: center; justify-content: center; padding: 1.5rem; }
         .modal.active { display: flex; }
         .modal-content { background: white; width: 100%; max-width: 400px; border-radius: 2.5rem; padding: 2.5rem; position: relative; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
-        
-        .system-modal-content { background: #0a0b0d; color: white; border: 1px solid #1f2937; }
+        .system-modal-content { background: #0a0b0d; color: white; border: 1px solid #1f2937; text-align: center; }
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -40,17 +40,22 @@
         .action-btn:active { transform: scale(0.95); background: rgba(255, 255, 255, 0.1); }
         .action-btn svg { width: 30px; height: 30px; stroke: #9ca3af; stroke-width: 1.5; fill: none; }
 
-        .invest-overlay { position: fixed; inset: 0; background: white; z-index: 3000; overflow-y: auto; display: none; }
-        .invest-overlay.active { display: block; }
+        /* Professional Full-Page Environments */
+        .terminal-overlay { 
+            position: fixed; inset: 0; background: #0a0b0d; z-index: 4000; 
+            overflow-y: auto; color: white; display: none; 
+            padding-bottom: 80px; /* Space for future nav */
+        }
+        .terminal-overlay.active { display: block; }
+        .env-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 2.2rem; padding: 2.5rem; }
     </style>
 </head>
-<body class="text-gray-900 overflow-x-hidden">
+<body class="overflow-x-hidden">
 
-    <div id="global-overlay" onclick="closeAllModals()" class="fixed inset-0 bg-black/60 opacity-0 pointer-events-none z-[250] transition-opacity backdrop-blur-sm"></div>
-    <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/40 opacity-0 pointer-events-none z-[150]"></div>
+    <div id="global-overlay" onclick="closeAll()" class="fixed inset-0 bg-black/60 opacity-0 pointer-events-none z-[4500] transition-opacity backdrop-blur-sm"></div>
 
     <div id="systemModal" class="modal">
-        <div class="modal-content system-modal-content text-center">
+        <div class="modal-content system-modal-content">
             <div class="w-16 h-16 bg-blue-600/20 rounded-full flex items-center justify-center mx-auto mb-6">
                 <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
             </div>
@@ -60,29 +65,29 @@
         </div>
     </div>
 
-    <div id="investPage" class="invest-overlay">
-        <header class="p-6 flex items-center border-b border-gray-50 bg-white sticky top-0 z-10">
-            <button onclick="closeInvestmentPage()" class="text-3xl mr-4 text-gray-900">←</button>
-            <h2 class="font-black uppercase tracking-tight text-sm text-gray-400">Environment Deployment</h2>
+    <div id="investPage" class="terminal-overlay">
+        <header class="p-6 flex items-center bg-[#0a0b0d] sticky top-0 z-10 border-b border-gray-800">
+            <button onclick="closeInvestmentPage()" class="text-3xl mr-4 text-white">←</button>
+            <h2 class="font-black uppercase tracking-tight text-sm text-gray-500">Secure Environment Deployment</h2>
         </header>
 
         <main class="p-8 max-w-md mx-auto">
-            <div class="bg-[#0a0b0d] rounded-[2.5rem] p-10 text-white mb-10 shadow-2xl border border-gray-800">
+            <div class="env-card text-white mb-10 shadow-2xl">
                 <p class="text-blue-500 font-bold text-[10px] uppercase tracking-widest mb-2">System Status</p>
                 <h1 class="text-3xl font-black uppercase mb-4">Investment Active</h1>
                 <div class="h-1.5 w-16 bg-blue-600 rounded-full"></div>
             </div>
 
             <div class="space-y-6 mb-12">
-                <div class="flex justify-between items-center py-5 border-b border-gray-100">
+                <div class="flex justify-between items-center py-5 border-b border-gray-800">
                     <span class="text-gray-400 font-bold uppercase text-[10px]">Plan Type</span>
                     <span id="displayPlanName" class="font-black text-xl uppercase">---</span>
                 </div>
-                <div class="flex justify-between items-center py-5 border-b border-gray-100">
+                <div class="flex justify-between items-center py-5 border-b border-gray-800">
                     <span class="text-gray-400 font-bold uppercase text-[10px]">Expected Yield</span>
                     <span id="displayPlanYield" class="font-black text-xl text-green-600">---</span>
                 </div>
-                <div class="flex justify-between items-center py-5 border-b border-gray-100">
+                <div class="flex justify-between items-center py-5 border-b border-gray-800">
                     <span class="text-gray-400 font-bold uppercase text-[10px]">Cycle Duration</span>
                     <span id="displayPlanCycle" class="font-black text-xl">---</span>
                 </div>
@@ -90,11 +95,11 @@
 
             <div class="mb-12">
                 <label class="block text-[10px] font-black uppercase text-gray-400 mb-4">Enter Investment Amount ($)</label>
-                <input type="number" id="investInput" placeholder="0.00" class="w-full bg-gray-50 border-2 border-gray-100 p-6 rounded-3xl font-black text-3xl focus:outline-none focus:border-blue-600 transition">
-                <p id="minReqLabel" class="text-[9px] font-bold text-gray-400 mt-4 px-2 uppercase tracking-wider"></p>
+                <input type="number" id="investInput" placeholder="0.00" class="w-full bg-white/5 border-2 border-gray-800 p-6 rounded-3xl font-black text-3xl focus:outline-none focus:border-blue-600 transition text-white">
+                <p id="minReqLabel" class="text-[9px] font-bold text-gray-500 mt-4 px-2 uppercase tracking-wider"></p>
             </div>
 
-            <button onclick="processActivation()" class="w-full py-7 bg-black text-white rounded-[2rem] font-black uppercase tracking-[0.2em] shadow-xl active:scale-95 transition text-xs">
+            <button onclick="processActivation()" class="w-full py-7 bg-white text-black rounded-[2rem] font-black uppercase tracking-[0.2em] shadow-xl active:scale-95 transition text-xs">
                 Activate Plan
             </button>
         </main>
@@ -128,39 +133,82 @@
             </div>
             <div class="mt-6 p-4 bg-red-50 rounded-2xl border border-red-100">
                 <p class="text-[9px] font-black text-red-600 uppercase">Alert:</p>
-                <p class="text-[10px] font-bold text-gray-700 leading-tight">Withdrawal locked. Contact your account manager for manual clearance.</p>
+                <p class="text-[10px] font-bold text-gray-700 leading-tight">Withdrawal locked. Contact account manager for manual clearance.</p>
             </div>
             <button onclick="closeAllModals()" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black uppercase tracking-widest mt-6 active:scale-95 transition">Exit Terminal</button>
         </div>
     </div>
 
-    <div id="sidebar" class="fixed top-0 right-0 h-full w-72 bg-white shadow-2xl sidebar-closed flex flex-col p-8">
+    <div id="profilePage" class="terminal-overlay">
+        <header class="p-6 flex items-center border-b border-gray-800 bg-[#0a0b0d] sticky top-0 z-10">
+            <button onclick="goHome()" class="text-3xl mr-4 text-white">←</button>
+            <h2 class="font-black uppercase tracking-tight text-sm text-gray-500">Investor Profile Identity</h2>
+        </header>
+        <main class="p-8 max-w-md mx-auto space-y-10">
+            <div class="env-card text-center space-y-4">
+                <div class="w-24 h-24 bg-blue-600 rounded-full flex items-center justify-center font-black text-4xl mx-auto shadow-2xl">JD</div>
+                <h1 class="text-2xl font-black uppercase tracking-tight text-white">Investor: FCC-99281</h1>
+                <p class="text-blue-500 font-bold text-xs uppercase tracking-widest">VERIFIED PROFESSIONAL</p>
+            </div>
+            <div class="space-y-4 font-bold text-[11px] uppercase tracking-widest">
+                <div class="flex justify-between p-6 bg-white/5 rounded-2xl border border-white/10"><span class="text-gray-500">Tier Level</span><span class="text-white">Gold Tier</span></div>
+                <div class="flex justify-between p-6 bg-white/5 rounded-2xl border border-white/10"><span class="text-gray-500">KYC Status</span><span class="text-green-500">Approved</span></div>
+                <div class="flex justify-between p-6 bg-white/5 rounded-2xl border border-white/10"><span class="text-gray-500">Terminal ID</span><span class="text-white font-mono">T-4811-A</span></div>
+            </div>
+            <button onclick="handleProfessionalAction('Verification locked. Contact your manager to update documents.')" class="w-full py-5 bg-zinc-800 text-zinc-500 rounded-2xl font-black uppercase text-xs tracking-widest opacity-60">Edit Documentation</button>
+        </main>
+    </div>
+
+    <div id="securityPage" class="terminal-overlay">
+        <header class="p-6 flex items-center border-b border-gray-800 bg-[#0a0b0d] sticky top-0 z-10">
+            <button onclick="goHome()" class="text-3xl mr-4 text-white">←</button>
+            <h2 class="font-black uppercase tracking-tight text-sm text-gray-500">Terminal Security Protocols</h2>
+        </header>
+        <main class="p-8 max-w-md mx-auto space-y-8">
+            <div class="env-card text-center">
+                <p class="text-blue-500 font-black text-[10px] uppercase tracking-[0.3em] mb-3">ENCRYPTION ACTIVE</p>
+                <h1 class="text-4xl font-black uppercase tracking-tighter text-white">AES-256</h1>
+            </div>
+            <div class="space-y-3 font-bold text-[11px] uppercase tracking-wider">
+                <div class="flex justify-between p-5 bg-white/5 rounded-2xl border border-white/10"><span class="text-gray-500">IP Masking</span><span class="text-green-500 font-black">VPN-Masked</span></div>
+                <div class="flex justify-between p-5 bg-white/5 rounded-2xl border border-white/10"><span class="text-gray-400">2FA Authenticator</span><span class="text-green-500">Enabled</span></div>
+                <div class="flex justify-between p-5 bg-white/5 rounded-2xl border border-white/10"><span class="text-gray-400">Terminal Firewall</span><span class="text-green-500">Active</span></div>
+                <div class="flex justify-between p-5 bg-white/5 rounded-2xl border border-white/10"><span class="text-gray-400">Last Login IP</span><span class="text-white font-mono">45.***.***.11</span></div>
+            </div>
+            <button onclick="logout()" class="w-full py-6 bg-red-600 rounded-2xl font-black uppercase text-xs tracking-widest shadow-lg shadow-red-600/20 mt-10">Terminate Current Session</button>
+        </main>
+    </div>
+
+    <div id="sidebar" class="fixed top-0 right-0 h-full w-72 bg-white shadow-2xl sidebar-closed flex flex-col p-8 z-[5000]">
         <div class="flex justify-between items-center mb-10">
             <span class="font-black uppercase tracking-widest text-[10px] text-gray-400">Menu</span>
             <button onclick="toggleSidebar()" class="text-xl">✕</button>
         </div>
         <nav class="flex flex-col gap-3">
             <button onclick="goHome()" class="bg-[#2b59ff] text-white p-5 rounded-3xl text-xs font-black uppercase text-left tracking-widest">Home</button>
-            <button onclick="openProfileTerminal()" class="bg-gray-100 text-gray-900 p-5 rounded-3xl text-xs font-black uppercase text-left tracking-widest">Profile</button>
-            <button onclick="openSecurityTerminal()" class="bg-gray-100 text-gray-900 p-5 rounded-3xl text-xs font-black uppercase text-left tracking-widest">Security</button>
-            <button onclick="processLogout()" class="text-left text-red-500 font-black text-xs uppercase p-5 tracking-widest mt-4">Logout</button>
+            <button onclick="openProfileTerminal()" class="bg-gray-100 text-gray-900 p-5 rounded-3xl text-xs font-black uppercase text-left tracking-widest">Profile Identity</button>
+            <button onclick="openSecurityTerminal()" class="bg-gray-100 text-gray-900 p-5 rounded-3xl text-xs font-black uppercase text-left tracking-widest">Security Terminal</button>
+            <button onclick="logout()" class="text-left text-red-500 font-black text-xs uppercase p-5 tracking-widest mt-4">Logout</button>
         </nav>
     </div>
 
-    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100 px-6 py-4">
+    <header class="sticky top-0 z-50 bg-white border-b border-gray-100 px-6 py-4">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-2">
                 <div class="w-8 h-8 bg-[#2b59ff] rounded-full flex items-center justify-center text-white font-bold text-sm">f</div>
-                <span class="text-xl font-bold uppercase tracking-tight">fatCoinCapital</span>
+                <span class="text-xl font-bold uppercase tracking-tight text-blue-900">fatCoinCapital</span>
             </div>
-            <button onclick="toggleSidebar()" class="w-10 h-10 bg-gray-50 border border-gray-200 rounded-xl flex items-center justify-center">☰</button>
+            <div class="flex items-center gap-3">
+                <div onclick="openProfileTerminal()" class="w-8 h-8 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-black text-xs cursor-pointer active:scale-95 transition">F</div>
+                <button onclick="toggleSidebar()" class="w-10 h-10 bg-gray-50 border border-gray-200 rounded-xl flex items-center justify-center">☰</button>
+            </div>
         </div>
     </header>
 
     <main class="max-w-7xl mx-auto px-6 py-10 pb-32">
         <div class="bg-[#0a0b0d] stats-card p-10 text-white shadow-2xl mb-8 border border-gray-800">
             <p class="text-blue-500 font-bold tracking-widest text-[10px] uppercase mb-4">Total Portfolio Value</p>
-            <h2 class="text-6xl font-black uppercase text-green-400">$200.14</h2>
+            <h2 class="text-6xl font-black uppercase text-green-400 tracking-tighter">$200.14</h2>
             <div class="flex gap-6 mt-8">
                 <div><p class="text-[10px] text-gray-500 uppercase font-bold">Active Bonus</p><p class="text-xl font-bold">$200.00</p></div>
                 <div class="border-l border-gray-800 pl-6"><p class="text-[10px] text-gray-500 uppercase font-bold">Yield Rate</p><p class="text-xl font-bold text-blue-400">0.07%</p></div>
@@ -173,29 +221,29 @@
                 <div class="market-terminal bg-[#0a0b0d] p-10 rounded-[2.8rem] border border-gray-800 shadow-2xl">
                     <gecko-coin-ticker-widget coin-id="bitcoin" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-ticker-widget>
                     <div class="grid grid-cols-2 gap-4 mt-10">
-                        <button onclick="openDeposit('BTC', 'bc1qyc...rq9x8')" class="action-btn"><span class="text-[10px] font-black uppercase text-white">Receive</span></button>
-                        <button onclick="openWithdraw('BTC')" class="action-btn"><span class="text-[10px] font-black uppercase text-white">Send</span></button>
+                        <button onclick="openDeposit('BTC', 'bc1qyc...rq9x8')" class="action-btn"><span class="text-[10px] font-black uppercase text-white tracking-widest">Receive</span></button>
+                        <button onclick="openWithdraw('BTC')" class="action-btn"><span class="text-[10px] font-black uppercase text-white tracking-widest">Send</span></button>
                     </div>
                 </div>
                 <div class="market-terminal bg-[#0a0b0d] p-10 rounded-[2.8rem] border border-gray-800 shadow-2xl">
                     <gecko-coin-ticker-widget coin-id="ethereum" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-ticker-widget>
                     <div class="grid grid-cols-2 gap-4 mt-10">
-                        <button onclick="openDeposit('ETH', '0xb43F...6402')" class="action-btn"><span class="text-[10px] font-black uppercase text-white">Receive</span></button>
-                        <button onclick="openWithdraw('ETH')" class="action-btn"><span class="text-[10px] font-black uppercase text-white">Send</span></button>
+                        <button onclick="openDeposit('ETH', '0xb43F...6402')" class="action-btn"><span class="text-[10px] font-black uppercase text-white tracking-widest">Receive</span></button>
+                        <button onclick="openWithdraw('ETH')" class="action-btn"><span class="text-[10px] font-black uppercase text-white tracking-widest">Send</span></button>
                     </div>
                 </div>
                 <div class="market-terminal bg-[#0a0b0d] p-10 rounded-[2.8rem] border border-gray-800 shadow-2xl">
                     <gecko-coin-ticker-widget coin-id="solana" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-ticker-widget>
                     <div class="grid grid-cols-2 gap-4 mt-10">
-                        <button onclick="openDeposit('SOL', 'SOL-ADDR-99')" class="action-btn"><span class="text-[10px] font-black uppercase text-white">Receive</span></button>
-                        <button onclick="openWithdraw('SOL')" class="action-btn"><span class="text-[10px] font-black uppercase text-white">Send</span></button>
+                        <button onclick="openDeposit('SOL', 'SOL-ADDR-99')" class="action-btn"><span class="text-[10px] font-black uppercase text-white tracking-widest">Receive</span></button>
+                        <button onclick="openWithdraw('SOL')" class="action-btn"><span class="text-[10px] font-black uppercase text-white tracking-widest">Send</span></button>
                     </div>
                 </div>
                 <div class="market-terminal bg-[#0a0b0d] p-10 rounded-[2.8rem] border border-gray-800 shadow-2xl">
                     <gecko-coin-ticker-widget coin-id="tether-gold" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-ticker-widget>
                     <div class="grid grid-cols-2 gap-4 mt-10">
-                        <button onclick="openDeposit('XAUT', 'XAUT-ADDR-00')" class="action-btn"><span class="text-[10px] font-black uppercase text-white">Receive</span></button>
-                        <button onclick="openWithdraw('XAUT')" class="action-btn"><span class="text-[10px] font-black uppercase text-white">Send</span></button>
+                        <button onclick="openDeposit('XAUT', 'XAUT-ADDR-00')" class="action-btn"><span class="text-[10px] font-black uppercase text-white tracking-widest">Receive</span></button>
+                        <button onclick="openWithdraw('XAUT')" class="action-btn"><span class="text-[10px] font-black uppercase text-white tracking-widest">Send</span></button>
                     </div>
                 </div>
             </div>
@@ -207,7 +255,7 @@
                 <div class="asset-card-compact flex flex-col justify-between">
                     <div class="flex justify-between items-center mb-6">
                         <div class="flex items-center gap-3"><img src="https://assets.coingecko.com/coins/images/1/small/bitcoin.png" class="w-10 h-10"><p class="text-white font-black text-2xl">BTC</p></div>
-                        <span class="text-[10px] font-black text-green-400">LIVE</span>
+                        <span class="text-[10px] font-black text-green-400 tracking-widest">LIVE</span>
                     </div>
                     <div class="bg-black/30 rounded-2xl p-4 border border-white/5">
                         <gecko-coin-converter-widget coin-id="bitcoin" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-converter-widget>
@@ -216,7 +264,7 @@
                 <div class="asset-card-compact flex flex-col justify-between">
                     <div class="flex justify-between items-center mb-6">
                         <div class="flex items-center gap-3"><img src="https://assets.coingecko.com/coins/images/279/small/ethereum.png" class="w-10 h-10"><p class="text-white font-black text-2xl">ETH</p></div>
-                        <span class="text-[10px] font-black text-green-400">LIVE</span>
+                        <span class="text-[10px] font-black text-green-400 tracking-widest">LIVE</span>
                     </div>
                     <div class="bg-black/30 rounded-2xl p-4 border border-white/5">
                         <gecko-coin-converter-widget coin-id="ethereum" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-converter-widget>
@@ -225,7 +273,7 @@
                 <div class="asset-card-compact flex flex-col justify-between">
                     <div class="flex justify-between items-center mb-6">
                         <div class="flex items-center gap-3"><img src="https://assets.coingecko.com/coins/images/4128/small/solana.png" class="w-10 h-10"><p class="text-white font-black text-2xl">SOL</p></div>
-                        <span class="text-[10px] font-black text-green-400">LIVE</span>
+                        <span class="text-[10px] font-black text-green-400 tracking-widest">LIVE</span>
                     </div>
                     <div class="bg-black/30 rounded-2xl p-4 border border-white/5">
                         <gecko-coin-converter-widget coin-id="solana" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-converter-widget>
@@ -234,7 +282,7 @@
                 <div class="asset-card-compact flex flex-col justify-between">
                     <div class="flex justify-between items-center mb-6">
                         <div class="flex items-center gap-3"><img src="https://assets.coingecko.com/coins/images/10481/small/tether-gold.png" class="w-10 h-10"><p class="text-white font-black text-2xl">XAUT</p></div>
-                        <span class="text-[10px] font-black text-green-400">LIVE</span>
+                        <span class="text-[10px] font-black text-green-400 tracking-widest">LIVE</span>
                     </div>
                     <div class="bg-black/30 rounded-2xl p-4 border border-white/5">
                         <gecko-coin-converter-widget coin-id="tether-gold" initial-currency="usd" locale="en" dark-mode="true" transparent-background="true"></gecko-coin-converter-widget>
@@ -246,24 +294,42 @@
         <h3 class="text-xs font-black uppercase tracking-[0.2em] text-gray-400 mb-6 px-2">Growth Strategies</h3>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
             <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-gray-100 flex flex-col justify-between">
-                <div><p class="text-[10px] font-black text-blue-500 mb-2 uppercase">Tier 1</p><h4 class="font-black text-2xl mb-1 uppercase">Starter Plan</h4><p class="text-green-600 font-bold text-sm">50% YIELD IN 7 DAYS</p></div>
-                <button onclick="openInvestmentPage(1)" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-[10px] uppercase mt-6">Select Plan</button>
+                <div>
+                    <p class="text-[10px] font-black text-blue-500 mb-2 uppercase tracking-widest">Tier 1</p>
+                    <h4 class="font-black text-2xl mb-1 text-black uppercase">Starter Plan</h4>
+                    <p class="text-green-600 font-bold text-sm">50% YIELD IN 7 DAYS</p>
+                </div>
+                <button onclick="openInvestmentPage(1)" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest mt-6">Select Plan</button>
             </div>
             <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-gray-100 flex flex-col justify-between">
-                <div><p class="text-[10px] font-black text-blue-600 mb-2 uppercase">Tier 2</p><h4 class="font-black text-2xl mb-1 uppercase">Pro Investor</h4><p class="text-green-600 font-bold text-sm">150% YIELD IN 16 DAYS</p></div>
-                <button onclick="openInvestmentPage(2)" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-[10px] uppercase mt-6">Select Plan</button>
+                <div>
+                    <p class="text-[10px] font-black text-blue-600 mb-2 uppercase tracking-widest">Tier 2</p>
+                    <h4 class="font-black text-2xl mb-1 text-black uppercase">Pro Investor</h4>
+                    <p class="text-green-600 font-bold text-sm">150% YIELD IN 16 DAYS</p>
+                </div>
+                <button onclick="openInvestmentPage(2)" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest mt-6">Select Plan</button>
             </div>
             <div class="bg-white p-8 rounded-[2.5rem] shadow-xl border border-gray-100 flex flex-col justify-between">
-                <div><p class="text-[10px] font-black text-blue-600 mb-2 uppercase">Tier 3</p><h4 class="font-black text-2xl mb-1 uppercase">Top Investor</h4><p class="text-green-600 font-bold text-sm">250% YIELD IN 30 DAYS</p></div>
-                <button onclick="openInvestmentPage(3)" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-[10px] uppercase mt-6">Select Plan</button>
+                <div>
+                    <p class="text-[10px] font-black text-blue-600 mb-2 uppercase tracking-widest">Tier 3</p>
+                    <h4 class="font-black text-2xl mb-1 text-black uppercase">Top Investor</h4>
+                    <p class="text-green-600 font-bold text-sm">250% YIELD IN 30 DAYS</p>
+                </div>
+                <button onclick="openInvestmentPage(3)" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest mt-6">Select Plan</button>
             </div>
         </div>
 
         <div class="bg-white stats-card shadow-2xl border border-gray-100 overflow-hidden">
-            <div class="p-8 border-b border-gray-50 bg-gray-50/50"><h3 class="text-xl font-black uppercase tracking-tight">System Ledger</h3></div>
+            <div class="p-8 border-b border-gray-50 bg-gray-50/50">
+                <h3 class="text-xl font-black uppercase tracking-tight">System Ledger</h3>
+            </div>
             <table class="w-full text-left">
                 <tbody class="divide-y divide-gray-50 font-medium text-sm">
-                    <tr><td class="px-8 py-6 font-mono text-gray-400 text-[10px]">TXN-BONUS-49201</td><td class="px-8 py-6 font-bold uppercase">Registration Bonus</td><td class="px-8 py-6 text-right font-black text-green-600">+$200.00</td></tr>
+                    <tr>
+                        <td class="px-8 py-6 font-mono text-gray-400 text-[10px]">TXN-BONUS-49201</td>
+                        <td class="px-8 py-6 font-bold uppercase">Registration Bonus</td>
+                        <td class="px-8 py-6 text-right font-black text-green-600">+$200.00</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -272,7 +338,7 @@
     <script>
         const userPortfolioBalance = 200.14; 
         let activePlanTier = null;
-        let currentDepositAddress = ""; 
+        let currentDepositAddress = ""; // Gate for clipboard logic
 
         const plans = {
             1: { name: "Starter Plan", yield: "50% Yield", cycle: "7 Days", min: 500 },
@@ -280,144 +346,71 @@
             3: { name: "Top Investor", yield: "250% Yield", cycle: "30 Days", min: 1000 }
         };
 
-        // --- CORE NAVIGATION ---
+        // --- CORE APPLICATION NAVIGATION ---
 
         function goHome() {
-            closeAllModals();
-            toggleSidebar();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            closeAll(); // Close everything
+            window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to main dashboard
         }
 
         function openProfileTerminal() {
-            toggleSidebar();
-            const profileHTML = `
-                <div class="text-left space-y-4">
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center font-bold text-white">JD</div>
-                        <div>
-                            <p class="text-white font-black text-sm uppercase">User: FCC-99281</p>
-                            <p class="text-blue-500 text-[10px] font-bold">VERIFIED INVESTOR</p>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-2 text-[10px] uppercase font-bold">
-                        <div class="bg-white/5 p-3 rounded-xl border border-white/10">
-                            <p class="text-gray-500 mb-1">Tier Level</p>
-                            <p class="text-white">Gold Tier</p>
-                        </div>
-                        <div class="bg-white/5 p-3 rounded-xl border border-white/10">
-                            <p class="text-gray-500 mb-1">KYC Status</p>
-                            <p class="text-green-500">Approved</p>
-                        </div>
-                    </div>
-                </div>
-            `;
-            handleProfessionalAction(profileHTML);
+            closeAll(); // Close other open views
+            toggleSidebar(); // Close sidebar if open
+            document.getElementById('profilePage').classList.add('active');
+            window.scrollTo(0,0);
         }
 
         function openSecurityTerminal() {
+            closeAll();
             toggleSidebar();
-            const securityHTML = `
-                <div class="text-left space-y-4">
-                    <p class="text-blue-500 text-[10px] font-black uppercase tracking-widest">Security Protocols</p>
-                    <div class="space-y-2">
-                        <div class="flex justify-between p-3 bg-white/5 rounded-xl border border-white/10">
-                            <span class="text-[10px] text-gray-400 uppercase">2FA Auth</span>
-                            <span class="text-[10px] text-green-500 font-bold">ACTIVE</span>
-                        </div>
-                        <div class="flex justify-between p-3 bg-white/5 rounded-xl border border-white/10">
-                            <span class="text-[10px] text-gray-400 uppercase">Encryption</span>
-                            <span class="text-[10px] text-blue-500 font-bold">AES-256</span>
-                        </div>
-                        <div class="flex justify-between p-3 bg-white/5 rounded-xl border border-white/10">
-                            <span class="text-[10px] text-gray-400 uppercase">IP Masking</span>
-                            <span class="text-[10px] text-white font-bold">VPN-PROTECTED</span>
-                        </div>
-                    </div>
-                </div>
-            `;
-            handleProfessionalAction(securityHTML);
+            document.getElementById('securityPage').classList.add('active');
+            window.scrollTo(0,0);
         }
 
-        function processLogout() {
-            if(confirm("Terminate terminal session?")) {
+        function logout() {
+            if(confirm("Terminate local terminal session?")) {
+                closeAll();
                 toggleSidebar();
-                handleProfessionalAction("Cleaning local cache... Terminating Session.");
+                handleProfessionalAction("Wiping localized cache... Dissolving Session ID.");
                 setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 1500);
+                    window.location.href = 'index.html'; // Direct to your landing page
+                }, 1800);
             }
         }
 
-        // --- UI & MODAL LOGIC ---
+        // --- IN-APP UI AND MODAL LOGIC ---
 
         function toggleSidebar() {
             const sb = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
+            const sb_overlay = document.getElementById('sidebar-overlay');
+            const g_overlay = document.getElementById('global-overlay');
+
             if(sb.classList.contains('sidebar-open')) {
                 sb.classList.replace('sidebar-open', 'sidebar-closed');
-                overlay.style.opacity = "0"; overlay.classList.add('pointer-events-none');
+                if(!g_overlay.classList.contains('bg-black/80')) { // If not modale overlay
+                    g_overlay.style.opacity = "0"; g_overlay.classList.add('pointer-events-none');
+                }
             } else {
                 sb.classList.replace('sidebar-closed', 'sidebar-open');
-                overlay.style.opacity = "1"; overlay.classList.remove('pointer-events-none');
+                g_overlay.style.opacity = "1"; g_overlay.classList.remove('pointer-events-none');
             }
         }
 
         function handleProfessionalAction(content) {
             document.getElementById('systemMsg').innerHTML = content;
             document.getElementById('systemModal').classList.add('active');
-            document.getElementById('global-overlay').style.opacity = "1";
-            document.getElementById('global-overlay').classList.remove('pointer-events-none');
+            
+            const g_overlay = document.getElementById('global-overlay');
+            g_overlay.classList.add('bg-black/80'); // Darker backdrop for modales
+            g_overlay.style.opacity = "1"; g_overlay.classList.remove('pointer-events-none');
         }
 
         function closeAllModals() {
             document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
-            document.getElementById('global-overlay').style.opacity = "0";
-            document.getElementById('global-overlay').classList.add('pointer-events-none');
-        }
-
-        // --- TRANSACTION LOGIC ---
-
-        function openDeposit(asset, addr) {
-            currentDepositAddress = addr;
-            document.getElementById('depAsset').innerText = asset;
-            document.getElementById('modalAddr').innerText = addr;
-            document.getElementById('depositModal').classList.add('active');
-            document.getElementById('global-overlay').style.opacity = "1";
-            document.getElementById('global-overlay').classList.remove('pointer-events-none');
-        }
-
-        async function copyToClipboard() {
-            if (!currentDepositAddress) return;
-            try {
-                await navigator.clipboard.writeText(currentDepositAddress);
-                handleProfessionalAction('Address Encrypted & Copied.');
-            } catch (err) {
-                const textArea = document.createElement("textarea");
-                textArea.value = currentDepositAddress;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-                handleProfessionalAction('Address Copied.');
-            }
-        }
-
-        function openWithdraw(asset) {
-            document.getElementById('withAsset').innerText = asset;
-            document.getElementById('withdrawModal').classList.add('active');
-            document.getElementById('global-overlay').style.opacity = "1";
-            document.getElementById('global-overlay').classList.remove('pointer-events-none');
-        }
-
-        function openInvestmentPage(tier) {
-            activePlanTier = tier;
-            const plan = plans[tier];
-            document.getElementById('displayPlanName').innerText = plan.name;
-            document.getElementById('displayPlanYield').innerText = plan.yield;
-            document.getElementById('displayPlanCycle').innerText = plan.cycle;
-            document.getElementById('minReqLabel').innerText = `Requirement: $${plan.min}.00 USD Balance`;
-            document.getElementById('investPage').classList.add('active');
-            window.scrollTo(0,0);
+            
+            const g_overlay = document.getElementById('global-overlay');
+            g_overlay.style.opacity = "0"; g_overlay.classList.add('pointer-events-none');
+            g_overlay.classList.remove('bg-black/80'); // Resetbackdrop
         }
 
         function closeInvestmentPage() { 
@@ -425,14 +418,82 @@
             activePlanTier = null; 
         }
 
+        function closeAll() {
+            // Closes full-page environment overlays and modales
+            document.querySelectorAll('.terminal-overlay').forEach(el => el.classList.remove('active'));
+            closeAllModals();
+        }
+
+        // --- TRANSACTION AND UTILITY LOGIC ---
+
+        function openDeposit(asset, addr) {
+            currentDepositAddress = addr; // Store globally for copy function
+            document.getElementById('depAsset').innerText = asset;
+            document.getElementById('modalAddr').innerText = addr;
+            
+            // Reusing your notification system as a temporary deposit viewer
+            handleProfessionalAction(`Establishing tunnel for inbound ${asset}...<br>Address: ${addr}`);
+        }
+
+        async function copyToClipboard() {
+            if (!currentDepositAddress) return;
+
+            try {
+                // Clipboard API (Requires HTTPS)
+                await navigator.clipboard.writeText(currentDepositAddress);
+                handleProfessionalAction('Address Encrypted & Copied to Clipboard.');
+            } catch (err) {
+                // Fallback for non-secure contexts (http) or older devices
+                const textArea = document.createElement("textarea");
+                textArea.value = currentDepositAddress;
+                // Move off-screen
+                textArea.style.position = "absolute";
+                textArea.style.left = "-9999px";
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                handleProfessionalAction('Address Copied (Fallback Protocol).');
+            }
+        }
+
+        function openWithdraw(asset) {
+            document.getElementById('withAsset').innerText = asset;
+            document.getElementById('withdrawModal').classList.add('active');
+            
+            const g_overlay = document.getElementById('global-overlay');
+            g_overlay.classList.add('bg-black/80');
+            g_overlay.style.opacity = "1"; g_overlay.classList.remove('pointer-events-none');
+        }
+
+        function openInvestmentPage(tier) {
+            closeAll(); // Close other environments first
+            activePlanTier = tier;
+            const plan = plans[tier];
+            
+            document.getElementById('displayPlanName').innerText = plan.name;
+            document.getElementById('displayPlanYield').innerText = plan.yield;
+            document.getElementById('displayPlanCycle').innerText = plan.cycle;
+            document.getElementById('minReqLabel').innerText = `Verification Requirement: $${plan.min}.00 USD Balance`;
+            document.getElementById('investInput').value = "";
+            
+            document.getElementById('investPage').classList.add('active');
+            window.scrollTo(0,0);
+        }
+
         function processActivation() {
             const plan = plans[activePlanTier];
             const amount = parseFloat(document.getElementById('investInput').value);
-            if (!amount || amount <= 0) { handleProfessionalAction("Enter valid amount."); return; }
+
+            if (!amount || amount <= 0) {
+                handleProfessionalAction("Enter a valid investment amount.");
+                return;
+            }
+
             if (userPortfolioBalance < plan.min) {
-                handleProfessionalAction(`Insufficient Funds. Requires $${plan.min} min balance.`);
+                handleProfessionalAction(`Account balance $${userPortfolioBalance} is below the $${plan.min} requirement for ${plan.name}. Please deposit funds to qualify.`);
             } else {
-                handleProfessionalAction(`${plan.name} Strategy Initiated.`);
+                handleProfessionalAction(`${plan.name} Activated successfully. Deployment in progress.`);
                 closeInvestmentPage();
             }
         }
